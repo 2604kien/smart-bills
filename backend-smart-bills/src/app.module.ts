@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { UserOweModule } from './user-owe/user-owe.module';
 import { BillModule } from './bill/bill.module';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
@@ -18,7 +19,7 @@ import { UserService } from './user/user.service';
     database:"nestJS-smart-bill",
     entities:[__dirname + '/**/*.entity{.ts,.js}'],
     synchronize:true,
-  }), UserModule, BillModule],
+  }), UserModule, BillModule, UserOweModule],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],
 })
