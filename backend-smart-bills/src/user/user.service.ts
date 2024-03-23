@@ -68,4 +68,19 @@ export class UserService {
         await this.userRepository.update(id, user);
         return {message: "User data is updated", data:user};
     }
+    //delete user by ID
+    async deleteUser(id:number):Promise<Object>{
+        const foundedUser= await this.userRepository.findOneBy({id});
+        if(!foundedUser){
+            throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
+        }
+        try{
+            await this.userRepository.delete(id);
+            return {message:'User is deleted successfully'}
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
