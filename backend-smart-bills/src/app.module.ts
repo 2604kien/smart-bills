@@ -6,6 +6,7 @@ import { UserPaidModule } from './user-paid/user-paid.module';
 import { UserOweModule } from './user-owe/user-owe.module';
 import { BillModule } from './bill/bill.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -17,7 +18,7 @@ import { UserModule } from './user/user.module';
     database:"nestJS-smart-bill",
     entities:[__dirname + '/**/*.entity{.ts,.js}'],
     synchronize:true,
-  }), UserModule, BillModule, UserOweModule, UserPaidModule],
+  }), UserModule, BillModule, UserOweModule, UserPaidModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
