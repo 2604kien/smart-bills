@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -19,16 +19,19 @@ export class UserService {
         return user;
     }
     async createNewUser(user:UserDto):Promise<Object>{
-        try {
-            //check if user is exist
-            const existUser=await this.userRepository.findOne({
-                where:{
-                    username:user.username,
-                }
-            });
-            if (existUser){
-                return {message: `User ${user.username} is already created.`}
+         //check if user is exist
+         const existUser=await this.userRepository.findOne({
+            where:{
+                username:user.username,
             }
+        });
+        if(!user.fullName || !user.username || !user.password){
+            throw new HttpException('All field are required', HttpStatus.OK);
+        }
+        if (existUser){
+            throw new HttpException(`User ${user.username} is already created.`, HttpStatus.CONFLICT);
+        }
+        try {
             const newUser= new User();
             newUser.fullName=user.fullName;
             newUser.username=user.username;
@@ -40,7 +43,7 @@ export class UserService {
             }
         } catch (error) {
             console.log(error);
-            return {message: "Internal Server Error."}
+            throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
