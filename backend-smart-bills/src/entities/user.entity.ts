@@ -7,12 +7,12 @@ export class User{
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
-    full_name:string;
+    fullName:string;
     @Column({unique:true})
     username:string;
     @Column()
     password: string;
-    @Column()
+    @Column({default:0})
     balance: number;
     @OneToMany(()=>User_Owe, user_owe=>user_owe.user)
     oweList: User_Owe[]

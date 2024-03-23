@@ -9,9 +9,9 @@ export class Bill{
     @CreateDateColumn()
     date: Date;
     @Column()
-    total_cost: number;
+    totalCost: number;
     @Column()
-    number_people:number;
+    numberPeople:number;
     @OneToMany(()=>User_Paid, user_paid=>user_paid.bill)
     paidList: User_Paid;
     @OneToMany(()=>User_Owe, user_owe=>user_owe.bill)
