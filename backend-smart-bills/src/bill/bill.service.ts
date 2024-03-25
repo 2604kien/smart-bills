@@ -66,4 +66,21 @@ export class BillService {
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async deleteBill(id:number){
+        if(!id){
+           throw new HttpException('Please provide valid id.', HttpStatus.OK)
+        }
+        const foundedBill=await this.billRepository.findOneBy({id});
+        if(!foundedBill){
+            throw new HttpException('Bill with provided id is not found.', HttpStatus.NOT_FOUND);
+        }
+        try{
+            await this.billRepository.delete(id);
+            return {message:"Bill is deleted successfully"}
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
