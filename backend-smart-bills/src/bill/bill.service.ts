@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
+import { BillDto } from './dto/bill.dto';
 @Injectable()
 export class BillService {
     constructor(@InjectRepository(Bill) private billRepository:Repository<Bill>){}
@@ -32,5 +33,20 @@ export class BillService {
         }
     }
     //create new bill
-    
+    async createNewBill(bill:BillDto){
+        if(!bill.totalCost || !bill.numberPeople){
+            throw new HttpException('All field are required.', HttpStatus.OK);
+        }
+        try{
+            const newBill= new Bill();
+            newBill.totalCost=bill.totalCost;
+            newBill.numberPeople=bill.numberPeople;
+            await this.billRepository.save(newBill);
+            return {message:"A new bill is added", data:newBill}
+        }
+        catch(error){
+            console.log(error)
+            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
