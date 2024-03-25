@@ -49,4 +49,21 @@ export class BillService {
             throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //update bill and need to modify later for proper handling
+    async updateBill(bill:BillDto, id:number){
+        if(!bill.numberPeople || !bill.totalCost){
+            throw new HttpException('All field are required.', HttpStatus.OK);
+        }
+        const foundedBill=await this.billRepository.findOneBy({id});
+        if(!foundedBill){
+            throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
+        }
+        try{
+            await this.billRepository.update(id, bill);
+            return {message:'Bill data is successfully editted', data:bill}
+        }
+        catch(error){
+            throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
