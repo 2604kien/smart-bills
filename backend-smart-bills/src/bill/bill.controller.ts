@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { BillService } from './bill.service';
 import { BillDto } from './dto/bill.dto';
 
@@ -20,5 +20,9 @@ export class BillController {
     @Put(':id')
     async updateBill(@Param('id') id:number, @Body() bill:BillDto){
         return this.billService.updateBill(bill, id);
+    }
+    @Delete(':id')
+    async deleteBill(@Param('id') id:number){
+        return this.billService.deleteBill(id);
     }
 }
