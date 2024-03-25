@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, CreateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Bill } from "./bill.entity";
 
@@ -6,6 +6,8 @@ import { Bill } from "./bill.entity";
 export class User_Paid{
     @PrimaryGeneratedColumn()
     id:number;
+    @CreateDateColumn()
+    date: Date;
     @ManyToOne(()=>User, user=>user.paidList)
     @JoinColumn()
     user:User
