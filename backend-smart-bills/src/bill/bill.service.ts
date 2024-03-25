@@ -8,7 +8,7 @@ export class BillService {
     constructor(@InjectRepository(Bill) private billRepository:Repository<Bill>){}
 
     //get all bill
-    async getAllBill(){
+    async getAllBill():Promise<Object>{
         try{
             const data=await this.billRepository.find();
             return {message: "All bill data are retrieved", data:data}
@@ -19,12 +19,15 @@ export class BillService {
         }
     }
     //get one bill by id
-    async getOneBill(id:number){
+    async getOneBill(id:number):Promise<Object>{
         if(!id){
             throw new HttpException('Please provide id.', HttpStatus.OK);
         }
+        const bill=await this.billRepository.findOneBy({id});
+        if(!bill){
+            throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
+        }
         try{
-            const bill=await this.billRepository.findOneBy({id});
             return {message: "Bill data is retrieved", data:bill};
         }
         catch(error){
@@ -33,7 +36,7 @@ export class BillService {
         }
     }
     //create new bill
-    async createNewBill(bill:BillDto){
+    async createNewBill(bill:BillDto):Promise<Object>{
         if(!bill.totalCost || !bill.numberPeople){
             throw new HttpException('All field are required.', HttpStatus.OK);
         }
@@ -50,7 +53,7 @@ export class BillService {
         }
     }
     //update bill and need to modify later for proper handling
-    async updateBill(bill:BillDto, id:number){
+    async updateBill(bill:BillDto, id:number):Promise<Object>{
         if(!bill.numberPeople || !bill.totalCost){
             throw new HttpException('All field are required.', HttpStatus.OK);
         }
@@ -66,7 +69,8 @@ export class BillService {
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async deleteBill(id:number){
+    //delete bill by id
+    async deleteBill(id:number):Promise<Object>{
         if(!id){
            throw new HttpException('Please provide valid id.', HttpStatus.OK)
         }
