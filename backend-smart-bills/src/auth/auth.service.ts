@@ -7,7 +7,7 @@ import { AuthDto } from './dto/auth.dto';
 export class AuthService {
     constructor(@InjectRepository(User) private userRepository:Repository<User>){}
     
-    async login(data:AuthDto, response:Response){
-        
+    async login(data:AuthDto, response:Response):Promise<Object>{
+        return{}
     }
 }
