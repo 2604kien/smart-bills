@@ -7,9 +7,12 @@ import { UserOweModule } from './user-owe/user-owe.module';
 import { BillModule } from './bill/bill.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot({isGlobal:true}),
+    TypeOrmModule.forRoot({
     type:"postgres",
     host:"localhost",
     port:5432,
