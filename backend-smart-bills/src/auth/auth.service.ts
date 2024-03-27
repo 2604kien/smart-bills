@@ -33,10 +33,5 @@ export class AuthService {
                     throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             }
-            else{
-                throw new HttpException('Invalid credential', HttpStatus.UNAUTHORIZED);
-            }
     }
-
-    
 }
