@@ -11,7 +11,7 @@ export class AuthService {
         private jwtService:JwtService,
         @InjectRepository(User) private userRepository:Repository<User>
     ){}
-    
+      //login logic
     async login(data:AuthDto):Promise<Object>{
         if(!data.username||!data.password){
             throw new HttpException('All field are required', HttpStatus.OK);
@@ -25,7 +25,7 @@ export class AuthService {
             if(isAuthenticate){
                 delete foundedUser.password;
                 try{
-                    const jwt= await this.jwtService.signAsync({id:foundedUser.id, UserInfo:{username:foundedUser.username, role:foundedUser.role}})
+                    const jwt= await this.jwtService.signAsync({UserInfo:{id:foundedUser.id, username:foundedUser.username, role:foundedUser.role}})
                     return {message: "You are login successfully.", data:jwt}
                 }
                 catch(error){
