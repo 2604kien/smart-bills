@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BillService } from './bill.service';
 import { BillDto } from './dto/bill.dto';
 
@@ -14,10 +14,12 @@ export class BillController {
         return this.billService.getOneBill(id);
     }
     @Post()
+    @UsePipes(new ValidationPipe())
     async createNewBill(@Body() bill:BillDto){
         return this.billService.createNewBill(bill);
     }
     @Put(':id')
+    @UsePipes(new ValidationPipe())
     async updateBill(@Param('id') id:number, @Body() bill:BillDto){
         return this.billService.updateBill(bill, id);
     }

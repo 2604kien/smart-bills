@@ -12,6 +12,8 @@ export class User{
     username:string;
     @Column()
     password: string;
+    @Column()
+    email:string;
     @Column({default:0})
     balance: number;
     @Column({default:"user"})
