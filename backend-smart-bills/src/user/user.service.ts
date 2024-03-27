@@ -29,10 +29,7 @@ export class UserService {
     }
     //create new user 
     async createNewUser(user:UserDto):Promise<Object>{
-         //check if user is exist
-         if(!user.fullName || !user.username || !user.password){
-            throw new HttpException('All field are required', HttpStatus.OK);
-        }
+
          const existUser=await this.userRepository.findOne({
             where:{
                 username:user.username,
@@ -46,6 +43,7 @@ export class UserService {
             newUser.fullName=user.fullName;
             newUser.username=user.username;
             newUser.password= await bcrypt.hash(user.password, 10);
+            newUser.email=user.email;
             await this.userRepository.save(newUser);
             return {
                 message:"User is created successfully",
@@ -58,9 +56,6 @@ export class UserService {
     }
     //update user data
     async updateUser(user:UserUpdateDto, id:number):Promise<Object>{
-        if(!user.fullName || !user.username || !user.password || !user.balance){
-            throw new HttpException('All field are required', HttpStatus.OK);
-        }
         const foundedUser= await this.userRepository.findOneBy({id});
         if(!foundedUser){
             throw new HttpException('User is not found.', HttpStatus.NOT_FOUND);
