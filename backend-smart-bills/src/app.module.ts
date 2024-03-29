@@ -8,11 +8,15 @@ import { BillModule } from './bill/bill.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal:true
+    }),
+    PassportModule.register({
+      session:true,
     }),
     TypeOrmModule.forRoot({
     type:"postgres",
