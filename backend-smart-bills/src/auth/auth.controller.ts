@@ -11,15 +11,14 @@ import { RolesGuard } from 'src/guards/role.guard';
 @Controller('auth')
 export class AuthController {
     constructor(private authService:AuthService){}
-    @Post('login')
     @UseGuards(LocalGuard)
+    @Post('login')
     async login(@Req() req:Request){
         return req.user;
     }
-    
-    @Get('test')
-    @Roles(Role.admin, Role.user)
     @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.admin, Role.user)
+    @Get('test')
     async test(@Req() req:Request){
         return req.user;
     }

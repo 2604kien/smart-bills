@@ -8,18 +8,19 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
+import { SessionSerializer } from './serializer/session.serializer';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([User]),
-    PassportModule,
+    PassportModule.register({session:true}),
     JwtModule.register({
       secret:process.env.SECRET,
       signOptions:{expiresIn:'1h'}
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, SessionSerializer],
   controllers: [AuthController]
 })
 export class AuthModule {}
