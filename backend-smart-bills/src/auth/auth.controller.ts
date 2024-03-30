@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/role.decorator';
@@ -15,6 +15,16 @@ export class AuthController {
     @Post('login')
     async login(@Req() req:Request){
         return req.user;
+    }
+    @Get('logout')
+    async logout(@Req() req:Request){
+        try{  
+            req.logOut(err=>err?console.log(err):{});
+        }
+        catch(error){
+            throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return {message: "You are logout successfully."}
     }
     @UseGuards(AuthenticationAuthGuard, RolesGuard)
     @Roles(Role.admin, Role.user)
