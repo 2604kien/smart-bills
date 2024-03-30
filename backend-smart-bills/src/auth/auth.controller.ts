@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enum/role.enum';
-import { JwtAuthGuard } from '../guards/jwt.guard';
+import { AuthenticationAuthGuard } from 'src/guards/authentication.guard';
 import { LocalGuard } from '../guards/local.guards';
 import { RolesGuard } from 'src/guards/role.guard';
 
@@ -16,7 +16,7 @@ export class AuthController {
     async login(@Req() req:Request){
         return req.user;
     }
-    @UseGuards(JwtAuthGuard, RolesGuard)
+    @UseGuards(AuthenticationAuthGuard, RolesGuard)
     @Roles(Role.admin, Role.user)
     @Get('test')
     async test(@Req() req:Request){

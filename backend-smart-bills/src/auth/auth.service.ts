@@ -4,11 +4,9 @@ import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
     constructor(
-        private jwtService:JwtService,
         @InjectRepository(User) private userRepository:Repository<User>
     ){}
       //login logic
@@ -25,8 +23,7 @@ export class AuthService {
             if(isAuthenticate){
                 delete foundedUser.password;
                 try{
-                    const jwt= await this.jwtService.signAsync({UserInfo:{id:foundedUser.id, username:foundedUser.username, roles:foundedUser.roles}})
-                    return {message: "You are login successfully.", data:jwt}
+                    return {message: "You are login successfully.", data:{id:foundedUser.id, username:foundedUser.username, roles:foundedUser.roles}}
                 }
                 catch(error){
                     console.log(error);

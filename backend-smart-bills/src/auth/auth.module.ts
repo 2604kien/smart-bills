@@ -6,7 +6,6 @@ import { User } from 'src/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { SessionSerializer } from './serializer/session.serializer';
 
@@ -20,7 +19,7 @@ import { SessionSerializer } from './serializer/session.serializer';
       signOptions:{expiresIn:'1h'}
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, SessionSerializer],
+  providers: [AuthService, LocalStrategy, SessionSerializer],
   controllers: [AuthController]
 })
 export class AuthModule {}
