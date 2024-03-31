@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserOweService } from './user-owe.service';
 import { UserOweDto } from './dto/user-owe.dto';
 
@@ -17,5 +17,9 @@ export class UserOweController {
     @UsePipes(new ValidationPipe())
     async createNewUserOwe (@Body() data:UserOweDto){
         return this.userOweService.createNewUserOwe(data);
+    }
+    @Delete(':id')
+    async deleteUserOwe(@Param('id') id:number){
+        return this.userOweService.deleteUserOwe(id);
     }
 }
