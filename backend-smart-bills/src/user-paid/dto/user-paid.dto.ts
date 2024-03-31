@@ -8,11 +8,3 @@ export class UserPaidDto{
     @IsNotEmpty()
     bill:Bill;
 }
-export class EditUserPaidDto{
-    @IsNotEmpty()
-    user:User;
-    @IsNotEmpty()
-    bill:Bill;
-    @IsNotEmpty()
-    date:Date;
-}
