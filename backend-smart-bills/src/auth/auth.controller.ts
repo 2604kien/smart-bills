@@ -1,22 +1,39 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enum/role.enum';
 import { JwtAuthGuard } from '../guards/jwt.guard';
 import { LocalGuard } from '../guards/local.guards';
 import { RolesGuard } from 'src/guards/role.guard';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService:AuthService){}
+    constructor(private authService:AuthService, private jwtService:JwtService){}
+    
     @Post('login')
     @UseGuards(LocalGuard)
-    async login(@Req() req:Request){
-        return req.user;
+    async login(@Req() req:Request, @Res() res:Response){
+        const accessToken=await this.jwtService.signAsync({UserInfo:req.user})
+        const refreshToken=await this.jwtService.signAsync({UserInfo:req.user})
+        res.cookie('jwt', refreshToken, {
+            httpOnly:true,
+            secure: true,
+            sameSite:'none',
+            maxAge:7*24*60*60*1000
+        })
+        res.send({message: "You are login successfully", data:accessToken});
     }
-    
+    @Get('refresh')
+    async refresh(@Req() req:Request, @Res() res:Response){
+        return this.authService.refresh(req, res);
+    }
+    @Get('logout')
+    async logout(@Req() req: Request, @Res() res:Response){
+        return this.authService.logout(req, res);
+    }
     @Get('test')
     @Roles(Role.admin, Role.user)
     @UseGuards(JwtAuthGuard, RolesGuard)
