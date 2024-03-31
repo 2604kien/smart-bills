@@ -12,8 +12,12 @@ export class User{
     username:string;
     @Column()
     password: string;
+    @Column()
+    email:string;
     @Column({default:0})
     balance: number;
+    @Column("text", {nullable:true, default:['user'], array:true})
+    roles:string[];
     @OneToMany(()=>User_Owe, user_owe=>user_owe.user)
     oweList: User_Owe[]
     @OneToMany(()=>User_Paid, user_paid=>user_paid.user)
