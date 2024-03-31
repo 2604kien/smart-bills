@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from "typeorm";
 import { User } from "./user.entity";
 import { Bill } from "./bill.entity";
 
@@ -8,8 +8,10 @@ export class User_Owe{
     id: number;
     @ManyToOne(()=>User, user=>user.oweList)
     @JoinColumn()
-    user:User
+    user:User;
     @ManyToOne(()=>Bill, bill=>bill.oweList)
     @JoinColumn()
-    bill:Bill
+    bill:Bill;
+    @Column()
+    oweAmount:number;
 }

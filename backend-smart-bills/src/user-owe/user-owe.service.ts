@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User_Owe } from 'src/entities/user-owe.entity';
+import { UserOweDto } from './dto/user-owe.dto';
 @Injectable()
 export class UserOweService {
     constructor(@InjectRepository(User_Owe) private userOweRepository:Repository<User_Owe>){}
@@ -31,6 +32,25 @@ export class UserOweService {
         catch(error){
             console.log(error);
             throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //add new User_Owe
+    async createNewUserOwe(data:UserOweDto){
+        const foundedUserOwe=this.userOweRepository.findOneBy({user:{id:data.user.id}, bill:{id:data.bill.id}});
+        if(foundedUserOwe){
+            throw new HttpException('This user_owe is already added', HttpStatus.CONFLICT);
+        }
+        try{
+            const newUserOwe=new User_Owe();
+            newUserOwe.user=data.user;
+            newUserOwe.bill=data.bill;
+            newUserOwe.oweAmount=data.oweAmount;
+            await this.userOweRepository.save(newUserOwe);
+            return {message:"New User_Owe is successfully created", data: newUserOwe};
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

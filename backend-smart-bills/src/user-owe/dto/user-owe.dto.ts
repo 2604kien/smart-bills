@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber } from "class-validator";
 import { Bill } from "src/entities/bill.entity";
 import { User } from "src/entities/user.entity";
-export class UserOwe{
+export class UserOweDto{
     @IsNotEmpty()
     @IsNumber()
     oweAmount:number;
@@ -9,6 +9,7 @@ export class UserOwe{
     user:User;
     @IsNotEmpty()
     bill:Bill;
+    
 }
 export class EditUserOwe{
     @IsNotEmpty()
