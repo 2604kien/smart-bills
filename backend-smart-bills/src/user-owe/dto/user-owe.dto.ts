@@ -11,14 +11,3 @@ export class UserOweDto{
     bill:Bill;
     
 }
-export class EditUserOwe{
-    @IsNotEmpty()
-    user:User;
-    @IsNotEmpty()
-    bill:Bill;
-    @IsNotEmpty()
-    date:Date;
-    @IsNotEmpty()
-    @IsNumber()
-    oweAmount:number;
-}
