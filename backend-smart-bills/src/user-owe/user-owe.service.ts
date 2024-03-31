@@ -9,7 +9,23 @@ export class UserOweService {
     //get all data from User_Owe table
     async getAllUserOwe():Promise<Object>{
         try{
-            const data=await this.userOweRepository.find();
+            const data=await this.userOweRepository.find({
+                select:{
+                    user:{
+                        id:true,
+                        fullName:true
+                    },
+                    bill:{
+                        id:true,
+                        date:true,
+                        totalCost:true,
+                    }
+                },
+                relations:{
+                    user:true,
+                    bill:true
+                }
+            });
             return {message: "All data from User_Owe table is retrieved.", data:data}
         }
         catch(error){
@@ -22,7 +38,24 @@ export class UserOweService {
         if(!id){
             throw new HttpException('Please provide valid id.', HttpStatus.OK);
         }
-        const foundedData=await this.userOweRepository.findOneBy({id});
+        const foundedData=await this.userOweRepository.findOne({
+            where:{id},
+            select:{
+                user:{
+                    id:true,
+                    fullName:true
+                },
+                bill:{
+                    id:true,
+                    date:true,
+                    totalCost:true
+                }
+            },
+            relations:{
+                user:true,
+                bill:true
+            }
+        });
         if(!foundedData){
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
         }

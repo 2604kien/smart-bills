@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm";
 import { User_Owe } from "./user-owe.entity";
 import { User_Paid } from "./user-paid.entity";
+import { Bill } from "./bill.entity";
 
 @Entity()
 export class User{
@@ -22,5 +23,7 @@ export class User{
     oweList: User_Owe[]
     @OneToMany(()=>User_Paid, user_paid=>user_paid.user)
     paidList: User_Paid[]
+    @OneToMany(()=>Bill, bill=>bill.user)
+    billList: Bill[]
 
 }

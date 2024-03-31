@@ -9,9 +9,7 @@ export class User_Paid{
     @CreateDateColumn()
     date: Date;
     @ManyToOne(()=>User, user=>user.paidList)
-    @JoinColumn()
     user:User
     @ManyToOne(()=>Bill, bill=>bill.paidList)
-    @JoinColumn()
     bill:Bill
 }

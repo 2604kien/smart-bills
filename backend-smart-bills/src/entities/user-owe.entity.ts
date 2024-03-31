@@ -7,10 +7,8 @@ export class User_Owe{
     @PrimaryGeneratedColumn()
     id: number;
     @ManyToOne(()=>User, user=>user.oweList)
-    @JoinColumn()
     user:User;
     @ManyToOne(()=>Bill, bill=>bill.oweList)
-    @JoinColumn()
     bill:Bill;
     @Column()
     oweAmount:number;
