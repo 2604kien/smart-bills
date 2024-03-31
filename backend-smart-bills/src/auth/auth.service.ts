@@ -46,8 +46,12 @@ export class AuthService {
         delete foundedUser.fullName;
         delete foundedUser.email;
         delete foundedUser.balance;
-        const accessToken=await this.jwtService.signAsync({UserInfo:foundedUser})
-        const refreshToken=await this.jwtService.signAsync({UserInfo:foundedUser});
+        const accessToken=await this.jwtService.signAsync({UserInfo:foundedUser},{
+            expiresIn:'15m'
+        })
+        const refreshToken=await this.jwtService.signAsync({UserInfo:foundedUser},{
+            expiresIn:'7d'
+        });
         res.clearCookie('jwt',{
             httpOnly:true,
             secure:true,
@@ -59,7 +63,7 @@ export class AuthService {
             sameSite:'none',
             maxAge:7*24*60*60*1000
         })
-        res.send({data:accessToken});
+        res.send({accessToken:accessToken});
     }
     async logout(req:Request, res:Response){
         const cookie= req.cookies

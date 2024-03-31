@@ -15,8 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
-      secret:process.env.SECRET,
-      signOptions:{expiresIn:'15m'}
+      secret:process.env.SECRET
     })
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

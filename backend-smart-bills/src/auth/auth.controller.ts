@@ -16,8 +16,12 @@ export class AuthController {
     @Post('login')
     @UseGuards(LocalGuard)
     async login(@Req() req:Request, @Res() res:Response){
-        const accessToken=await this.jwtService.signAsync({UserInfo:req.user})
-        const refreshToken=await this.jwtService.signAsync({UserInfo:req.user})
+        const accessToken=await this.jwtService.signAsync({UserInfo:req.user},{
+            expiresIn:'15m'
+        })
+        const refreshToken=await this.jwtService.signAsync({UserInfo:req.user},{
+            expiresIn:'7d'
+        })
         res.cookie('jwt', refreshToken, {
             httpOnly:true,
             secure: true,
