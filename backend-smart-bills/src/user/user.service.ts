@@ -14,7 +14,12 @@ export class UserService {
     }
     //get one user by id
     async getOneUser(id:number):Promise<Object>{
-        const user=await this.userRepository.findOneBy({id});
+        const user=await this.userRepository.findOne({
+            where:{id},
+            relations:{
+                billList:true
+            }
+        });
         if(!user){
             throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
         }

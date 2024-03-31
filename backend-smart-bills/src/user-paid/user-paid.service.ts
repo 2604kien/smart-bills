@@ -9,12 +9,45 @@ export class UserPaidService {
 
     //get all User_Paid
     async getAll(){
-        const data=await this.userPaidRepository.find();
+        const data=await this.userPaidRepository.find({
+            select:{
+                user:{
+                    id:true,
+                    fullName:true,
+                },
+                bill:{
+                    id:true,
+                    date:true,
+                    totalCost:true
+                }
+            },
+            relations:{
+                user:true,
+                bill:true
+            }
+        });
         return {message:"All User_Paid data are retrieved successfully", data}
     }
     //get one User_Paid by id
     async getUserPaidById(id:number){
-        const data=await this.userPaidRepository.findOneBy({id});
+        const data=await this.userPaidRepository.findOne({
+            where:{id},
+            select:{
+                user:{
+                    id:true,
+                    fullName:true
+                },
+                bill:{
+                    id:true,
+                    date:true,
+                    totalCost:true,
+                }
+            },
+            relations:{
+                user:true,
+                bill:true
+            }
+        });
         if(!data){
             throw new HttpException(`User_Paid with the id ${id} is not found.`, HttpStatus.NOT_FOUND);
         }

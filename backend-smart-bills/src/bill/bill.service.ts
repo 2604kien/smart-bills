@@ -10,7 +10,15 @@ export class BillService {
     //get all bill
     async getAllBill():Promise<Object>{
         try{
-            const data=await this.billRepository.find();
+            const data=await this.billRepository.find({
+                select:{
+                    user:{
+                        id:true,
+                        fullName:true
+                    }
+                },
+                relations:{user:true}
+            });
             return {message: "All bill data are retrieved", data:data}
         }
         catch(error){
@@ -23,7 +31,16 @@ export class BillService {
         if(!id){
             throw new HttpException('Please provide id.', HttpStatus.OK);
         }
-        const bill=await this.billRepository.findOneBy({id});
+        const bill=await this.billRepository.findOne({
+            where:{id},
+            select:{
+                user:{
+                    id:true,
+                    fullName:true
+                }
+            },
+            relations:{user:true}
+        });
         if(!bill){
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
         }
@@ -44,6 +61,7 @@ export class BillService {
             const newBill= new Bill();
             newBill.totalCost=bill.totalCost;
             newBill.numberPeople=bill.numberPeople;
+            newBill.user=bill.user;
             await this.billRepository.save(newBill);
             return {message:"A new bill is added", data:newBill}
         }
