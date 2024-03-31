@@ -27,7 +27,7 @@ export class UserOweService {
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
         }
         try{
-            return {message: "A row data in User_Owe table is retrieved", data:foundedData};
+            return {message: `User_Owe with id ${id} is retrieved successfully.`, data:foundedData};
         }
         catch(error){
             console.log(error);
@@ -61,5 +61,17 @@ export class UserOweService {
         }
         await this.userOweRepository.delete(id);
         return {message:`User_Owe with the id ${id} is deleted successfully`}
+    }
+    //edit user_owe
+    async updateUserOwe(data:UserOweDto, id:number){
+        const foundedUserOwe=await this.userOweRepository.findOneBy({id});
+        if(!foundedUserOwe){
+            throw new HttpException(`User_Owe with the id ${id} is not found`, HttpStatus.NOT_FOUND)
+        }
+        foundedUserOwe.user=data.user;
+        foundedUserOwe.bill=data.bill;
+        foundedUserOwe.oweAmount=data.oweAmount;
+        await this.userOweRepository.save(foundedUserOwe);
+        return {message:`User_Owe with the id ${id} is updated successfully`}
     }
 }
