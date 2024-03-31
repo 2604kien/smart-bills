@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Request, Response } from 'express';
 @Injectable()
 export class AuthService {
     constructor(
@@ -20,18 +21,56 @@ export class AuthService {
         if(!foundedUser){
             throw new HttpException('You need to register before login.', HttpStatus.NOT_FOUND);
         }
-
             const isAuthenticate=await bcrypt.compare(data.password, foundedUser.password);
             if(isAuthenticate){
                 delete foundedUser.password;
-                try{
-                    const jwt= await this.jwtService.signAsync({UserInfo:{id:foundedUser.id, username:foundedUser.username, roles:foundedUser.roles}})
-                    return {message: "You are login successfully.", data:jwt}
-                }
-                catch(error){
-                    console.log(error);
-                    throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+                delete foundedUser.fullName;
+                delete foundedUser.email;
+                delete foundedUser.balance;
+                return foundedUser;
             }
+    }
+    async refresh(req: Request, res:Response):Promise<any>{
+        const cookie=req.cookies;
+        if(!cookie){
+            throw new HttpException('No Content', HttpStatus.NO_CONTENT)
+        }
+        const payload= await this.jwtService.verifyAsync(cookie.jwt, {
+            secret:process.env.SECRET
+        });
+        const foundedUser= await this.userRepository.findOneBy({id: payload.UserInfo.id});
+        if(!foundedUser){
+            throw new HttpException('No user found', HttpStatus.UNAUTHORIZED);
+        }
+        delete foundedUser.password;
+        delete foundedUser.fullName;
+        delete foundedUser.email;
+        delete foundedUser.balance;
+        const accessToken=await this.jwtService.signAsync({UserInfo:foundedUser})
+        const refreshToken=await this.jwtService.signAsync({UserInfo:foundedUser});
+        res.clearCookie('jwt',{
+            httpOnly:true,
+            secure:true,
+            sameSite:'none',
+        })
+        res.cookie('jwt',refreshToken,{
+            httpOnly:true,
+            secure:true,
+            sameSite:'none',
+            maxAge:7*24*60*60*1000
+        })
+        res.send({data:accessToken});
+    }
+    async logout(req:Request, res:Response){
+        const cookie= req.cookies
+        if(!cookie){
+            throw new HttpException('No Content', HttpStatus.NO_CONTENT);
+        }
+        res.clearCookie('jwt', {
+            httpOnly:true,
+            secure: true,
+            sameSite:'none'
+        })
+        res.send({message:"Cookie is cleared"});
     }
 }
