@@ -36,7 +36,7 @@ export class UserOweService {
     }
     //add new User_Owe
     async createNewUserOwe(data:UserOweDto){
-        const foundedUserOwe=this.userOweRepository.findOneBy({user:{id:data.user.id}, bill:{id:data.bill.id}});
+        const foundedUserOwe=await this.userOweRepository.findOneBy({user:{id:data.user.id}, bill:{id:data.bill.id}});
         if(foundedUserOwe){
             throw new HttpException('This user_owe is already added', HttpStatus.CONFLICT);
         }
@@ -52,5 +52,14 @@ export class UserOweService {
             console.log(error);
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    //delete user_owe
+    async deleteUserOwe(id:number){
+        const foundedUserOwe=await this.userOweRepository.findOneBy({id});
+        if(!foundedUserOwe){
+            throw new HttpException(`User_Owe with the id ${id} is not found`, HttpStatus.NOT_FOUND)
+        }
+        await this.userOweRepository.delete(id);
+        return {message:`User_Owe with the id ${id} is deleted successfully`}
     }
 }
