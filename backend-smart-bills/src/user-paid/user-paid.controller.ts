@@ -1,4 +1,44 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { UserPaidService } from './user-paid.service';
+import { UserPaidDto } from './dto/user-paid.dto';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/enum/role.enum';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { RolesGuard } from 'src/guards/role.guard';
 
 @Controller('user-paid')
-export class UserPaidController {}
+export class UserPaidController {
+    constructor(private readonly userPaidService:UserPaidService){}
+    @Get()
+    @Roles(Role.admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    getAll(){
+        return this.userPaidService.getAll();
+    }
+    @Get(':id')
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    getUserPaidById(@Param('id') id:number){
+        return this.userPaidService.getUserPaidById(id);
+    }
+    @Post()
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @UsePipes(new ValidationPipe())
+    createNewUserPaid(@Body() data:UserPaidDto){
+        return this.userPaidService.createUserPaid(data);
+    }
+    @Patch(':id')
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @UsePipes(new ValidationPipe())
+    updateUser(@Param('id') id:number,@Body() data:UserPaidDto){
+        return this.userPaidService.updateUserPaid(data, id);
+    }
+    @Delete(':id')
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    deleteUser(@Param('id') id:number){
+        return this.userPaidService.deleteUserPaid(id);
+    }
+}

@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
-import { BillDto } from './dto/bill.dto';
+import { BillDto, UpdateBillDto } from './dto/bill.dto';
 @Injectable()
 export class BillService {
     constructor(@InjectRepository(Bill) private billRepository:Repository<Bill>){}
@@ -10,7 +10,15 @@ export class BillService {
     //get all bill
     async getAllBill():Promise<Object>{
         try{
-            const data=await this.billRepository.find();
+            const data=await this.billRepository.find({
+                select:{
+                    user:{
+                        id:true,
+                        fullName:true
+                    }
+                },
+                relations:{user:true}
+            });
             return {message: "All bill data are retrieved", data:data}
         }
         catch(error){
@@ -23,7 +31,16 @@ export class BillService {
         if(!id){
             throw new HttpException('Please provide id.', HttpStatus.OK);
         }
-        const bill=await this.billRepository.findOneBy({id});
+        const bill=await this.billRepository.findOne({
+            where:{id},
+            select:{
+                user:{
+                    id:true,
+                    fullName:true
+                }
+            },
+            relations:{user:true}
+        });
         if(!bill){
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
         }
@@ -44,6 +61,7 @@ export class BillService {
             const newBill= new Bill();
             newBill.totalCost=bill.totalCost;
             newBill.numberPeople=bill.numberPeople;
+            newBill.user=bill.user;
             await this.billRepository.save(newBill);
             return {message:"A new bill is added", data:newBill}
         }
@@ -53,17 +71,14 @@ export class BillService {
         }
     }
     //update bill and need to modify later for proper handling
-    async updateBill(bill:BillDto, id:number):Promise<Object>{
-        if(!bill.numberPeople || !bill.totalCost){
-            throw new HttpException('All field are required.', HttpStatus.OK);
-        }
+    async updateBill(bill:UpdateBillDto, id:number):Promise<Object>{
         const foundedBill=await this.billRepository.findOneBy({id});
         if(!foundedBill){
             throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
         }
         try{
             await this.billRepository.update(id, bill);
-            return {message:'Bill data is successfully editted', data:bill}
+            return {message:'Bill data is successfully editted'}
         }
         catch(error){
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
