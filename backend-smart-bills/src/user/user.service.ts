@@ -14,7 +14,25 @@ export class UserService {
     }
     //get one user by id
     async getOneUser(id:number):Promise<Object>{
-        const user=await this.userRepository.findOneBy({id});
+        const user=await this.userRepository.findOne({
+            where:{id},
+            select:{
+                oweList:{
+                    id:true
+                },
+                paidList:{
+                   id:true
+                },
+                billList:{
+                    id:true
+                }
+            },
+            relations:{
+                billList:true,
+                oweList:true,
+                paidList:true
+            }
+        });
         if(!user){
             throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
         }
@@ -57,11 +75,14 @@ export class UserService {
     //update user data
     async updateUser(user:UserUpdateDto, id:number):Promise<Object>{
         const foundedUser= await this.userRepository.findOneBy({id});
+        if(user.password){
+            user.password=await bcrypt.hash(user.password, 10)
+        }
         if(!foundedUser){
             throw new HttpException('User is not found.', HttpStatus.NOT_FOUND);
         }
         await this.userRepository.update(id, user);
-        return {message: "User data is updated", data:user};
+        return {message: "User data is updated"};
     }
     //delete user by ID
     async deleteUser(id:number):Promise<Object>{
