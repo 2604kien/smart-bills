@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
-import { BillDto } from './dto/bill.dto';
+import { BillDto, UpdateBillDto } from './dto/bill.dto';
 @Injectable()
 export class BillService {
     constructor(@InjectRepository(Bill) private billRepository:Repository<Bill>){}
@@ -71,17 +71,14 @@ export class BillService {
         }
     }
     //update bill and need to modify later for proper handling
-    async updateBill(bill:BillDto, id:number):Promise<Object>{
-        if(!bill.numberPeople || !bill.totalCost){
-            throw new HttpException('All field are required.', HttpStatus.OK);
-        }
+    async updateBill(bill:UpdateBillDto, id:number):Promise<Object>{
         const foundedBill=await this.billRepository.findOneBy({id});
         if(!foundedBill){
             throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
         }
         try{
             await this.billRepository.update(id, bill);
-            return {message:'Bill data is successfully editted', data:bill}
+            return {message:'Bill data is successfully editted'}
         }
         catch(error){
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);

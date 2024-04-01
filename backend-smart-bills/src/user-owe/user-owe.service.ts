@@ -49,7 +49,7 @@ export class UserOweService {
                     id:true,
                     date:true,
                     totalCost:true
-                }
+                },
             },
             relations:{
                 user:true,
