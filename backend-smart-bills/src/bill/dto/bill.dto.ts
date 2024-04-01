@@ -12,3 +12,7 @@ export class BillDto{
     @IsNotEmpty()
     user:User;
 }
+export class UpdateBillDto{
+    @IsNotEmpty()
+    user:User
+}
