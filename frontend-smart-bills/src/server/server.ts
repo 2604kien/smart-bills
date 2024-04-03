@@ -1,0 +1,1 @@
+export const backEndServer:string="http://localhost:3500/"
