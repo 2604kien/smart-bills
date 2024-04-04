@@ -8,9 +8,9 @@ function App() {
     <div className="App h-screen m-0">
       <Routes>
         <Route path="" element={<Layout/>}>
-        </Route>
         <Route path="login"element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
+        </Route>
       </Routes>
     </div>
   );
