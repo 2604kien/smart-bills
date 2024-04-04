@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '../guards/jwt.guard';
 import { LocalGuard } from '../guards/local.guards';
 import { RolesGuard } from 'src/guards/role.guard';
 import { JwtService } from '@nestjs/jwt';
+import { AuthDto } from './dto/auth.dto';
 
 
 @Controller('auth')
@@ -15,19 +16,21 @@ export class AuthController {
     
     @Post('login')
     @UseGuards(LocalGuard)
-    async login(@Req() req:Request, @Res() res:Response){
+    async login(@Body() data: AuthDto,@Req() req:Request, @Res() res:Response){
         const accessToken=await this.jwtService.signAsync({UserInfo:req.user},{
             expiresIn:'15m'
         })
-        const refreshToken=await this.jwtService.signAsync({UserInfo:req.user},{
-            expiresIn:'7d'
-        })
-        res.cookie('jwt', refreshToken, {
-            httpOnly:true,
-            secure: true,
-            sameSite:'none',
-            maxAge:7*24*60*60*1000
-        })
+        if(data.remember===true){
+            const refreshToken=await this.jwtService.signAsync({UserInfo:req.user},{
+                expiresIn:'7d'
+            })
+            res.cookie('jwt', refreshToken, {
+                httpOnly:true,
+                secure: true,
+                sameSite:'none',
+                maxAge:7*24*60*60*1000
+            })
+        }
         res.send({message: "You are login successfully", data:accessToken});
     }
     @Get('refresh')
