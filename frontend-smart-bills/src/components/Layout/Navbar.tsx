@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../Logo/WhiteBackground.png";
 import Menu from "./Menu";
@@ -8,6 +8,16 @@ export default function Navbar(){
     const hanndleMenuClick=()=>{
         setIsClick(prev=>!prev);
     }
+    const menuRef=React.useRef<HTMLInputElement>(null);
+    React.useEffect(()=>{
+        let handler=(e:any)=>{
+            const element=menuRef.current;
+            if(element && !element.contains(e.target)) {
+                setIsClick(false);
+            }
+        }
+        document.addEventListener("mousedown", handler);
+    },[])
     return(
         <div style={{position:"relative"}}>
         <div className="h-20">
@@ -17,12 +27,12 @@ export default function Navbar(){
             <input className="indent-2 border-gray sm:border-2 rounded-xl " placeholder="Search..." style={{width:"30%", maxWidth:"300px"}}/>
             <div style={{fontSize:"1.5rem", gap:"20px"}} className="flex flex-row justify-between items-center">
                 <i className="fa-solid fa-bell cursor-pointer hover:brightness-50 duration-150 hover:text-white"></i>
-                <i className="fa-solid fa-user cursor-pointer hover:brightness-50 duration-150 hover:text-white"></i>
+                <i onClick={()=> navigate('/login')} className="fa-solid fa-user cursor-pointer hover:brightness-50 duration-150 hover:text-white"></i>
                 <i onClick={hanndleMenuClick} className="fa-solid fa-bars cursor-pointer hover:brightness-50 duration-150 hover:text-white"></i>
 
             </div>
         </div>
-        {isClick && <Menu handleMenuClick={hanndleMenuClick}/>}
+        <Menu menuRef={menuRef} handleMenuClick={hanndleMenuClick} isClick={isClick}/>
         </div>
         
     )
