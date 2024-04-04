@@ -8,3 +8,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.close{
+  padding-top: 0;
+  opacity: 0;
+  top:60px;
+}
+.open{
+  padding: 20px;
+  opacity: 1;
+  top:80px;
+}
