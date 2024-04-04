@@ -7,7 +7,7 @@ export default function MenuItem(props:{item:string, itemName:string, navigation
             props.handleMenuClick();
             navigate(props.navigation);
         }} style={{
-            height:"fit-content"
+            height:"fit-content",
         }}>
             <i className={props.item}></i>
             <h1 className="select-none">{props.itemName}</h1>
