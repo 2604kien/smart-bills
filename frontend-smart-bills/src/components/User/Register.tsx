@@ -37,9 +37,9 @@ export default function Login(){
         };
     },[message])
     return (
-        <section>
-            <div className="flex flex-col justify-center items-center h-screen">
-                <div className="container-fluid border-black sm:border flex flex-col justify-center items-center rounded-xl bg-black text-white" style={{boxShadow:"0px 5px 20px 5px rgba(0,0,0,0.5)",height:"90%", width:"640px", maxWidth:"100%", minWidth:"390px", position:"relative"}}>
+        <section >
+            <div className="z-0 flex flex-col justify-center items-center h-screen">
+                <div className="container border-black sm:border flex flex-col justify-center items-center rounded-xl bg-black text-white" style={{boxShadow:"0px 5px 20px 5px rgba(0,0,0,0.5)",height:"90%", width:"640px", maxWidth:"100%", minWidth:"390px", position:"relative"}}>
                 <h1 className="text-white cursor-pointer" style={{position:"absolute", left:"20px", top:"20px", fontSize:"2rem"}} onClick={()=>navigate('/login')}>←</h1>
                         <div className="h-1/6 flex flex-col justify-center w-full items-center">
                             <h1 className="text-5xl font-semibold">Register</h1>
