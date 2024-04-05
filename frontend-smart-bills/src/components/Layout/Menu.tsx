@@ -6,7 +6,7 @@ export default function Menu(props:{menuRef:React.RefObject<HTMLInputElement> ,i
     const navigateArray:string[]=["/", "/dashboard", "/setting","news","bills"];
     const element=classArray.map((el,i)=><MenuItem key={i} item={classArray[i]} itemName={nameArray[i]} navigation={navigateArray[i]} handleMenuClick={props.handleMenuClick}/>)
     return(
-        <div ref={props.menuRef} className={props.isClick?"open":"close"} style={{ transition:"all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1)", visibility:props.isClick?"visible":"hidden",position:"fixed",overflow:"hidden", right:"0px", height:"fit-content", width:"300px", borderBottomLeftRadius:"15px",borderBottomRightRadius:"15px", backgroundColor:"#f0f0f0", boxShadow:"0px 1px 5px 1px rgba(0,0,0,0.5)", display:"grid", gridTemplateColumns:"30% 30% 30%", gridTemplateRows:"20% 20% 20% 20%", gap:"20px", rowGap:"40px"}}> 
+        <div ref={props.menuRef} className={props.isClick?"open":"close"} style={{ transition:"all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1)", visibility:props.isClick?"visible":"hidden",position:"fixed",overflow:"hidden", right:"0px", height:"fit-content", width:"390px", borderBottomLeftRadius:"15px",borderBottomRightRadius:"15px", backgroundColor:"#f0f0f0", boxShadow:"0px 1px 5px 1px rgba(0,0,0,0.5)", display:"grid", gridTemplateColumns:"30% 30% 30%", gridTemplateRows:"20% 20% 20% 20%", gap:"20px", rowGap:"40px"}}> 
             {element}
         </div>
     )

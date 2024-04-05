@@ -7,16 +7,27 @@ type Register={
     password:string,
     email:string
 }
-const userAdapter=createEntityAdapter();
-export const getAllUserData:Object=async (token:string) => {
-    const config={
-        headers: {
-            Authorization:`Bearer ${token}`
-        }
-    }
-    const response=await axios.get(backEndServer, config);
-    return response.data;
+type User={
+    id:number,
+    username:string,
+    fullName:string,
+    email:string,
+    balance:number,
+    roles:string[],
+    oweList:Object,
+    paidList:Object,
+    billList:Object
 }
+const userAdapter=createEntityAdapter();
+export const getAllUserData=createAsyncThunk('user/getAllUserData',async (token:string) => {
+   
+    const response=await axios.get(backEndServer, getConfig(token));
+    return response.data;
+})
+export const getUserById=createAsyncThunk<{message:string, data?:string}, {id:number, token:string}, {rejectValue:string}>('user/getUserById', async({id, token})=>{
+    const response=await axios.get(backEndServer+`user/${id}`, getConfig(token));
+    return response.data;
+})
 export const createNewUser=createAsyncThunk<{message:string, data?:string}, Register, {rejectValue:string}>('user/createNewUser',async(data:Register,{rejectWithValue})=>{
     try{
         const response=await axios.post(backEndServer+'user', data);
@@ -28,7 +39,18 @@ export const createNewUser=createAsyncThunk<{message:string, data?:string}, Regi
 })
 const initialState=userAdapter.getInitialState({
     status:'idle',
-    message:""
+    message:"",
+    currentUser:{
+        id:0,
+        username:"",
+        fullName:"",
+        email:"",
+        balance:0,
+        roles:[],
+        oweList:{},
+        paidList:{},
+        billList:{}
+    }
 });
 export const userSlice=createSlice({
     name:'user',
@@ -41,7 +63,17 @@ export const userSlice=createSlice({
         .addCase(createNewUser.rejected, (state, action:any)=>{
             state.message=action.payload.message;
         })
+        .addCase(getUserById.fulfilled, (state, action:any)=>{
+            state.currentUser=action.payload.data;
+        })
     },
 })
-
+const getConfig=(token:string)=>{
+    const config={
+        headers: {
+            Authorization:`Bearer ${token}`
+        }
+    }
+    return config;
+}
 export default userSlice.reducer;
