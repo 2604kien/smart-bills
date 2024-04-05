@@ -7,11 +7,13 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Setting from './components/Setting/Setting';
 import New from './components/New/New';
 import Bill from './components/Bill/Bill';
+import Home from './components/Home/Home';
 function App() {
   return (
     <div className="App h-screen m-0">
       <Routes>
         <Route path="" element={<Layout/>}>
+        <Route path='' element={<Home/>}/>
         <Route path="login"element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
         <Route path='dashboard' element={<Dashboard/>}/>

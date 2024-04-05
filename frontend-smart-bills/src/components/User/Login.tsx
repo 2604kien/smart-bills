@@ -26,7 +26,6 @@ export default function Login(){
                 [name]:type==="checkbox"?checked:value
             }
         })
-        console.log(formData);
     }
     const handleSubmit=async (event:React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
