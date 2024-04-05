@@ -20,7 +20,7 @@ export class AuthController {
         const accessToken=await this.jwtService.signAsync({UserInfo:req.user},{
             expiresIn:'15m'
         })
-        if(data.remember===true){
+        // if(data.remember===true){ wait to integrate with session
             const refreshToken=await this.jwtService.signAsync({UserInfo:req.user},{
                 expiresIn:'7d'
             })
@@ -30,7 +30,7 @@ export class AuthController {
                 sameSite:'none',
                 maxAge:7*24*60*60*1000
             })
-        }
+        // }
         res.send({message: "You are login successfully", data:accessToken});
     }
     @Get('refresh')
