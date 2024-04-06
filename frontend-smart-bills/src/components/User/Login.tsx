@@ -58,10 +58,10 @@ export default function Login(){
                                 <input onChange={handleChange} value={formData.password} name="password" className="w-full h-11 rounded-xl indent-1.5 text-black" type="password" placeholder="Enter your password." required/>
                                 <i className="fa-solid fa-lock flex flex-col text-black justify-center items-center rounded-xl bg-white" style={{position:"absolute", top:"2px", right:"0px",border: "1px solid white", height:"90%", width:"30px"}}></i>
                                 </div>
-                                <div className="w-full flex items-center gap-2">
+                                {/* <div className="w-full flex items-center gap-2">
                                     <input onChange={handleChange} checked={formData.remember} name="remember" id="remember" type="checkbox" />
                                     <label htmlFor="remember">Remember Me</label>
-                                </div>
+                                </div> */}
                                 <button className="bg-white text-black rounded-lg h-9 mt-10 font-bold hover:brightness-75 duration-150">Log In</button>
                             </form>
                             <h1 className="mt-3" onClick={()=>navigate('/register')}>or <span className="underline cursor-pointer hover:brightness-75 duration-150">register here</span></h1>
