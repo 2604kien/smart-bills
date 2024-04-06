@@ -10,7 +10,7 @@ import Bill from './components/Bill/Bill';
 import Home from './components/Home/Home';
 function App() {
   return (
-    <div className="App h-screen m-0">
+    <div className="App h-screen m-0" >
       <Routes>
         <Route path="" element={<Layout/>}>
         <Route path='' element={<Home/>}/>

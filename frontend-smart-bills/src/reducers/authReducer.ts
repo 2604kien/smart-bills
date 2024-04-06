@@ -25,6 +25,10 @@ export const logout=createAsyncThunk('auth/logout', async()=>{
     const response=await axios.get(backEndServer+'auth/logout', {withCredentials:true});
     return response.data;
 })
+export const refresh=createAsyncThunk('auth/refresh', async()=>{
+    const response=await axios.get(backEndServer+'auth/refresh', {withCredentials:true});
+    return response.data;
+})
 const authSlice=createSlice({
     name:'auth',
     initialState,
@@ -45,7 +49,13 @@ const authSlice=createSlice({
         .addCase(logout.fulfilled,(state, action)=>{
             state.isAuthenticated=false;
             state.accessToken="";
-        } )
+        })
+        .addCase(refresh.fulfilled, (state, action)=>{
+            if(action.payload.accessToken){
+                state.isAuthenticated=true;
+                state.accessToken=action.payload.accessToken;
+            }
+        })
     }
 })
 export default authSlice.reducer;
