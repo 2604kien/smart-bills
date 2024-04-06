@@ -8,6 +8,7 @@ import Setting from './components/Setting/Setting';
 import New from './components/New/New';
 import Bill from './components/Bill/Bill';
 import Home from './components/Home/Home';
+import Friend from './components/Friend/Friend';
 function App() {
   return (
     <div className="App h-screen m-0" >
@@ -20,6 +21,7 @@ function App() {
         <Route path='setting' element={<Setting/>}/>
         <Route path='news' element={<New/>}/>
         <Route path='bills' element={<Bill/>}/>
+        <Route path="friend" element={<Friend/>}/>
         </Route>
       </Routes>
     </div>
