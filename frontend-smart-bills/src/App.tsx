@@ -9,19 +9,21 @@ import New from './components/New/New';
 import Bill from './components/Bill/Bill';
 import Home from './components/Home/Home';
 import Friend from './components/Friend/Friend';
+import AddBill from './components/Bill/AddBill';
 function App() {
   return (
     <div className="App h-screen m-0" >
       <Routes>
         <Route path="" element={<Layout/>}>
-        <Route path='' element={<Home/>}/>
-        <Route path="login"element={<Login/>}/>
-        <Route path="register" element={<Register/>}/>
-        <Route path='dashboard' element={<Dashboard/>}/>
-        <Route path='setting' element={<Setting/>}/>
-        <Route path='news' element={<New/>}/>
-        <Route path='bills' element={<Bill/>}/>
-        <Route path="friend" element={<Friend/>}/>
+          <Route path='' element={<Home/>}/>
+          <Route path="login"element={<Login/>}/>
+          <Route path="register" element={<Register/>}/>
+          <Route path='dashboard' element={<Dashboard/>}/>
+          <Route path='setting' element={<Setting/>}/>
+          <Route path='news' element={<New/>}/>
+          <Route path='bill' element={<Bill/>}/>
+          <Route path='bill/new' element={<AddBill/>}/>
+          <Route path="friend" element={<Friend/>}/>
         </Route>
       </Routes>
     </div>
