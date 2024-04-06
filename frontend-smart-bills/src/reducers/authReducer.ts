@@ -43,8 +43,14 @@ const authSlice=createSlice({
             state.message="Login successfully";
             state.isAuthenticated=true;
         })
-        .addCase(login.rejected, (state, action)=>{
-            state.message="Username/password incorrect!";
+        .addCase(login.rejected, (state, action:any)=>{
+            if(action.error.message.includes("401")||action.error.message.includes("404")){
+                state.message="Username/password incorrect!";
+              
+            }
+            else{
+                state.message="Something went wrong, please try again later" 
+            }
         })
         .addCase(logout.fulfilled,(state, action)=>{
             state.isAuthenticated=false;
