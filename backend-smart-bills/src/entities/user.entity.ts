@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, OneToOne } from "typeorm";
 import { User_Owe } from "./user-owe.entity";
 import { User_Paid } from "./user-paid.entity";
 import { Bill } from "./bill.entity";
+import { FriendRequest } from "./friend-request.entity";
 
 @Entity()
 export class User{
@@ -25,5 +26,8 @@ export class User{
     paidList: User_Paid[]
     @OneToMany(()=>Bill, bill=>bill.user)
     billList: Bill[]
-
+    @OneToMany(()=>FriendRequest, friend_request=>friend_request.sender)
+    friendRequestList:FriendRequest[];
+    @OneToMany(()=>FriendRequest, friend_request=>friend_request.receiver)
+    pendingRequestList:FriendRequest[];
 }

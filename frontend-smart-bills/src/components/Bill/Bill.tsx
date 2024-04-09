@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import BillCard from "./BillCard";
+import BillCard from "../Layout/BillCard";
 export default function Bill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
