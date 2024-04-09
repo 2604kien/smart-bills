@@ -8,6 +8,8 @@ import { BillModule } from './bill/bill.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { GatewayModule } from './gateway/gateway.module';
+import { MyGateWay } from './gateway/gateway';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { ConfigModule } from '@nestjs/config';
     database:"nestJS-smart-bill",
     entities:[__dirname + '/**/*.entity{.ts,.js}'],
     synchronize:true,
-  }), UserModule, BillModule, UserOweModule, UserPaidModule, AuthModule],
+  }),GatewayModule, UserModule, BillModule, UserOweModule, UserPaidModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

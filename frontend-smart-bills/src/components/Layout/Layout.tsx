@@ -3,7 +3,7 @@ import { Outlet, useLocation} from "react-router-dom";
 import Navbar from "./Navbar";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { refresh } from "../../reducers/authReducer";
-import BillCard from "../Bill/BillCard";
+import BillCard from "./BillCard";
 export default function Layout(){
     const dispatch=useAppDispatch();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
