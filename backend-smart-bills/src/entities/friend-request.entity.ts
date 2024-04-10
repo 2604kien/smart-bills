@@ -8,4 +8,6 @@ export class FriendRequest{
     sender:User;
     @ManyToOne(()=>User, user=>user.pendingRequestList)
     receiver:User;
+    @Column({default:"pending"})
+    status:string
 }

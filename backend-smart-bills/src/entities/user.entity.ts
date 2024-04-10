@@ -28,8 +28,6 @@ export class User{
     balance: number;
     @Column("text", {nullable:true, default:['user'], array:true})
     roles:string[];
-    @Column("jsonb", {nullable:true, default:[]})
-    friendList:FriendListType[];
     @OneToMany(()=>User_Owe, user_owe=>user_owe.user)
     oweList: User_Owe[]
     @OneToMany(()=>User_Paid, user_paid=>user_paid.user)

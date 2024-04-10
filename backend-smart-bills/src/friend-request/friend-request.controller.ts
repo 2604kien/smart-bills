@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
 import { FriendRequestDto } from './Dtos/friend-request.dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
@@ -28,8 +28,12 @@ export class FriendRequestController {
     deleteRequestById(@Param('id') id:number){
         return this.friendRequestService.deleteFriendRequestReject(id);
     }
-    @Delete('accept/:id')
-    deleteRequestByIdAccept(@Param('id') id:number){
-        return this.friendRequestService.deleteFriendRequestAccept(id);
+    @Get('accept/:id')
+    acceptRequest(@Param('id') id:number){
+        return this.friendRequestService.acceptFriendRequest(id);    
+    }
+    @Get('friend-list/:id')
+    getFriendList(@Param('id') id:number, @Query('senderId') senderId:number){
+        return this.friendRequestService.getFriendList(id, senderId);
     }
 }

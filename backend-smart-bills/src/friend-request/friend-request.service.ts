@@ -64,12 +64,8 @@ export class FriendRequestService {
         const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
         const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
         if(!foundedReceiver){
-            throw new HttpException('User with this mobile number is not found.', HttpStatus.NOT_FOUND);
+            throw new HttpException('User with this mobile number is not found.', HttpStatus.NOT_FOUND)
         }
-       //filter then check if the friend list in the sender has the receiver
-       if(foundedSender.friendList.filter(a=>a.id===foundedReceiver.id)){
-            throw new HttpException('You already be friend with this person.', HttpStatus.CONFLICT);
-       }
         try{
             const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
             const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
@@ -96,56 +92,34 @@ export class FriendRequestService {
             throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async deleteFriendRequestAccept(id:number){
-        try{
-            const foundedRequest=await this.friendRequestRepository.findOne({
-                where:{id:id},
-                select:{
-                    sender:{
-                        id:true,
-                        username:true,
-                        fullName:true,
-                        email:true,
-                        phoneNumber:true,
-                    },
-                    receiver:{
-                        id:true,
-                        username:true,
-                        fullName:true,
-                        email:true,
-                        phoneNumber:true,
-                    }
-                },
-                relations:{
-                    sender:true,
-                    receiver:true,
+    async acceptFriendRequest(id:number){
+        const foundedRequest=await this.friendRequestRepository.findOneBy({id});
+        if(!foundedRequest){
+            throw new HttpException('Friend Request not found', HttpStatus.NOT_FOUND);
+        }
+        foundedRequest.status="accepted";
+        await this.friendRequestRepository.save(foundedRequest);
+        return {message:"Accepted friend request."}
+    }
+    async getFriendList(id:number, senderId:number){
+        const friendList=await this.friendRequestRepository.find({where:{
+                sender:{
+                    id:senderId
                 }
-            });
-            const foundedSender=await this.userRepository.findOneBy({id:foundedRequest.sender.id});
-            const foundedReceiver=await this.userRepository.findOneBy({id:foundedRequest.receiver.id});
-            const senderObject={
-                id:foundedSender.id,
-                username:foundedSender.username,
-                fullName:foundedSender.fullName
+            },
+            select:{
+                sender:{
+                    id:true,
+                    username:true,
+                    fullName:true,
+                }
+            },
+            relations:{
+                sender:true,
+                receiver:true
             }
-            const receiverObject={
-                id:foundedReceiver.id,
-                username:foundedReceiver.username,
-                fullName:foundedReceiver.fullName
-            }
-            console.log("Sender: "+foundedSender.id);
-            console.log("Receiver: "+foundedReceiver.id);
-            foundedSender.friendList.push(receiverObject)
-            await this.userRepository.save(foundedSender);
-            foundedReceiver.friendList.push(senderObject);
-            await this.userRepository.save(foundedReceiver);
-            await this.friendRequestRepository.delete(id);
-            return {message:"Friend request is accepted"};
-        }
-        catch(error){
-            console.log(error);
-            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        });
+        return {message:"FriendList is retrieved", friendList}
     }
 }
 

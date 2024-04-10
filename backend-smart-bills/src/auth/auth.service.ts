@@ -27,7 +27,6 @@ export class AuthService {
                 delete foundedUser.fullName;
                 delete foundedUser.email;
                 delete foundedUser.balance;
-                delete foundedUser.friendList;
                 return foundedUser;
             }
     }
