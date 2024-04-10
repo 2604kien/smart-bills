@@ -63,6 +63,9 @@ export class FriendRequestService {
         }
         const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
         const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
+        if(!foundedReceiver){
+            throw new HttpException('User with this mobile number is not found.', HttpStatus.NOT_FOUND);
+        }
        //filter then check if the friend list in the sender has the receiver
        if(foundedSender.friendList.filter(a=>a.id===foundedReceiver.id)){
             throw new HttpException('You already be friend with this person.', HttpStatus.CONFLICT);
