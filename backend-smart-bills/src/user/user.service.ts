@@ -38,7 +38,7 @@ export class UserService {
                 oweList:true,
                 paidList:true,
                 friendRequestList:true,
-                pendingRequestList:true,
+                pendingRequestList:true
             }
         });
         if(!user){
