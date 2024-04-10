@@ -7,7 +7,8 @@ type Register={
     username:string,
     fullName:string,
     password:string,
-    email:string
+    email:string,
+    phoneNumber:string,
 }
 export default function Login(){
     const dispatch=useAppDispatch();
@@ -17,7 +18,8 @@ export default function Login(){
         fullName:"",
         username:"",
         password:"",
-        email:""
+        email:"",
+        phoneNumber:"",
     });
     const handleChange=(event:React.ChangeEvent<HTMLInputElement>)=>{
         const {name, value}=event.target;
@@ -55,6 +57,9 @@ export default function Login(){
                                 <input onChange={handleChange} name="password" value={formData.password} className="w-full h-11 rounded-xl indent-1.5 text-black" type="password" placeholder="Enter your password." required/>
                                 <i className="fa-solid fa-lock flex flex-col text-black justify-center items-center rounded-xl bg-white" style={{position:"absolute", top:"2px", right:"0px",border: "1px solid white", height:"90%", width:"30px"}}></i>
                                 </div>
+                                <label className="text-lg">Phone Number <span className="text-red-600">*</span></label>
+                                <input onChange={handleChange} name="phoneNumber" value={formData.phoneNumber} className="w-full h-11 indent-1.5 rounded-xl text-black text-base" type="tel" pattern="[0-9]{10}" placeholder="Enter your phone number." required/>
+
                                 <label className="text-lg">Email <span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="email" value={formData.email} className="w-full h-11 indent-1.5 rounded-xl text-black text-base" type="email" placeholder="Enter your email." required/>
                                 <button className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Create New Account</button>
