@@ -25,12 +25,20 @@ export class UserService {
                 },
                 billList:{
                     id:true
+                },
+                friendRequestList:{
+                    id:true
+                },
+                pendingRequestList:{
+                    id:true
                 }
             },
             relations:{
                 billList:true,
                 oweList:true,
-                paidList:true
+                paidList:true,
+                friendRequestList:true,
+                pendingRequestList:true,
             }
         });
         if(!user){
@@ -60,6 +68,7 @@ export class UserService {
             const newUser= new User();
             newUser.fullName=user.fullName;
             newUser.username=user.username;
+            newUser.phoneNumber=user.phoneNumber;
             newUser.password= await bcrypt.hash(user.password, 10);
             newUser.email=user.email;
             await this.userRepository.save(newUser);

@@ -4,6 +4,12 @@ import { User_Paid } from "./user-paid.entity";
 import { Bill } from "./bill.entity";
 import { FriendRequest } from "./friend-request.entity";
 
+type FriendListType={
+    id:number,
+    username:string,
+    fullName:string,
+}
+
 @Entity()
 export class User{
     @PrimaryGeneratedColumn()
@@ -14,12 +20,16 @@ export class User{
     username:string;
     @Column()
     password: string;
-    @Column()
+    @Column({unique:true})
     email:string;
+    @Column({unique:true})
+    phoneNumber:string;
     @Column({default:0})
     balance: number;
     @Column("text", {nullable:true, default:['user'], array:true})
     roles:string[];
+    @Column("jsonb", {nullable:true, default:[]})
+    friendList:FriendListType[];
     @OneToMany(()=>User_Owe, user_owe=>user_owe.user)
     oweList: User_Owe[]
     @OneToMany(()=>User_Paid, user_paid=>user_paid.user)

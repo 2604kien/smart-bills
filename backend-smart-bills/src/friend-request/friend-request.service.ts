@@ -1,0 +1,148 @@
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FriendRequest } from 'src/entities/friend-request.entity';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
+import { FriendRequestDto} from './Dtos/friend-request.dto';
+
+@Injectable()
+export class FriendRequestService {
+    constructor(@InjectRepository(FriendRequest) private friendRequestRepository:Repository<FriendRequest>,
+    @InjectRepository(User) private userRepository:Repository<User>
+){}
+
+    async getAll(){
+        return await this.friendRequestRepository.find({
+            select:{
+                sender:{
+                    id:true,
+                    username:true
+                },
+                receiver:{
+                    id:true,
+                    username:true
+                }
+            },
+            relations:{
+                sender:true,
+                receiver:true,
+            }
+        })
+    }
+    async getById(id:number){
+        try{
+            const foundedRequest=await this.friendRequestRepository.findOne({
+                where:{id:id},
+                select:{
+                    sender:{
+                        id:true,
+                        username:true
+                    },
+                    receiver:{
+                        id:true,
+                        username:true
+                    }
+                },
+                relations:{
+                    sender:true,
+                    receiver:true,
+                }
+            })
+            return {message:`Request with id ${id} is retrieved successfully`, data:foundedRequest};
+        }
+        catch (error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //Add friend Request
+    async addFriendRequest(data:FriendRequestDto){
+        const foundedRequest=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{phoneNumber:data.receiverPhoneNumber}});
+        if(foundedRequest){
+            throw new HttpException('You already sent friend request to this person.',HttpStatus.CONFLICT);
+        }
+        const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
+        const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
+       //filter then check if the friend list in the sender has the receiver
+       if(foundedSender.friendList.filter(a=>a.id===foundedReceiver.id)){
+            throw new HttpException('You already be friend with this person.', HttpStatus.CONFLICT);
+       }
+        try{
+            const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
+            const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
+            const newRequest=new FriendRequest();
+            newRequest.sender=foundedSender;
+            newRequest.receiver=foundedReceiver;
+            await this.friendRequestRepository.save(newRequest);
+            return {message: "New friend request is pending.", data: newRequest}
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+    //delete friendRequest reject
+    async deleteFriendRequestReject(id:number){
+        try{
+            await this.friendRequestRepository.delete(id);
+            return {message:"Friend Request is rejected successfully"}
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    async deleteFriendRequestAccept(id:number){
+        try{
+            const foundedRequest=await this.friendRequestRepository.findOne({
+                where:{id:id},
+                select:{
+                    sender:{
+                        id:true,
+                        username:true,
+                        fullName:true,
+                        email:true,
+                        phoneNumber:true,
+                    },
+                    receiver:{
+                        id:true,
+                        username:true,
+                        fullName:true,
+                        email:true,
+                        phoneNumber:true,
+                    }
+                },
+                relations:{
+                    sender:true,
+                    receiver:true,
+                }
+            });
+            const foundedSender=await this.userRepository.findOneBy({id:foundedRequest.sender.id});
+            const foundedReceiver=await this.userRepository.findOneBy({id:foundedRequest.receiver.id});
+            const senderObject={
+                id:foundedSender.id,
+                username:foundedSender.username,
+                fullName:foundedSender.fullName
+            }
+            const receiverObject={
+                id:foundedReceiver.id,
+                username:foundedReceiver.username,
+                fullName:foundedReceiver.fullName
+            }
+            console.log("Sender: "+foundedSender.id);
+            console.log("Receiver: "+foundedReceiver.id);
+            foundedSender.friendList.push(receiverObject)
+            await this.userRepository.save(foundedSender);
+            foundedReceiver.friendList.push(senderObject);
+            await this.userRepository.save(foundedReceiver);
+            await this.friendRequestRepository.delete(id);
+            return {message:"Friend request is accepted"};
+        }
+        catch(error){
+            console.log(error);
+            throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+
