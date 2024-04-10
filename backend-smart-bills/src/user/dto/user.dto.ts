@@ -12,6 +12,9 @@ export class UserDto{
     @IsNotEmpty()
     @IsEmail()
     email:string;
+    @IsNotEmpty()
+    @IsString()
+    phoneNumber:string;
 }
 export class UserUpdateDto{
     @IsNotEmpty()
