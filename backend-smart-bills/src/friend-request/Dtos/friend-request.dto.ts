@@ -5,5 +5,5 @@ export class FriendRequestDto{
     @IsNotEmpty()
     sender:User;
     @IsNotEmpty()
-    receiverPhoneNumber:string;
+    receiver:User;
 }

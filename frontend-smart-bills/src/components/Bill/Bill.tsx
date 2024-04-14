@@ -6,8 +6,8 @@ export default function Bill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const element=isAuthenticated? (<div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>  
-                                            <div style={{position:"relative"}}>
-                                            </div>
+                                            <div></div>
+                                            <h1 style={{fontSize:"4rem"}}>Hi</h1>
                                     </div>):
                                     (
                                         <div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>
