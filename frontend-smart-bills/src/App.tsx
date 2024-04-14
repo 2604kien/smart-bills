@@ -10,6 +10,8 @@ import Bill from './components/Bill/Bill';
 import Home from './components/Home/Home';
 import Friend from './components/Friend/Friend';
 import AddBill from './components/Bill/AddBill';
+import FriendLayout from './components/Friend/FriendLayout';
+import AddFriend from './components/Friend/AddFriend';
 function App() {
   return (
     <div className="App h-screen m-0" >
@@ -23,7 +25,10 @@ function App() {
           <Route path='news' element={<New/>}/>
           <Route path='bill' element={<Bill/>}/>
           <Route path='bill/new' element={<AddBill/>}/>
-          <Route path="friend" element={<Friend/>}/>
+          <Route path="friend" element={<FriendLayout/>}>
+            <Route path='' element={<Friend/>}/>
+            <Route path='new' element={<AddFriend/>}/>
+          </Route>
         </Route>
       </Routes>
     </div>

@@ -44,4 +44,8 @@ export class UserController {
     async deleteUser(@Param('id') id:number){
         return this.userService.deleteUser(id);
     }
+    @Get('phone/:phoneNumber')
+    getUserByPhoneNumber(@Param('phoneNumber') phoneNumber:string){
+        return this.userService.getUserByPhoneNumber(phoneNumber);
+    }
 }
