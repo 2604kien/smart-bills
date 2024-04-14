@@ -58,7 +58,7 @@ export class FriendRequestService {
     //Add friend Request
     async addFriendRequest(data:FriendRequestDto){
         const foundedRequest=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{id:data.receiver.id}});
-        if(foundedRequest){
+        if(foundedRequest || data.sender.id===data.receiver.id){
             throw new HttpException('You already sent friend request to this person.',HttpStatus.CONFLICT);
         }
         const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
