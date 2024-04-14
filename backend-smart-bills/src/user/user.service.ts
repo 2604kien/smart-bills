@@ -108,4 +108,23 @@ export class UserService {
             throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async getUserByPhoneNumber(phoneNumber:string):Promise<Object>{
+        if(!phoneNumber){
+            throw new HttpException('Please provide valid Phone Number', HttpStatus.NO_CONTENT);
+        }
+        const foundedUser=await this.userRepository.findOne({
+            where: {phoneNumber},
+            select:{
+                fullName:true,
+                username:true,
+                email:true,
+                phoneNumber:true,
+                id:true
+            }
+        });
+        if(!foundedUser){
+            throw new HttpException('There is no user with this phone Number', HttpStatus.NOT_FOUND);
+        }
+        return {message:"User with this Phone Number is founded.", data:foundedUser}
+    }
 }

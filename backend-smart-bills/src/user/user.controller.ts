@@ -44,4 +44,10 @@ export class UserController {
     async deleteUser(@Param('id') id:number){
         return this.userService.deleteUser(id);
     }
+    @Get('phone/:phoneNumber')
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    getUserByPhoneNumber(@Param('phoneNumber') phoneNumber:string){
+        return this.userService.getUserByPhoneNumber(phoneNumber);
+    }
 }

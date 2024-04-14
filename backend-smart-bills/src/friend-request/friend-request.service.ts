@@ -57,18 +57,18 @@ export class FriendRequestService {
     }
     //Add friend Request
     async addFriendRequest(data:FriendRequestDto){
-        const foundedRequest=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{phoneNumber:data.receiverPhoneNumber}});
-        if(foundedRequest){
+        const foundedRequest=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{id:data.receiver.id}});
+        if(foundedRequest || data.sender.id===data.receiver.id){
             throw new HttpException('You already sent friend request to this person.',HttpStatus.CONFLICT);
         }
         const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
-        const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
+        const foundedReceiver=await this.userRepository.findOneBy({id:data.receiver.id});
         if(!foundedReceiver){
             throw new HttpException('User with this mobile number is not found.', HttpStatus.NOT_FOUND)
         }
         try{
             const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
-            const foundedReceiver=await this.userRepository.findOneBy({phoneNumber:data.receiverPhoneNumber});
+            const foundedReceiver=await this.userRepository.findOneBy({id:data.receiver.id});
             const newRequest=new FriendRequest();
             newRequest.sender=foundedSender;
             newRequest.receiver=foundedReceiver;

@@ -49,7 +49,8 @@ const initialState=userAdapter.getInitialState({
         roles:[],
         oweList:{},
         paidList:{},
-        billList:{}
+        billList:{},
+        phoneNumber:"",
     }
 });
 export const userSlice=createSlice({
