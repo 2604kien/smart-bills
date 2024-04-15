@@ -19,15 +19,18 @@ type User={
     billList:Object
 }
 const userAdapter=createEntityAdapter();
+//get all user data (only for admin user)
 export const getAllUserData=createAsyncThunk('user/getAllUserData',async (token:string) => {
    
     const response=await axios.get(backEndServer, getConfig(token));
     return response.data;
 })
+//get user by id
 export const getUserById=createAsyncThunk<{message:string, data?:string}, {id:number, token:string}, {rejectValue:string}>('user/getUserById', async({id, token})=>{
     const response=await axios.get(backEndServer+`user/${id}`, getConfig(token));
     return response.data;
 })
+//register new user
 export const createNewUser=createAsyncThunk<{message:string, data?:string}, Register, {rejectValue:string}>('user/createNewUser',async(data:Register,{rejectWithValue})=>{
     try{
         const response=await axios.post(backEndServer+'user', data);

@@ -36,11 +36,13 @@ export class FriendRequestService {
                 select:{
                     sender:{
                         id:true,
-                        username:true
+                        username:true,
+                        fullName:true,
                     },
                     receiver:{
                         id:true,
-                        username:true
+                        username:true,
+                        fullName:true,
                     }
                 },
                 relations:{
@@ -61,7 +63,6 @@ export class FriendRequestService {
         if(foundedRequest || data.sender.id===data.receiver.id){
             throw new HttpException('You already sent friend request to this person.',HttpStatus.CONFLICT);
         }
-        const foundedSender=await this.userRepository.findOneBy({id:data.sender.id});
         const foundedReceiver=await this.userRepository.findOneBy({id:data.receiver.id});
         if(!foundedReceiver){
             throw new HttpException('User with this mobile number is not found.', HttpStatus.NOT_FOUND)
@@ -101,25 +102,105 @@ export class FriendRequestService {
         await this.friendRequestRepository.save(foundedRequest);
         return {message:"Accepted friend request."}
     }
-    async getFriendList(id:number, senderId:number){
-        const friendList=await this.friendRequestRepository.find({where:{
+    async getFriendList(senderId:number){
+        //get all friend request where user is the sender
+        const friendList1=await this.friendRequestRepository.find({where:{
                 sender:{
                     id:senderId
-                }
+                },
+                status:"accepted"
+            },
+            select:{
+                receiver:{
+                    id:true,
+                    username:true,
+                    fullName:true,
+                    phoneNumber:true,
+                },
+            },
+            relations:{
+                receiver:true,
+            }
+        });
+        const renameList1=friendList1.map(el=>{
+            return{
+                id:el.id,
+                status:el.status,
+                user:el.receiver,
+            }
+        })
+        //get all friend where user is the receiver.
+        const friendList2=await this.friendRequestRepository.find({
+            where:{
+                receiver:{
+                    id:senderId
+                },
+                status:"accepted"
             },
             select:{
                 sender:{
                     id:true,
                     username:true,
                     fullName:true,
+                    phoneNumber:true,
                 }
             },
             relations:{
-                sender:true,
-                receiver:true
+                sender:true
             }
         });
-        return {message:"FriendList is retrieved", friendList}
+        const renameList2=friendList2.map(el=>{
+            return{
+                id:el.id,
+                status:el.status,
+                user:el.sender,
+            }
+        });
+        const result=renameList1.concat(renameList2);
+        return {message:"FriendList is retrieved", data:result}
+    }
+    async getFriendRequestList(senderId:number){
+        const friendRequest=await this.friendRequestRepository.find({where:{
+                sender:{
+                    id:senderId,
+                },
+                status:"pending",
+            },
+            select:{
+                receiver:{
+                    id:true,
+                    username:true,
+                    fullName:true,
+                    phoneNumber:true,
+                }
+            },
+            relations:{
+                receiver:true,
+            }
+        });
+        return {message:"Friend Request List is retrieved", data:friendRequest}
+    }
+    async getPendingRequestList(receiverId:number){
+        const pendingList=await this.friendRequestRepository.find({
+            where:{
+                receiver:{
+                    id:receiverId
+                },
+                status:"pending"
+            },
+            select:{
+                sender:{
+                    id:true,
+                    username:true,
+                    fullName:true,
+                    phoneNumber:true,
+                }
+            },
+            relations:{
+                sender:true
+            }
+        })
+        return {message:"Friend Request List is retrieved", data:pendingList}
     }
 }
 
