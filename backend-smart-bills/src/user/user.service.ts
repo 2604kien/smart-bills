@@ -25,20 +25,12 @@ export class UserService {
                 },
                 billList:{
                     id:true
-                },
-                friendRequestList:{
-                    id:true
-                },
-                pendingRequestList:{
-                    id:true
                 }
             },
             relations:{
                 billList:true,
                 oweList:true,
                 paidList:true,
-                friendRequestList:true,
-                pendingRequestList:true
             }
         });
         if(!user){
