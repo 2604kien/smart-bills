@@ -33,7 +33,15 @@ export class FriendRequestController {
         return this.friendRequestService.acceptFriendRequest(id);    
     }
     @Get('friend-list/:id')
-    getFriendList(@Param('id') id:number, @Query('senderId') senderId:number){
-        return this.friendRequestService.getFriendList(id, senderId);
+    getFriendList(@Param('id') senderId:number){
+        return this.friendRequestService.getFriendList(senderId);
+    }
+    @Get('request-list/:id')
+    getFriendRequestList(@Param('id') id:number){
+        return this.friendRequestService.getFriendRequestList(id);
+    }
+    @Get('pending-list/:id')
+    getPendingList(@Param('id') id:number){
+        return this.friendRequestService.getPendingRequestList(id);
     }
 }

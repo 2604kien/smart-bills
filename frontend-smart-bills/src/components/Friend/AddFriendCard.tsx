@@ -2,7 +2,7 @@ import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { sendFriendRequest } from "../../reducers/friendRequestReducer";
-export default function FriendCard(props:{status:boolean, data:any}){
+export default function AddFriendCard(props:{status:boolean, data:any}){
     const currUserId=useAppSelector(state=>state.user.currentUser.id);
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
@@ -17,7 +17,8 @@ export default function FriendCard(props:{status:boolean, data:any}){
             }
         }
         dispatch(sendFriendRequest({data, token}));
-        alert("Your request is successfully performed.")
+        alert("Your request is successfully performed.");
+        window.location.reload();
     }
     return(
         <div className="flex flex-col justify-center items-center" style={{
@@ -61,7 +62,7 @@ export default function FriendCard(props:{status:boolean, data:any}){
                         border:"1px solid black",
                         borderRadius:"50%",
                         padding:"0 20px",
-                        boxShadow:"1px 1px 20px 1px rgba(0,0,0,0.5)",
+                        boxShadow:"0px 1px 5px 2px rgba(0,0,0,0.5)",
                         fontSize:"3rem"
                     }}>+</button>
                 </div>
