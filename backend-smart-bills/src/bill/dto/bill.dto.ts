@@ -10,9 +10,9 @@ export class BillDto{
     @IsNumber()
     numberPeople:number;
     @IsNotEmpty()
-    user:User;
+    creator:User;
 }
 export class UpdateBillDto{
     @IsNotEmpty()
-    user:User
+    creator:User
 }
