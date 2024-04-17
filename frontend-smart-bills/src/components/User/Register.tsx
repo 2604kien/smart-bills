@@ -62,7 +62,9 @@ export default function Login(){
 
                                 <label className="text-lg">Email <span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="email" value={formData.email} className="w-full h-11 indent-1.5 rounded-xl text-black text-base" type="email" placeholder="Enter your email." required/>
-                                <button className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Create New Account</button>
+                                <button style={{
+                                    marginBottom:"20px"
+                                }} className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Create New Account</button>
                             </form>
                         </div>
                 </div>
