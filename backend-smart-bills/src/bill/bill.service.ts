@@ -12,12 +12,12 @@ export class BillService {
         try{
             const data=await this.billRepository.find({
                 select:{
-                    user:{
+                    creator:{
                         id:true,
                         fullName:true
                     }
                 },
-                relations:{user:true}
+                relations:{creator:true}
             });
             return {message: "All bill data are retrieved", data:data}
         }
@@ -34,12 +34,12 @@ export class BillService {
         const bill=await this.billRepository.findOne({
             where:{id},
             select:{
-                user:{
+                creator:{
                     id:true,
                     fullName:true
                 }
             },
-            relations:{user:true}
+            relations:{creator:true}
         });
         if(!bill){
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);
@@ -61,7 +61,7 @@ export class BillService {
             const newBill= new Bill();
             newBill.totalCost=bill.totalCost;
             newBill.numberPeople=bill.numberPeople;
-            newBill.user=bill.user;
+            newBill.creator=bill.creator;
             await this.billRepository.save(newBill);
             return {message:"A new bill is added", data:newBill}
         }

@@ -32,8 +32,8 @@ export class User{
     oweList: User_Owe[]
     @OneToMany(()=>User_Paid, user_paid=>user_paid.user)
     paidList: User_Paid[]
-    @OneToMany(()=>Bill, bill=>bill.user)
-    billList: Bill[]
+    @OneToMany(()=>Bill, bill=>bill.creator)
+    createdBillList: Bill[]
     @OneToMany(()=>FriendRequest, friend_request=>friend_request.sender)
     friendRequestList:FriendRequest[];
     @OneToMany(()=>FriendRequest, friend_request=>friend_request.receiver)
