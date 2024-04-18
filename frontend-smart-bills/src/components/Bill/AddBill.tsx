@@ -1,12 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
+import AddBillForm from "./AddBillForm";
 export default function AddBill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const element=isAuthenticated? (<div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>  
                                             <div></div>
-                                            <h1 style={{fontSize:"4rem"}}>Add Bill</h1>
+                                            <div>
+                                                <AddBillForm/>
+                                            </div>
                                     </div>):
                                     (
                                         <div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>
