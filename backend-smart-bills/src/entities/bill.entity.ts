@@ -10,6 +10,10 @@ export class Bill{
     @CreateDateColumn()
     date: Date;
     @Column()
+    title: string;
+    @Column({nullable:true})
+    description:string;
+    @Column()
     totalCost: number;
     @Column()
     numberPeople:number;
