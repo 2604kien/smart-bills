@@ -8,8 +8,8 @@ export class User_Paid{
     id:number;
     @CreateDateColumn()
     date: Date;
-    @ManyToOne(()=>User, user=>user.paidList)
+    @ManyToOne(()=>User, user=>user.paidList, {onDelete:'CASCADE'})
     user:User
-    @ManyToOne(()=>Bill, bill=>bill.paidList)
+    @ManyToOne(()=>Bill, bill=>bill.paidList, {onDelete:'CASCADE'})
     bill:Bill
 }

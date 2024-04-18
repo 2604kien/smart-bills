@@ -6,9 +6,9 @@ import { Bill } from "./bill.entity";
 export class User_Owe{
     @PrimaryGeneratedColumn()
     id: number;
-    @ManyToOne(()=>User, user=>user.oweList)
+    @ManyToOne(()=>User, user=>user.oweList, {onDelete:'CASCADE'})
     user:User;
-    @ManyToOne(()=>Bill, bill=>bill.oweList)
+    @ManyToOne(()=>Bill, bill=>bill.oweList, {onDelete:'CASCADE'})
     bill:Bill;
     @Column()
     oweAmount:number;
