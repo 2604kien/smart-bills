@@ -23,12 +23,12 @@ export class UserService {
                 paidList:{
                    id:true
                 },
-                billList:{
+                createdBillList:{
                     id:true
                 }
             },
             relations:{
-                billList:true,
+                createdBillList:true,
                 oweList:true,
                 paidList:true,
             }

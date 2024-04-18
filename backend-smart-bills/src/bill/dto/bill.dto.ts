@@ -7,12 +7,15 @@ export class BillDto{
     @IsNumber()
     totalCost:number;
     @IsNotEmpty()
+    title:string;
+    description:string;
+    @IsNotEmpty()
     @IsNumber()
     numberPeople:number;
     @IsNotEmpty()
-    user:User;
+    creator:User;
 }
 export class UpdateBillDto{
     @IsNotEmpty()
-    user:User
+    creator:User
 }

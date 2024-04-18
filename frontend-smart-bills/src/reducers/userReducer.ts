@@ -16,7 +16,7 @@ type User={
     roles:string[],
     oweList:Object,
     paidList:Object,
-    billList:Object
+    createdBillList:Object
 }
 const userAdapter=createEntityAdapter();
 //get all user data (only for admin user)
@@ -52,7 +52,7 @@ const initialState=userAdapter.getInitialState({
         roles:[],
         oweList:{},
         paidList:{},
-        billList:{},
+        createdBillList:{},
         phoneNumber:"",
     }
 });
