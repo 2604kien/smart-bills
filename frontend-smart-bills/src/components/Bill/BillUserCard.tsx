@@ -84,8 +84,9 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
             </div>
             <div className="flex flex-col justify-center items-center">
                     <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-3">
-                        <input type="number" onChange={handleChange} placeholder="$ Amount" name="amount" value={formData.amount} className="w-5/6" style={{
+                        <input type="number" readOnly={isClicked} onChange={handleChange} placeholder="$ Amount" name="amount" value={formData.amount} className="w-5/6" style={{
                             border:"1px solid black",
+                            background:isClicked?"lightgrey":"white",
                             borderRadius:"10px",
                             padding:"3px"
                         }} required/>
