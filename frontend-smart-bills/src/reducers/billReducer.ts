@@ -10,6 +10,11 @@ export const getAllCreatedBill=createAsyncThunk<{message:string, data?:Object}, 
     const response=await axios.get(backEndServer+`bill/${id}`, getConfig(token));
     return response.data;
 })
+export const createNewBill=createAsyncThunk<{message:string, data?:Object},{data:any, token:string}>('bill/createNewBill',async({data, token})=>{
+    console.log(data);
+    const response=await axios.post(backEndServer+`bill`, data, getConfig(token));
+    return response.data;
+})
 
 const billSlice=createSlice({
     name:'bill',

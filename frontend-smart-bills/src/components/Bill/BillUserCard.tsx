@@ -1,16 +1,19 @@
 import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png"
+import { useAppSelector } from "../../app/hooks";
 export default function BillUserCard(props:{ amount:number, setInvolveList:any, involveList:any, equal: boolean, id:number, fullName:string, username:string, phoneNumber:string}){
+    const currUser=useAppSelector(state=>state.user.currentUser);
     const [formData, setFormData]=React.useState<{isPaid:boolean, amount:number, userId:number, userFullName:string}>({
         isPaid:false,
         amount:props.equal?props.amount:0,
-        userId:props.id,
-        userFullName:props.fullName
+        userId:props.id===currUser.id?currUser.id:props.id,
+        userFullName:props.fullName===currUser.fullName? currUser.fullName:props.fullName,
     });
     const handleSubmit=(e:any)=>{
         e.preventDefault();
         setIsClicked(prev=>!prev);
     }
+    //adjust amount based on change in equal to display.
     React.useEffect(()=>{
         if(props.equal===true && isClicked===true){
             setFormData(prev=>{
@@ -21,6 +24,23 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
             })
         }
     },[props.equal])
+    //adjust amount based on change in equal to the involve list
+    React.useEffect(()=>{
+        if(props.equal===true && isClicked===true){
+            props.setInvolveList((prev:any)=>{
+                const arr=prev.map((el:{isPaid:boolean, amount:number, userId:number, userFullName:string})=>{
+                    if (el.userId===formData.userId){
+                        return {
+                            ...el,
+                            amount:formData.amount,
+                        }
+                    }
+                    return el;
+                });
+                return arr;
+            })
+        }
+    },[props.equal, formData.amount]);
     const handleChange=(e:any)=>{
         const {name, type, value, checked}=e.target;
         if(type==="checkbox"){
@@ -48,10 +68,10 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
                 ]
             })
         }
-        else if(props.involveList.includes(formData) && isClicked===false){
+        else if(isClicked===false){
             props.setInvolveList((prev:any)=>{
-                prev=prev.filter((el:any)=>el.userId!==formData.userId)
-                return prev
+                const arr=prev.filter((el:any)=>el.userId!==formData.userId)
+                return arr;
             })
         }
     },[isClicked]);
@@ -91,8 +111,8 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
                             padding:"3px"
                         }} required/>
                         <div className="flex flex-row gap-1">
-                            <input onChange={handleChange} id="isPaid" type="checkbox" checked={formData.isPaid} disabled={isClicked} name="isPaid"/>
-                            <label htmlFor="isPaid">Is Paid?</label>
+                            <input onChange={handleChange} id={"isPaid"+props.username} type="checkbox" checked={formData.isPaid} disabled={isClicked} name="isPaid"/>
+                            <label htmlFor={"isPaid"+props.username}>Is Paid?</label>
                         </div>
                         <button className="bg-black text-white rounded-xl hover:bg-white hover:text-black duration-300" style={{
                             border:"1px solid black",

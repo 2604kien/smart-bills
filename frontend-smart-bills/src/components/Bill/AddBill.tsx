@@ -5,11 +5,11 @@ import AddBillForm from "./AddBillForm";
 export default function AddBill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
-    const element=isAuthenticated? (<div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>  
-                                            <div></div>
-                                            <div>
-                                                <AddBillForm/>
-                                            </div>
+    const element=isAuthenticated? (<div className="flex flex-col justify-center items-center" style={{height:"100%", width:"100%"}}>
+                                    
+                                        <AddBillForm/> 
+                                    
+                                        
                                     </div>):
                                     (
                                         <div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>

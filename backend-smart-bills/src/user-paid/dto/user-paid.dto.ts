@@ -7,4 +7,6 @@ export class UserPaidDto{
     user:User;
     @IsNotEmpty()
     bill:Bill;
+    @IsNotEmpty()
+    paidAmount:number;
 }

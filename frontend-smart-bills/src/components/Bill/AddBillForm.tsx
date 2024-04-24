@@ -2,6 +2,7 @@ import React, { HtmlHTMLAttributes } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
+import { createNewBill } from "../../reducers/billReducer";
 export default function AddBillForm(){
     const currUser=useAppSelector(state=>state.user.currentUser);
     const [formData,setFormData]=React.useState({
@@ -10,8 +11,16 @@ export default function AddBillForm(){
         userList:[],
         totalCost:0,
         numberPeople:0,
-        creator:currUser
-    })
+        creator:currUser,
+    });
+    React.useEffect(()=>{
+        setFormData(prev=>{
+            return {
+                ...prev,
+                creator:currUser
+            }
+        })
+    },[currUser])
     const id=currUser?currUser.id:0;
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
@@ -22,7 +31,7 @@ export default function AddBillForm(){
         setFormData(prev=>{
             return{
                 ...prev,
-                [name]:value
+                [name]: name==="totalCost"?Number(value):value
             }
         })
     }
@@ -35,7 +44,7 @@ export default function AddBillForm(){
     )
     const handleSubmit=(e:any)=>{
         e.preventDefault();
-        console.log(formData);
+        dispatch(createNewBill({data:formData, token}));
     }
     React.useEffect(()=>{
         if(id!==0){
@@ -52,15 +61,15 @@ export default function AddBillForm(){
         document.addEventListener("mousedown", handler);
     },[])
     return (
-        <section >
-            <div className="z-0 flex flex-col justify-center items-center h-full mt-10">
+
+            <div className="z-0 flex flex-col justify-center items-center w-full h-full mt-5">
             
-                <div className="container border-black sm:border flex flex-col justify-center items-center rounded-xl bg-black text-white" style={{position:"relative",boxShadow:"0px 5px 20px 5px rgba(0,0,0,0.5)",height:"90%", width:"60%", maxWidth:"100%", minWidth:"390px"}}>
+                <div className="container border-black sm:border w-full flex flex-col justify-center items-center rounded-xl bg-black text-white" style={{position:"relative",boxShadow:"0px 5px 20px 5px rgba(0,0,0,0.5)",height:"90%", width:"60%", maxWidth:"100%", minWidth:"390px"}}>
                 <AddUserOverlay totalCost={formData.totalCost} userRef={userRef} setOverlay={setOverlay} setUserArray={setFormData} overlay={overlay}/>
                         <div className="h-1/6 flex flex-col justify-center w-full items-center">
                             <h1 className="text-5xl font-semibold mt-5">Add New Bill</h1>
                         </div>
-                        <div className="flex flex-col justify-center items-center w-5/6">
+                        <div className="flex flex-col justify-center items-center w-full">
                             <form className="flex flex-col w-5/6 gap-5" onSubmit={handleSubmit}>
                                 
                                 <label className="text-lg">Title<span className="text-red-600">*</span></label>
@@ -74,12 +83,11 @@ export default function AddBillForm(){
                                     {userElement}
                                 </div>
                                 <button style={{
-                                    marginBottom:"20px"
+                                    marginBottom:"30px"
                                 }} className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Create New Bill</button>
                             </form>
                         </div>
                 </div>
             </div>
-        </section>
     )
 }
