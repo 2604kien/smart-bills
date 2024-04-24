@@ -6,20 +6,21 @@ export default function AddUserOverlay(props:{setUserArray:any, overlay:any, tot
     const friendList=useAppSelector(state=>state.friendRequest.friendList);
     const [isEqual, setIsEqual]=React.useState(false);
     const currUser=useAppSelector(state=>state.user.currentUser);
-    const userList=[{user:currUser}].concat(friendList);
+    const userList=currUser.id!=0?[{user:currUser}].concat(friendList):[];
     const [involveList, setInvolveList]=React.useState([]);
     const amount=involveList.length>0?props.totalCost/involveList.length:0;
     const userCardElement=userList && userList.length>0? userList.map((el:any, id:number)=><BillUserCard amount={amount} setInvolveList={setInvolveList} involveList={involveList} equal={isEqual} key={id} id={el.user.id} fullName={el.user.fullName} phoneNumber={el.user.phoneNumber} username={el.user.username}/>):<></>
-    console.log(involveList);
     const handleSubmit=()=>{
         props.setUserArray((prev:any)=>{
             return {
                 ...prev,
-                userList:involveList
+                userList:involveList,
+                numberPeople:involveList.length
             }
         });
         props.setOverlay(false);
     }
+    React.useEffect(()=>{setIsEqual(false)},[props.totalCost])
     return(
         <div className="flex flex-col justify-center items-center" ref={props.userRef} style={{
             border:"3px solid black",

@@ -7,6 +7,7 @@ import { User_Owe } from 'src/entities/user-owe.entity';
 @Module({
   imports:[TypeOrmModule.forFeature([User_Owe])],
   controllers: [UserOweController],
-  providers: [UserOweService]
+  providers: [UserOweService],
+  exports:[UserOweService]
 })
 export class UserOweModule {}

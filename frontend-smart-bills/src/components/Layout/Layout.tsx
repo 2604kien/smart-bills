@@ -30,7 +30,6 @@ export default function Layout(){
     return (
         <div className="flex flex-col" style={{height:"inherit", zIndex:"999"}}>
             <Navbar/>
-            {location.pathname.includes("bill")?<BillCard/>:<></>}
             <Outlet/>
         </div>
     )

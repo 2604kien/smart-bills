@@ -3,9 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
 import { BillDto, UpdateBillDto } from './dto/bill.dto';
+import { UserOweService } from 'src/user-owe/user-owe.service';
+import { UserPaidService } from 'src/user-paid/user-paid.service';
+import { User } from 'src/entities/user.entity';
 @Injectable()
 export class BillService {
-    constructor(@InjectRepository(Bill) private billRepository:Repository<Bill>){}
+    constructor(
+        @InjectRepository(Bill) private billRepository:Repository<Bill>,
+        @Inject(UserOweService) private userOweService:UserOweService,
+        @Inject(UserPaidService) private userPaidService:UserPaidService,
+    ){}
 
     //get all bill
     async getAllBill():Promise<Object>{
@@ -54,16 +61,47 @@ export class BillService {
     }
     //create new bill
     async createNewBill(bill:BillDto):Promise<Object>{
-        if(!bill.totalCost || !bill.numberPeople){
-            throw new HttpException('All field are required.', HttpStatus.OK);
-        }
         try{
+            //create bill
             const newBill= new Bill();
             newBill.totalCost=bill.totalCost;
             newBill.numberPeople=bill.numberPeople;
             newBill.creator=bill.creator;
-            await this.billRepository.save(newBill);
-            return {message:"A new bill is added", data:newBill}
+            newBill.title=bill.title;
+            newBill.description=bill.description || ""
+            const savedBill= await this.billRepository.save(newBill);
+            //create user-owe
+            const userOweList=bill.userList.filter(el=>el.isPaid===false);
+            if(userOweList){
+                userOweList.map(async (el)=>{
+                const user=new User();
+                user.id=el.userId;
+                const data={
+                    bill:savedBill,
+                    user:user,
+                    oweAmount: Number(el.amount)
+                }
+                await this.userOweService.createNewUserOwe(data);
+                return el;
+            })
+            }
+            //create user-paid
+
+            const userPaidList=bill.userList.filter(el=>el.isPaid===true);
+            if(userPaidList){
+                userPaidList.map(async (el)=>{
+                    const user=new User();
+                    user.id=el.userId;
+                    const data={
+                        bill:savedBill,
+                        user:user,
+                        paidAmount:Number(el.amount)
+                    }
+                    await this.userPaidService.createUserPaid(data);
+                    return el;
+                })
+                return {message:"A new bill is added", data:newBill}
+            }
         }
         catch(error){
             console.log(error)

@@ -63,6 +63,7 @@ export class UserPaidService {
             const newUserPaid= new User_Paid();
             newUserPaid.bill=data.bill;
             newUserPaid.user=data.user;
+            newUserPaid.paidAmount=data.paidAmount;
             await this.userPaidRepository.save(newUserPaid);
             return {message:"A new user_paid is created.", data:newUserPaid}
         }

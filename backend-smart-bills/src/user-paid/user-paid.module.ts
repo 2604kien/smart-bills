@@ -7,6 +7,7 @@ import { User_Paid } from 'src/entities/user-paid.entity';
 @Module({
   imports:[TypeOrmModule.forFeature([User_Paid])],
   controllers: [UserPaidController],
-  providers: [UserPaidService]
+  providers: [UserPaidService],
+  exports:[UserPaidService]
 })
 export class UserPaidModule {}
