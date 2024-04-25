@@ -50,9 +50,9 @@ const initialState=userAdapter.getInitialState({
         email:"",
         balance:0,
         roles:[],
-        oweList:{},
-        paidList:{},
-        createdBillList:{},
+        oweList:[],
+        paidList:[],
+        createdBillList:[],
         phoneNumber:"",
     }
 });

@@ -21,7 +21,6 @@ export default function BillCard(){
     return (
         <div style={{
             height:"100%",
-            zIndex:"999",
             display:"grid",
             gridTemplateColumns:"20% 80%"
         }}>
@@ -30,12 +29,13 @@ export default function BillCard(){
                     gridTemplateRows:"9% 35% 50%",
                     transition:"all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1)",
                     animation:"slideDown 0.5s forwards",
-                    position:"absolute",
+                    position:"fixed",
                     top:"0px",
                     left:"0px", width:"20%", 
                     borderBottomRightRadius:"25px",
-                    zIndex:"5",
+                    zIndex:"999",
                     background:"black",
+                    
                 }}>
                 <div className="flex flex-col justify-center items-center">
                     <img className="cursor-pointer" onClick={()=>navigate('/')} src={Logo} alt="logo" style={{scale:"0.6"}}/>

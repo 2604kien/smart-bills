@@ -41,4 +41,11 @@ export class UserOweController {
     async deleteUserOwe(@Param('id') id:number){
         return this.userOweService.deleteUserOwe(id);
     }
+    @Post('get-list')
+    @Roles(...Role.all())
+    @UsePipes(new ValidationPipe())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    async getUserOweList(@Body() data:any){
+        return this.userOweService.getUserOweFromList(data);
+    }
 }
