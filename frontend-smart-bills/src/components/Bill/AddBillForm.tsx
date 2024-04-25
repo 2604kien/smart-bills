@@ -45,6 +45,7 @@ export default function AddBillForm(){
     const handleSubmit=(e:any)=>{
         e.preventDefault();
         dispatch(createNewBill({data:formData, token}));
+        window.location.reload();
     }
     React.useEffect(()=>{
         if(id!==0){
