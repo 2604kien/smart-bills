@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User_Owe } from 'src/entities/user-owe.entity';
-import { UserOweDto } from './dto/user-owe.dto';
+import { UserOweDto, UserOweListDto } from './dto/user-owe.dto';
 @Injectable()
 export class UserOweService {
     constructor(@InjectRepository(User_Owe) private userOweRepository:Repository<User_Owe>){}
@@ -106,5 +106,42 @@ export class UserOweService {
         foundedUserOwe.oweAmount=data.oweAmount;
         await this.userOweRepository.save(foundedUserOwe);
         return {message:`User_Owe with the id ${id} is updated successfully`}
+    }
+    //get all User Owe from list
+    async getUserOweFromList(data:UserOweListDto){
+        if(data.currOweList?.length>0 && data.currOweList){
+            
+            const foundedList=await Promise.all(data.currOweList.map(async (el:{id:number})=>{
+                const result= await this.userOweRepository.findOne({
+                    where:{id:el.id},
+                    select:{
+                        user:{
+                            id:true,
+                            fullName:true
+                        },
+                        bill:{
+                            id:true,
+                            date:true,
+                            title:true,
+                            totalCost:true,
+                            creator:{
+                                fullName:true
+                            }
+                        },
+                    },
+                    relations:{
+                        user:true,
+                        bill:{
+                            creator:true
+                        }
+                    }
+                });
+               return result;
+            }));
+            return {message:`All User_Owe from the provided list are retrieved`, data:foundedList}
+        }
+        else{
+            return {message:`Please provide the Owe List`}
+        }
     }
 }

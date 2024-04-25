@@ -50,7 +50,7 @@ export default function Navbar(){
         document.addEventListener("mousedown", handler);
     },[])
     return(
-        <div style={{position:"relative", zIndex:"5"}}>
+        <div style={{position:"relative", zIndex:"999"}}>
         <div className="h-20">
         </div>
         <div className="select-none sm:border h-20 border-gray text-black" style={{width:"100vw", top:"0", position:"fixed", borderLeft:"none", borderRight:"none", display:"grid", gridTemplateColumns:"20% 60% 20%"}} >

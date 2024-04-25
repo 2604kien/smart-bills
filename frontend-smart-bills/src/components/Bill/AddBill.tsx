@@ -6,10 +6,7 @@ export default function AddBill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const element=isAuthenticated? (<div className="flex flex-col justify-center items-center" style={{height:"100%", width:"100%"}}>
-                                    
-                                        <AddBillForm/> 
-                                    
-                                        
+                                        <AddBillForm/>                                   
                                     </div>):
                                     (
                                         <div style={{display:"grid", gridTemplateColumns:"20% 80%", height:"100%"}}>
