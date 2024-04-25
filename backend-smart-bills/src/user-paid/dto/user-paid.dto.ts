@@ -8,5 +8,5 @@ export class UserPaidDto{
     @IsNotEmpty()
     bill:Bill;
     @IsNotEmpty()
-    paidAmount:number;
+    paidAmount:string;
 }

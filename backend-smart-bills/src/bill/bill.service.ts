@@ -83,7 +83,7 @@ export class BillService {
                 const data={
                     bill:savedBill,
                     user:user,
-                    oweAmount: Number(el.amount)
+                    oweAmount: el.amount
                 }
                 await this.userOweService.createNewUserOwe(data);
                 return el;
@@ -99,7 +99,7 @@ export class BillService {
                     const data={
                         bill:savedBill,
                         user:user,
-                        paidAmount:Number(el.amount)
+                        paidAmount:el.amount
                     }
                     await this.userPaidService.createUserPaid(data);
                     return el;

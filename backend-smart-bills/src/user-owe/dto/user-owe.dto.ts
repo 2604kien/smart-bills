@@ -7,7 +7,7 @@ type OweBill={
 export class UserOweDto{
     @IsNotEmpty()
     @IsNumber()
-    oweAmount:number;
+    oweAmount:string;
     @IsNotEmpty()
     user:User;
     @IsNotEmpty()

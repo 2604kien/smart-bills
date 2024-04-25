@@ -8,8 +8,8 @@ export class User_Paid{
     id:number;
     @CreateDateColumn()
     date: Date;
-    @Column("decimal",{nullable:true})
-    paidAmount:number;
+    @Column({nullable:true})
+    paidAmount:string;
     @ManyToOne(()=>User, user=>user.paidList, {onDelete:'CASCADE'})
     user:User
     @ManyToOne(()=>Bill, bill=>bill.paidList, {onDelete:'CASCADE'})

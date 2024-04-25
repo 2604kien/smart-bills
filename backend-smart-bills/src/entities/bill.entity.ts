@@ -14,7 +14,7 @@ export class Bill{
     @Column({nullable:true})
     description:string;
     @Column()
-    totalCost: number;
+    totalCost: string;
     @Column()
     numberPeople:number;
     @OneToMany(()=>User_Paid, user_paid=>user_paid.bill)
