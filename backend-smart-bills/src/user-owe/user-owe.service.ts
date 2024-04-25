@@ -130,6 +130,11 @@ export class UserOweService {
                             }
                         },
                     },
+                    order:{
+                        bill:{
+                            date:'DESC'
+                        }
+                    },
                     relations:{
                         user:true,
                         bill:{
@@ -150,6 +155,7 @@ export class UserOweService {
         const foundedUserOwe= await this.userOweRepository.findOne({
             where:{id},
             select:{
+                id:true,
                 user:{
                     id:true,
                     fullName:true
@@ -159,6 +165,7 @@ export class UserOweService {
                     date:true,
                     totalCost:true
                 },
+                oweAmount:true,
             },
             relations:{
                 user:true,

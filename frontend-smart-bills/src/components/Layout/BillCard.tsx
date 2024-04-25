@@ -12,6 +12,7 @@ export default function BillCard(){
             <h1 onClick={()=>navigate("/bill/new")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>Add New Bill</h1>
             <h1 onClick={()=>navigate("/bill/owe")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>View Owed Bill</h1>
             <h1 onClick={()=>navigate("/bill/paid")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>View Paid Bill</h1>
+            <h1 onClick={()=>navigate("/bill/created")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>View Created Bill</h1>
         </div>
     ):(
         <div className="flex flex-col justify-center items-center">     
