@@ -14,13 +14,13 @@ export class Bill{
     @Column({nullable:true})
     description:string;
     @Column()
-    totalCost: number;
+    totalCost: string;
     @Column()
     numberPeople:number;
     @OneToMany(()=>User_Paid, user_paid=>user_paid.bill)
     paidList: User_Paid;
     @OneToMany(()=>User_Owe, user_owe=>user_owe.bill)
     oweList:User_Owe;
-    @ManyToOne(()=>User, user=>user.createdBillList)
+    @ManyToOne(()=>User, user=>user.createdBillList, {onDelete:'CASCADE'})
     creator:User;
 }

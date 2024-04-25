@@ -11,5 +11,5 @@ export class User_Owe{
     @ManyToOne(()=>Bill, bill=>bill.oweList, {onDelete:'CASCADE'})
     bill:Bill;
     @Column()
-    oweAmount:number;
+    oweAmount:string;
 }

@@ -3,7 +3,7 @@ import { User_Paid } from "src/entities/user-paid.entity";
 import { User } from "src/entities/user.entity";
 type UserInvolve={
     isPaid:boolean;
-    amount:number;
+    amount:string;
     userId:number;
     userFullName:string
 }
@@ -11,7 +11,7 @@ type UserInvolve={
 export class BillDto{
     @IsNotEmpty()
     @IsNumber()
-    totalCost:number;
+    totalCost:string;
     @IsNotEmpty()
     title:string;
     description:string;
@@ -27,4 +27,8 @@ export class BillDto{
 export class UpdateBillDto{
     @IsNotEmpty()
     creator:User
+}
+export class BillListDto{
+    @IsNotEmpty()
+    currList:{id:number}[]
 }

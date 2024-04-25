@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
-import { BillDto, UpdateBillDto } from './dto/bill.dto';
+import { BillDto, BillListDto, UpdateBillDto } from './dto/bill.dto';
 import { UserOweService } from 'src/user-owe/user-owe.service';
 import { UserPaidService } from 'src/user-paid/user-paid.service';
 import { User } from 'src/entities/user.entity';
@@ -44,7 +44,11 @@ export class BillService {
                 creator:{
                     id:true,
                     fullName:true
-                }
+                },
+                title:true,
+                description:true,
+                numberPeople:true,
+                totalCost:true
             },
             relations:{creator:true}
         });
@@ -79,7 +83,7 @@ export class BillService {
                 const data={
                     bill:savedBill,
                     user:user,
-                    oweAmount: Number(el.amount)
+                    oweAmount: el.amount
                 }
                 await this.userOweService.createNewUserOwe(data);
                 return el;
@@ -95,7 +99,7 @@ export class BillService {
                     const data={
                         bill:savedBill,
                         user:user,
-                        paidAmount:Number(el.amount)
+                        paidAmount:el.amount
                     }
                     await this.userPaidService.createUserPaid(data);
                     return el;
@@ -142,7 +146,33 @@ export class BillService {
     }
     //delete all bill data
     async deleteAll(){
-        await this.billRepository.clear();
+        await this.billRepository.delete({});
         return {message:"All Bill Deleted"};
+    }
+    //get bill detail from list
+    async getBillList(data:BillListDto){
+        const foundedList=await Promise.all(data.currList.map(async (el:{id:number})=>{
+            const result=await this.billRepository.findOne({
+                where:{id:el.id},
+                select:{
+                    id:true,
+                    creator:{
+                        id:true,
+                        fullName:true
+                    },
+                    title:true,
+                    description:true,
+                    numberPeople:true,
+                    totalCost:true,
+                    date:true,
+                },
+                order:{
+                    date:'DESC'
+                },
+                relations:{creator:true}
+            });
+            return result;
+        }));
+        return {message:`All Bill from the provided list are retrieved`, data:foundedList}
     }
 }

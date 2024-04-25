@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BillService } from './bill.service';
-import { BillDto, UpdateBillDto } from './dto/bill.dto';
+import { BillDto,BillListDto,UpdateBillDto } from './dto/bill.dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { RolesGuard } from 'src/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
@@ -35,16 +35,22 @@ export class BillController {
     async updateBill(@Param('id') id:number, @Body() bill:UpdateBillDto){
         return this.billService.updateBill(bill, id);
     }
+    @Delete('all')
+    @Roles(Role.admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    async deleteAll(){
+        return this.billService.deleteAll();
+    }
     @Delete(':id')
     @Roles(...Role.all())
     @UseGuards(JwtAuthGuard, RolesGuard)
     async deleteBill(@Param('id') id:number){
         return this.billService.deleteBill(id);
     }
-    @Delete()
-    @Roles(Role.admin)
+    @Post('get-list')
+    @Roles(...Role.all())
     @UseGuards(JwtAuthGuard, RolesGuard)
-    async deleteAll(){
-        return this.billService.deleteAll();
+    async getBillList(@Body() data:BillListDto ){
+        return this.billService.getBillList(data)
     }
 }
