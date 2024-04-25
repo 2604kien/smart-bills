@@ -15,6 +15,7 @@ import AddFriend from './components/Friend/AddFriend';
 import ViewOweBill from './components/Bill/ViewOweBill';
 import BillCard from './components/Layout/BillCard';
 import ViewPaidBill from './components/Bill/ViewPaidBill';
+import CreatedBill from './components/Bill/CreatedBill';
 function App() {
   return (
     <div className="App h-screen m-0" >
@@ -31,6 +32,7 @@ function App() {
             <Route path='new' element={<AddBill/>}/>
             <Route path='owe' element={<ViewOweBill/>}/>
             <Route path='paid' element={<ViewPaidBill/>}/>
+            <Route path='created' element={<CreatedBill/>}/>
           </Route>
           <Route path="friend" element={<FriendLayout/>}>
             <Route path='' element={<Friend/>}/>

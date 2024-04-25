@@ -21,6 +21,6 @@ export class Bill{
     paidList: User_Paid;
     @OneToMany(()=>User_Owe, user_owe=>user_owe.bill)
     oweList:User_Owe;
-    @ManyToOne(()=>User, user=>user.createdBillList)
+    @ManyToOne(()=>User, user=>user.createdBillList, {onDelete:'CASCADE'})
     creator:User;
 }

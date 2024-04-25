@@ -28,3 +28,7 @@ export class UpdateBillDto{
     @IsNotEmpty()
     creator:User
 }
+export class BillListDto{
+    @IsNotEmpty()
+    currList:{id:number}[]
+}
