@@ -41,4 +41,10 @@ export class BillController {
     async deleteBill(@Param('id') id:number){
         return this.billService.deleteBill(id);
     }
+    @Delete()
+    @Roles(Role.admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    async deleteAll(){
+        return this.billService.deleteAll();
+    }
 }

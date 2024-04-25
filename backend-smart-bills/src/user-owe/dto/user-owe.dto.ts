@@ -16,5 +16,5 @@ export class UserOweDto{
 }
 export class UserOweListDto{
     @IsNotEmpty()
-    currOweList:OweBill[]
+    currList:OweBill[]
 }

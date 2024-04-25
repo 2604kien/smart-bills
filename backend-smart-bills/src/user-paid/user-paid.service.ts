@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User_Paid } from 'src/entities/user-paid.entity';
 import { UserPaidDto } from './dto/user-paid.dto';
+import { UserOweListDto } from 'src/user-owe/dto/user-owe.dto';
 @Injectable()
 export class UserPaidService {
     constructor(@InjectRepository(User_Paid) private readonly userPaidRepository:Repository<User_Paid>){}
@@ -98,5 +99,41 @@ export class UserPaidService {
         }
         await this.userPaidRepository.delete(id);
         return {message:`User_Paid with the id ${id} is deleted successfully`}
+    }
+    async getPaidBillFromList(data:UserOweListDto){
+        if(data.currList?.length>0 && data.currList){
+            
+            const foundedList=await Promise.all(data.currList.map(async (el:{id:number})=>{
+                const result= await this.userPaidRepository.findOne({
+                    where:{id:el.id},
+                    select:{
+                        user:{
+                            id:true,
+                            fullName:true
+                        },
+                        bill:{
+                            id:true,
+                            date:true,
+                            totalCost:true,
+                            title:true,
+                            creator:{
+                                fullName:true
+                            }
+                        }
+                    },
+                    relations:{
+                        user:true,
+                        bill:{
+                            creator:true
+                        }
+                    }
+                });
+               return result;
+            }));
+            return {message:`All User_Owe from the provided list are retrieved`, data:foundedList}
+        }
+        else{
+            return {message:`Please provide the Owe List`}
+        }
     }
 }
