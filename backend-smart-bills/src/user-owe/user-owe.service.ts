@@ -1,11 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User_Owe } from 'src/entities/user-owe.entity';
-import { UserOweDto } from './dto/user-owe.dto';
+import { UserOweDto, UserOweListDto } from './dto/user-owe.dto';
+import { UserPaidService } from 'src/user-paid/user-paid.service';
 @Injectable()
 export class UserOweService {
-    constructor(@InjectRepository(User_Owe) private userOweRepository:Repository<User_Owe>){}
+    constructor(@InjectRepository(User_Owe) private userOweRepository:Repository<User_Owe>, @Inject(UserPaidService) private userPaidService:UserPaidService){}
     //get all data from User_Owe table
     async getAllUserOwe():Promise<Object>{
         try{
@@ -106,5 +107,74 @@ export class UserOweService {
         foundedUserOwe.oweAmount=data.oweAmount;
         await this.userOweRepository.save(foundedUserOwe);
         return {message:`User_Owe with the id ${id} is updated successfully`}
+    }
+    //get all User Owe from list
+    async getUserOweFromList(data:UserOweListDto){
+        if(data.currList?.length>0 && data.currList){
+            
+            const foundedList=await Promise.all(data.currList.map(async (el:{id:number})=>{
+                const result= await this.userOweRepository.findOne({
+                    where:{id:el.id},
+                    select:{
+                        user:{
+                            id:true,
+                            fullName:true
+                        },
+                        bill:{
+                            id:true,
+                            date:true,
+                            title:true,
+                            totalCost:true,
+                            creator:{
+                                fullName:true
+                            }
+                        },
+                    },
+                    relations:{
+                        user:true,
+                        bill:{
+                            creator:true
+                        }
+                    }
+                });
+               return result;
+            }));
+            return {message:`All User_Owe from the provided list are retrieved`, data:foundedList}
+        }
+        else{
+            return {message:`Please provide the Owe List`}
+        }
+    }
+    //delete user owe and add user paid
+    async getUserOweToUserPaid(id:number){
+        const foundedUserOwe= await this.userOweRepository.findOne({
+            where:{id},
+            select:{
+                user:{
+                    id:true,
+                    fullName:true
+                },
+                bill:{
+                    id:true,
+                    date:true,
+                    totalCost:true
+                },
+            },
+            relations:{
+                user:true,
+                bill:true
+            }
+        });
+        if(!foundedUserOwe){
+            throw new HttpException('User_Owe is not found with the provided id.', HttpStatus.NOT_FOUND);
+        }
+        const userPaid={
+            user: foundedUserOwe.user,
+            bill:foundedUserOwe.bill,
+            paidAmount:foundedUserOwe.oweAmount,
+        }
+        await this.userOweRepository.delete(id);
+        await this.userPaidService.createUserPaid(userPaid);
+        return {message:"Your owe amount is settled"};
     }
 }

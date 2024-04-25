@@ -5,6 +5,7 @@ import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enum/role.enum';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { RolesGuard } from 'src/guards/role.guard';
+import { UserOweListDto } from 'src/user-owe/dto/user-owe.dto';
 
 @Controller('user-paid')
 export class UserPaidController {
@@ -40,5 +41,12 @@ export class UserPaidController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     deleteUser(@Param('id') id:number){
         return this.userPaidService.deleteUserPaid(id);
+    }
+    @Post('get-list')
+    @Roles(...Role.all())
+    @UseGuards(JwtAuthGuard,RolesGuard)
+    @UsePipes(new ValidationPipe())
+    getPaidUserFromList(@Body() data:UserOweListDto){
+        return this.userPaidService.getPaidBillFromList(data);
     }
 }
