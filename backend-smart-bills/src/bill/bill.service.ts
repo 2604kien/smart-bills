@@ -140,4 +140,9 @@ export class BillService {
             throw new HttpException('Something went wrong, please try again later.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //delete all bill data
+    async deleteAll(){
+        await this.billRepository.clear();
+        return {message:"All Bill Deleted"};
+    }
 }

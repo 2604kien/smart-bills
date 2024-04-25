@@ -5,7 +5,7 @@ import ViewBillCard from "./ViewBillCard";
 export default function ViewOweBill(){
     const oweBillList=useAppSelector(state=>state.user.currentUser.oweList);
     const [page, setPage]=React.useState(1);
-    const [currOweList, setCurrOweList]=React.useState([]);
+    const [currList, setCurrOweList]=React.useState([]);
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const element=[];
@@ -23,12 +23,11 @@ export default function ViewOweBill(){
         }
     },[oweBillList, page])
     React.useEffect(()=>{
-        if(currOweList.length>0){
-            dispatch(getOweBill({data:{currOweList}, token}))
+        if(currList.length>0){
+            dispatch(getOweBill({data:{currList}, token}))
         }
         
-    },[currOweList])
-    console.log(displayList);
+    },[currList])
     return (
         <div className="flex flex-col justify-center items-center" style={{
             height:"fit-content",
@@ -39,7 +38,6 @@ export default function ViewOweBill(){
                 marginBottom:"30px"
             }}>
                 <h1 style={{
-                    textDecoration:"underline"
                 }}>Page</h1>
                 <div className="flex flex-row justify-center items-center gap-5">{element}</div>
             </div>

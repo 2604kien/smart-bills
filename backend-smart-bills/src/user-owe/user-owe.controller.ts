@@ -48,4 +48,11 @@ export class UserOweController {
     async getUserOweList(@Body() data:any){
         return this.userOweService.getUserOweFromList(data);
     }
+    @Get('settle/:id')
+    @Roles(...Role.all())
+    @UsePipes(new ValidationPipe())
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    async getUserOweToUserPaid(@Param('id') id:number){
+        return this.userOweService.getUserOweToUserPaid(id);
+    }
 }
