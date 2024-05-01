@@ -9,7 +9,8 @@ export default function ViewOweBill(){
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const element=[];
-    const displayList:any=useAppSelector(state=>[...state.bill.oweList].reverse());
+    const displayListUnSorted:{message:string, data:Object}[]=useAppSelector(state=>state.bill.oweList);
+    const displayList=displayListUnSorted.length>0?[...displayListUnSorted].reverse():[];
     for(let i=1; i<oweBillList.length/10+1; i++){
         element.push(<h1 className="cursor-pointer hover:scale-125" onClick={()=>setPage(i)} key={i} style={{color:page===i?"blue":"black", textDecoration:page===i?"underline":"none", fontSize:"1.25rem"}}>{i}</h1>)
     }
@@ -22,7 +23,7 @@ export default function ViewOweBill(){
         else{
             setCurrOweList(oweBillList.slice((page-1)*10, page*10));
         }
-    },[oweBillList, page])
+    },[page, oweBillList])
     React.useEffect(()=>{
         if(currList.length>0){
             dispatch(getOweBill({data:{currList}, token}))

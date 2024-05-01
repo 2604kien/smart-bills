@@ -16,7 +16,9 @@ import ViewOweBill from './components/Bill/ViewOweBill';
 import BillCard from './components/Layout/BillCard';
 import ViewPaidBill from './components/Bill/ViewPaidBill';
 import CreatedBill from './components/Bill/CreatedBill';
+import { useAppSelector } from './app/hooks';
 function App() {
+  const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
   return (
     <div className="App h-screen m-0" >
       <Routes>
@@ -28,15 +30,19 @@ function App() {
           <Route path='setting' element={<Setting/>}/>
           <Route path='news' element={<New/>}/>
           <Route path='bill' element={<BillCard/>}>
-            <Route path='' element={<Bill/>}/>
-            <Route path='new' element={<AddBill/>}/>
-            <Route path='owe' element={<ViewOweBill/>}/>
-            <Route path='paid' element={<ViewPaidBill/>}/>
-            <Route path='created' element={<CreatedBill/>}/>
+            {isAuthenticated?(<>
+              <Route path='' element={<Bill/>}/>
+              <Route path='new' element={<AddBill/>}/>
+              <Route path='owe' element={<ViewOweBill/>}/>
+              <Route path='paid' element={<ViewPaidBill/>}/>
+              <Route path='created' element={<CreatedBill/>}/>
+            </>):<></>}
           </Route>
           <Route path="friend" element={<FriendLayout/>}>
-            <Route path='' element={<Friend/>}/>
-            <Route path='new' element={<AddFriend/>}/>
+            {isAuthenticated?(<>
+              <Route path='' element={<Friend/>}/>
+              <Route path='new' element={<AddFriend/>}/>
+            </>):<></>}
           </Route>
         </Route>
       </Routes>
