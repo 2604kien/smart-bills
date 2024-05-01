@@ -2,7 +2,9 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { deleteBill } from "../../reducers/billReducer";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 export default function ViewCreatedCard(props:any){
+    const navigate=useNavigate();
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const handleDelete=()=>{
@@ -41,7 +43,7 @@ export default function ViewCreatedCard(props:any){
                     borderRadius:"15px",
                     height:"60px",
                     width:"100px"
-                }}>Edit</button>
+                }} onClick={()=>navigate(`/bill/edit/${props.data.id}`)}>Edit</button>
                 <button className="border-red-600 hover:border-black border-2  bg-red-600 text-white hover:bg-white hover:text-black duration-300" style={{
                     fontSize:"1.5rem",
                     height:"60px",
