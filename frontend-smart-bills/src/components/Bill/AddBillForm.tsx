@@ -45,6 +45,7 @@ export default function AddBillForm(){
     const handleSubmit=(e:any)=>{
         e.preventDefault();
         dispatch(createNewBill({data:formData, token}));
+        alert('Add New Bill Successfully');
         window.location.reload();
     }
     React.useEffect(()=>{
@@ -78,7 +79,7 @@ export default function AddBillForm(){
                                 <label className="text-lg">Total Cost<span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="totalCost" value={formData.totalCost} className="w-1/4 h-11 indent-1.5 rounded-xl text-black text-base" type="number" placeholder="Enter total bill cost." required/>
                                 <label className="text-lg">Description</label>
-                                <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}} required/>
+                                <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}}/>
                                 <h1 className="bg-white rounded-xl text-black duration-300 cursor-pointer sm:border border-white hover:brightness-50 p-2 gap-2" style={{width:"fit-content"}} onClick={()=>setOverlay(true)}>Add User</h1>
                                 <div className="w-full sm:border border-white" style={{height:"100px"}}>
                                     {userElement}

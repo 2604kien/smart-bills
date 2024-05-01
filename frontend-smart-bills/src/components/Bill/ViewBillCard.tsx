@@ -69,9 +69,10 @@ export default function ViewBillCard(props:any){
                  </>
                ):<>
                 <h1 style={{fontWeight:"600", fontSize:"1.5rem"}}>Title: {props.data.bill?.title}</h1>
-                 <h1>Date: {props.data.bill.date.split('T')[0].split("-").reverse().join("-")}</h1>
+                 <h1>Time: {moment(props.data.bill.date).format('HH:mm | DD-MM-YYYY')}</h1>
                  <h1>Created By: {props.data.bill.creator.fullName}</h1>
                  <h1>Total Cost: ${props.data.bill.totalCost}</h1>
+                 <h1>Paid Amount: ${props.data.paidAmount}</h1>
                </>}
             </div>
             <div className="flex flex-col justify-center items-center">

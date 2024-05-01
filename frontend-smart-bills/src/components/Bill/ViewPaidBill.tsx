@@ -9,7 +9,8 @@ export default function ViewPaidBill(){
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const element=[];
-    const displayList:any=useAppSelector(state=>[...state.bill.paidList]).reverse();
+    const displayListUnSorted:any=useAppSelector(state=>state.bill.paidList);
+    const displayList=displayListUnSorted.length>0?[...displayListUnSorted].reverse():[];
     for(let i=1; i<PaidBillList.length/10+1; i++){
         element.push(<h1 className="cursor-pointer hover:scale-125" onClick={()=>setPage(i)} key={i} style={{color:page===i?"blue":"black", textDecoration:page===i?"underline":"none", fontSize:"1.25rem"}}>{i}</h1>)
     }
