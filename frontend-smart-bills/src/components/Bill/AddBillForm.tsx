@@ -42,11 +42,20 @@ export default function AddBillForm(){
             <h1>Please add an user</h1>
         </div>
     )
+    
+    
     const handleSubmit=(e:any)=>{
         e.preventDefault();
-        dispatch(createNewBill({data:formData, token}));
-        alert('Add New Bill Successfully');
-        window.location.reload();
+        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+currValue.amount,0);
+        const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
+        console.log(difference)
+        if(difference===0||(difference>=0.01&&difference<=0.02)){
+            dispatch(createNewBill({data:formData, token}));
+            alert('Add New Bill Successfully');
+        }
+        else{
+            alert('Total amount must equal to the total cost');
+        }
     }
     React.useEffect(()=>{
         if(id!==0){
