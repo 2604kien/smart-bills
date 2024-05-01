@@ -42,6 +42,7 @@ export class UserOweService {
         const foundedData=await this.userOweRepository.findOne({
             where:{id},
             select:{
+                id:true,
                 user:{
                     id:true,
                     fullName:true

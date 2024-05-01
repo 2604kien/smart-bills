@@ -17,6 +17,8 @@ import BillCard from './components/Layout/BillCard';
 import ViewPaidBill from './components/Bill/ViewPaidBill';
 import CreatedBill from './components/Bill/CreatedBill';
 import { useAppSelector } from './app/hooks';
+import Error from './components/Error/Error';
+import EditBill from './components/Bill/EditBill';
 function App() {
   const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
   return (
@@ -36,6 +38,7 @@ function App() {
               <Route path='owe' element={<ViewOweBill/>}/>
               <Route path='paid' element={<ViewPaidBill/>}/>
               <Route path='created' element={<CreatedBill/>}/>
+              <Route path='edit/:id' element={<EditBill/>}/>
             </>):<></>}
           </Route>
           <Route path="friend" element={<FriendLayout/>}>
@@ -44,6 +47,7 @@ function App() {
               <Route path='new' element={<AddFriend/>}/>
             </>):<></>}
           </Route>
+          <Route path='*' element={<Error/>}/>
         </Route>
       </Routes>
     </div>

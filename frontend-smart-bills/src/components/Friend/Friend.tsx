@@ -18,7 +18,7 @@ export default function Friend(){
     const token=useAppSelector(state=>state.auth.accessToken);
     const id=useAppSelector(state=>state.user.currentUser.id);
     const friendList=useAppSelector(state=>state.friendRequest.friendList);
-    const element=friendList && friendList.length>0?friendList.map((el:Action)=><ActionFriendCard action="list" id={el.id} fullName={el.user.fullName} username={el.user.username} phoneNumber={el.user.phoneNumber} />):<></>
+    const element=friendList && friendList.length>0?friendList.map((el:Action)=><ActionFriendCard key={el.id} action="list" id={el.id} fullName={el.user.fullName} username={el.user.username} phoneNumber={el.user.phoneNumber} />):<></>
     React.useEffect(()=>{
         if(!isNaN(id) && id>0) {
             dispatch(getFriendList({id, token}))

@@ -6,8 +6,10 @@ import { BillDto, BillListDto, UpdateBillDto } from './dto/bill.dto';
 import { UserOweService } from 'src/user-owe/user-owe.service';
 import { UserPaidService } from 'src/user-paid/user-paid.service';
 import { User } from 'src/entities/user.entity';
+import { title } from 'process';
 @Injectable()
 export class BillService {
+    
     constructor(
         @InjectRepository(Bill) private billRepository:Repository<Bill>,
         @Inject(UserOweService) private userOweService:UserOweService,
@@ -41,16 +43,31 @@ export class BillService {
         const bill=await this.billRepository.findOne({
             where:{id},
             select:{
-                creator:{
-                    id:true,
-                    fullName:true
-                },
+                id:true,
                 title:true,
                 description:true,
                 numberPeople:true,
-                totalCost:true
+                totalCost:true,
+                date:true,
+                oweList:{
+                    id:true,
+                    user:{
+                        id:true,
+                        fullName:true
+                    }
+                },
+                paidList:{
+                    id:true,
+                    user:{
+                        id:true,
+                        fullName:true
+                    }
+                }
             },
-            relations:{creator:true}
+            relations:{
+                oweList:{user:true},
+                paidList:{user:true}
+            }
         });
         if(!bill){
             throw new HttpException('The id provided is not found.', HttpStatus.NOT_FOUND);

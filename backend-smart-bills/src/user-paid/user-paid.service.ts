@@ -34,6 +34,7 @@ export class UserPaidService {
         const data=await this.userPaidRepository.findOne({
             where:{id},
             select:{
+                id:true,
                 user:{
                     id:true,
                     fullName:true

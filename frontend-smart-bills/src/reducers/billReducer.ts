@@ -1,12 +1,14 @@
 import { createEntityAdapter, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { backEndServer, getConfig } from "../server/server";
 import axios from "axios";
+import { getUserById } from "./userReducer";
 
 const billAdapter=createEntityAdapter();
 const initialState=billAdapter.getInitialState({
     oweList:[],
     paidList:[],
     createdList:[],
+    currBill:{},
 });
 
 //get all created bill
@@ -42,6 +44,10 @@ export const deleteBill=createAsyncThunk<{message:string, data?:Object}, {id:num
     const response=await axios.delete(backEndServer+`bill/${id}`, getConfig(token));
     return response.data;
 })
+export const getBillById=createAsyncThunk<{message:string, data?:Object},{id:number, token:string}>('bill/getBillById', async({id, token})=>{
+    const response=await axios.get(backEndServer+`bill/${id}`, getConfig(token));
+    return response.data;
+})
 const billSlice=createSlice({
     name:'bill',
     initialState,
@@ -55,6 +61,9 @@ const billSlice=createSlice({
         })
         .addCase(getCreatedBill.fulfilled, (state, action:any)=>{
             state.createdList=action.payload.data;
+        })
+        .addCase(getBillById.fulfilled, (state, action:any)=>{
+            state.currBill=action.payload.data;
         })
     }
 })
