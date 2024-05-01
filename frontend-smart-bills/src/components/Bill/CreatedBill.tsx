@@ -3,13 +3,14 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCreatedBill } from "../../reducers/billReducer";
 import ViewCreatedCard from "./ViewCreatedCard";
 export default function CreatedBill(){
-    const createdBillList=useAppSelector(state=>[...state.user.currentUser.createdBillList].reverse());
+    const createdBillList=useAppSelector(state=>state.user.currentUser.createdBillList);
     const [page, setPage]=React.useState(1);
     const [currList, setCurrCreatedList]=React.useState([]);
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const element=[];
-    const displayList:any=useAppSelector(state=>state.bill.createdList);
+    const displayListUnSorted:any=useAppSelector(state=>state.bill.createdList);
+    const displayList=displayListUnSorted.length>0?[...displayListUnSorted].reverse():[];
     for(let i=1; i<createdBillList.length/10+1; i++){
         element.push(<h1 className="cursor-pointer hover:scale-125" onClick={()=>setPage(i)} key={i} style={{color:page===i?"blue":"black", textDecoration:page===i?"underline":"none", fontSize:"1.25rem"}}>{i}</h1>)
     }
@@ -21,7 +22,7 @@ export default function CreatedBill(){
         else{
             setCurrCreatedList(createdBillList.slice((page-1)*10, page*10));
         }
-    },[createdBillList, page])
+    },[page, createdBillList])
     React.useEffect(()=>{
         if(currList.length>0){
             dispatch(getCreatedBill({data:{currList}, token}))

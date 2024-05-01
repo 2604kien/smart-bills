@@ -8,7 +8,7 @@ export default function AddUserOverlay(props:{setUserArray:any, overlay:any, tot
     const currUser=useAppSelector(state=>state.user.currentUser);
     const userList=currUser.id!=0?[{user:currUser}].concat(friendList):[];
     const [involveList, setInvolveList]=React.useState([]);
-    const amount=involveList.length>0?props.totalCost/involveList.length:0;
+    const amount=involveList.length>0?Math.round(props.totalCost/involveList.length*100)/100:0;
     const userCardElement=userList && userList.length>0? userList.map((el:any, id:number)=><BillUserCard amount={amount} setInvolveList={setInvolveList} involveList={involveList} equal={isEqual} key={id} id={el.user.id} fullName={el.user.fullName} phoneNumber={el.user.phoneNumber} username={el.user.username}/>):<></>
     const handleSubmit=()=>{
         props.setUserArray((prev:any)=>{
@@ -51,7 +51,9 @@ export default function AddUserOverlay(props:{setUserArray:any, overlay:any, tot
                 width:"100%",
                 height:"100%",
                 background:"white",
-                gridTemplateColumns:"50% 50%"
+                gridTemplateColumns:"50% 50%",
+                rowGap:"0%",
+                overflowY:"scroll"
             }}>
                 {userCardElement}
             </div>

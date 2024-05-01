@@ -36,7 +36,7 @@ export default function Login(){
         dispatch(resetMessage());
     },[message]);
     React.useEffect(()=>{
-        if(isAuthenticated) navigate('/dashboard');
+        if(isAuthenticated) navigate('/bill');
     },[isAuthenticated]);
     return (
         !isAuthenticated?<section>

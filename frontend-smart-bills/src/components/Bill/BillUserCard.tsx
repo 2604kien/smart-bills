@@ -82,7 +82,7 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
             padding:"15px",
             border:"1px solid gray",
             maxWidth:"500px",
-            height:"fit-content",
+            minHeight:"20%",
             background:isClicked?"lightgreen":"white"
         }}>
             <div className="flex flex-col justify-center items-center">
