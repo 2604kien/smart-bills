@@ -213,7 +213,42 @@ export class BillService {
                     })
             }            
              //update user-paid
-            
+             const userPaidList=bill.userList.filter(el=>el.isPaid===true);
+            if(userPaidList.length>0){
+                foundedBill.paidList.map(async el=>{
+                    //filter to check if any user-Paid is removed from the frontend
+                    const checkArray=userPaidList.filter(e=>Number(el.id)===Number(e.paidId));
+                    if(checkArray.length===0){
+                        await this.userPaidService.deleteUserPaid(el.id);
+                    }
+                    else{                                                                                                                                                                                                                                                                                        
+                        for(let i=0; i<userPaidList.length; i++){
+                            if(el.id===userPaidList[i].paidId){
+                                el.paidAmount=userPaidList[i].amount;
+                                await this.userPaidService.updateUserPaid(el,el.id);
+                                break;
+                            }
+                        }
+                    }
+                })
+                userPaidList.map(async el=>{
+                    const checkArray=foundedBill.paidList.filter(e=>el.paidId===e.id);
+                    if(checkArray.length===0){
+                        const user=new User();
+                        user.id=el.userId;
+                        const data={
+                            bill:foundedBill,
+                            user:user,
+                            paidAmount:el.amount
+                        }
+                        await this.userPaidService.createUserPaid(data);
+                    }
+                })
+            } else{
+                foundedBill.paidList.map(async el=>{
+                    await this.userPaidService.deleteUserPaid(el.id);
+                })
+            }
             return;
         }
         catch(error){
