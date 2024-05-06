@@ -30,7 +30,6 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     React.useEffect(()=>{
         if(props.userlist) setInvolveList(props.userlist)
     },[props.userlist])
-console.log(involveList);
     React.useEffect(()=>{setIsEqual(false)},[props.totalCost])
     return(
         <div className="flex flex-col justify-center items-center" ref={props.userRef} style={{
