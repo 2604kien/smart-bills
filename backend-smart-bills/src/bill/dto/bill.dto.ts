@@ -25,7 +25,6 @@ export class BillDto{
 
 }
 export class UpdateBillDto{
-    @IsNotEmpty()
     creator:User
 }
 export class BillListDto{
