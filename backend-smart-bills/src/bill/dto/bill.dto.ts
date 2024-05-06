@@ -5,20 +5,21 @@ type UserInvolve={
     isPaid:boolean;
     amount:string;
     userId:number;
-    userFullName:string
+    userFullName:string,
+    oweId?:number;
+    paidId?:number;
 }
 
 export class BillDto{
     @IsNotEmpty()
-    @IsNumber()
     totalCost:string;
     @IsNotEmpty()
     title:string;
+    @IsNotEmpty()
     description:string;
     @IsNotEmpty()
     @IsNumber()
     numberPeople:number;
-    @IsNotEmpty()
     creator:User;
     @IsNotEmpty()
     userList: UserInvolve[];

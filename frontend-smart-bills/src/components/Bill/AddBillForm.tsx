@@ -46,7 +46,7 @@ export default function AddBillForm(){
     
     const handleSubmit=(e:any)=>{
         e.preventDefault();
-        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+currValue.amount,0);
+        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+Number(currValue.amount),0);
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
@@ -86,8 +86,8 @@ export default function AddBillForm(){
                                 <input onChange={handleChange} name="title" value={formData.title} className="w-full h-11 indent-1.5 rounded-xl text-black text-base" type="text" placeholder="Enter bill title" required/>
                                 <label className="text-lg">Total Cost ($)<span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="totalCost" value={formData.totalCost} className="w-1/4 h-11 indent-1.5 rounded-xl text-black text-base" type="number" placeholder="Enter total bill cost." required/>
-                                <label className="text-lg">Description</label>
-                                <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}}/>
+                                <label className="text-lg">Description ($)<span className="text-red-600">*</span></label>
+                                <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}} required/>
                                 <h1 className="bg-white rounded-xl text-black duration-300 cursor-pointer sm:border border-white hover:brightness-50 p-2 gap-2" style={{width:"fit-content"}} onClick={()=>setOverlay(true)}>Add User</h1>
                                 <div className="w-full sm:border border-white" style={{height:"100px"}}>
                                     {userElement}

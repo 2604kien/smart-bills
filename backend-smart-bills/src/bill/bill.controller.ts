@@ -31,8 +31,8 @@ export class BillController {
     @Patch(':id')
     @Roles(...Role.all())
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @UsePipes(new ValidationPipe())
-    async updateBill(@Param('id') id:number, @Body() bill:UpdateBillDto){
+    @UsePipes(new ValidationPipe({whitelist:true}))
+    async updateBill(@Param('id') id:number, @Body() bill:BillDto){
         return this.billService.updateBill(bill, id);
     }
     @Delete('all')

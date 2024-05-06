@@ -48,6 +48,10 @@ export const getBillById=createAsyncThunk<{message:string, data?:Object},{id:num
     const response=await axios.get(backEndServer+`bill/${id}`, getConfig(token));
     return response.data;
 })
+export const updateBillById=createAsyncThunk<{message:string, data?:Object}, {id:number, data:any, token:string}>('bill/updateBillById', async({id, data, token})=>{
+    const response=await axios.patch(backEndServer+`bill/${id}`, data, getConfig(token));
+    return response.data;
+})
 const billSlice=createSlice({
     name:'bill',
     initialState,

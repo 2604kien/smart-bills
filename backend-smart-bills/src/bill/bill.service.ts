@@ -132,14 +132,85 @@ export class BillService {
         }
     }
     //update bill and need to modify later for proper handling
-    async updateBill(bill:UpdateBillDto, id:number):Promise<Object>{
-        const foundedBill=await this.billRepository.findOneBy({id});
+    async updateBill(bill:BillDto, id:number):Promise<Object>{
+        const foundedBill=await this.billRepository.findOne({
+            where:{id},
+            select:{
+                id:true,
+                title:true,
+                description:true,
+                numberPeople:true,
+                totalCost:true,
+                date:true,
+                oweList:{
+                    id:true,
+                    user:{
+                        id:true,
+                        fullName:true,
+                    },
+                    oweAmount:true
+                },
+                paidList:{
+                    id:true,
+                    user:{
+                        id:true,
+                        fullName:true
+                    },
+                    paidAmount:true
+                }
+            },
+            relations:{
+                oweList:{user:true},
+                paidList:{user:true}
+            }
+        });
         if(!foundedBill){
             throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
         }
         try{
-            await this.billRepository.update(id, bill);
-            return {message:'Bill data is successfully editted'}
+            console.log(id, foundedBill);
+            foundedBill.title=bill.title;
+            foundedBill.description=bill.description;
+            foundedBill.totalCost=bill.totalCost;
+            await this.billRepository.save(foundedBill);
+            //update user-owe list
+            const userOweList=bill.userList.filter(el=>el.isPaid===false);
+            if(userOweList){
+                //check if any user-owe need to be deleted
+                foundedBill.oweList.map(el=>{
+                    const deleteCheck=userOweList.filter(e=>el.id!==e.oweId);
+                    if(deleteCheck.length===0){
+                        console.log("none Delete");
+                    }
+                    else{
+                        console.log(deleteCheck)
+                    }
+                })
+                userOweList.map(async (el)=>{
+                    //founded id, update
+                    if(el.oweId){
+                        const foundedUserOwe:any=await this.userOweService.getUserOweById(Number(el.oweId))
+                        console.log("old: " +JSON.stringify(foundedUserOwe.data));
+                        console.log("new: "+JSON.stringify(el))
+                    }
+                    //not found so create new one
+                    else{
+                        console.log("notFound");
+                        // const user=new User();
+                        // user.id=el.userId;
+                        // const data={
+                        //     bill:foundedBill,
+                        //     user:user,
+                        //     oweAmount: el.amount
+                        // }
+                        // await this.userOweService.createNewUserOwe(data);
+                        // return el;
+                    }
+                })
+            }
+             //update user-paid
+            
+            return;
         }
         catch(error){
             console.log(error);
