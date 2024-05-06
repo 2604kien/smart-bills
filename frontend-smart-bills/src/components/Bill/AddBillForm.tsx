@@ -51,6 +51,7 @@ export default function AddBillForm(){
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
             alert('Add New Bill Successfully');
+            window.location.reload();
         }
         else{
             alert('Total amount must equal to the total cost');

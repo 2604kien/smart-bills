@@ -54,9 +54,9 @@ export default function EditBill(){
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
         console.log(totalCostCheck)
         if(difference===0||(difference>=0.01&&difference<=0.02)){
-            alert('Add New Bill Successfully');
-            console.log(formData);
             dispatch(updateBillById({id:Number(id), data:formData, token}))
+            alert('Edit Bill Successfully');
+            window.location.reload();
         }
         else{
             alert('Total amount must equal to the total cost');
