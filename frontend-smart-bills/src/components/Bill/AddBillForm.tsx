@@ -48,7 +48,6 @@ export default function AddBillForm(){
         e.preventDefault();
         const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+currValue.amount,0);
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
-        console.log(difference)
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
             alert('Add New Bill Successfully');
@@ -85,7 +84,7 @@ export default function AddBillForm(){
                                 
                                 <label className="text-lg">Title<span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="title" value={formData.title} className="w-full h-11 indent-1.5 rounded-xl text-black text-base" type="text" placeholder="Enter bill title" required/>
-                                <label className="text-lg">Total Cost<span className="text-red-600">*</span></label>
+                                <label className="text-lg">Total Cost ($)<span className="text-red-600">*</span></label>
                                 <input onChange={handleChange} name="totalCost" value={formData.totalCost} className="w-1/4 h-11 indent-1.5 rounded-xl text-black text-base" type="number" placeholder="Enter total bill cost." required/>
                                 <label className="text-lg">Description</label>
                                 <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}}/>
