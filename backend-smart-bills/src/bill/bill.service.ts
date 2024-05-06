@@ -53,15 +53,17 @@ export class BillService {
                     id:true,
                     user:{
                         id:true,
-                        fullName:true
-                    }
+                        fullName:true,
+                    },
+                    oweAmount:true
                 },
                 paidList:{
                     id:true,
                     user:{
                         id:true,
                         fullName:true
-                    }
+                    },
+                    paidAmount:true
                 }
             },
             relations:{
@@ -140,6 +142,7 @@ export class BillService {
             return {message:'Bill data is successfully editted'}
         }
         catch(error){
+            console.log(error);
             throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
