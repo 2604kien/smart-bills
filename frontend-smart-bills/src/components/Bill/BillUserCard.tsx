@@ -10,7 +10,7 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
         userFullName:props.fullName===currUser.fullName? currUser.fullName:props.fullName,
     });
     
-    const [isClicked, setIsClicked]=React.useState(props.id===currUser.id?true:false);
+    const [isClicked, setIsClicked]=React.useState(false);
     //adjust amount based on change in equal to display.
     React.useEffect(()=>{
         const check=props.involveList.filter((el:any)=>el.userId===props.id)

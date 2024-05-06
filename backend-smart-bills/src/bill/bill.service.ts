@@ -168,46 +168,50 @@ export class BillService {
             throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
         }
         try{
-            console.log(id, foundedBill);
             foundedBill.title=bill.title;
             foundedBill.description=bill.description;
             foundedBill.totalCost=bill.totalCost;
             await this.billRepository.save(foundedBill);
             //update user-owe list
             const userOweList=bill.userList.filter(el=>el.isPaid===false);
-            if(userOweList){
+            if(userOweList.length>0){
                 //check if any user-owe need to be deleted
-                foundedBill.oweList.map(el=>{
-                    const deleteCheck=userOweList.filter(e=>el.id!==e.oweId);
-                    if(deleteCheck.length===0){
-                        console.log("none Delete");
+                foundedBill.oweList.map(async el=>{
+                    //filter to check if any user-owe is removed from the frontend
+                    const checkArray=userOweList.filter(e=>Number(el.id)===Number(e.oweId));
+                    if(checkArray.length===0){
+                        await this.userOweService.deleteUserOwe(el.id);
                     }
-                    else{
-                        console.log(deleteCheck)
+                    else{                                                                                                                                                                                                                                                                                        
+                        for(let i=0; i<userOweList.length; i++){
+                            if(el.id===userOweList[i].oweId){
+                                el.oweAmount=userOweList[i].amount;
+                                await this.userOweService.updateUserOwe(el,el.id);
+                                break;
+                            }
+                        }
                     }
                 })
-                userOweList.map(async (el)=>{
-                    //founded id, update
-                    if(el.oweId){
-                        const foundedUserOwe:any=await this.userOweService.getUserOweById(Number(el.oweId))
-                        console.log("old: " +JSON.stringify(foundedUserOwe.data));
-                        console.log("new: "+JSON.stringify(el))
-                    }
-                    //not found so create new one
-                    else{
-                        console.log("notFound");
-                        // const user=new User();
-                        // user.id=el.userId;
-                        // const data={
-                        //     bill:foundedBill,
-                        //     user:user,
-                        //     oweAmount: el.amount
-                        // }
-                        // await this.userOweService.createNewUserOwe(data);
-                        // return el;
+                userOweList.map(async el=>{
+                    const checkArray=foundedBill.oweList.filter(e=>el.oweId===e.id);
+                    if(checkArray.length===0){
+                        const user=new User();
+                        user.id=el.userId;
+                        const data={
+                            bill:foundedBill,
+                            user:user,
+                            oweAmount: el.amount
+                        }
+                        await this.userOweService.createNewUserOwe(data);
                     }
                 })
             }
+            else{
+                //delete all user-owe if empty list is sent from the frontend
+                    foundedBill.oweList.map(async el=>{
+                        await this.userOweService.deleteUserOwe(el.id);
+                    })
+            }            
              //update user-paid
             
             return;
