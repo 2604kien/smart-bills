@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { User_Paid } from "./user-paid.entity";
 import { User_Owe } from "./user-owe.entity";
-import { User } from "./user.entity";
+import { UserDetail } from "./userdetail.entity";
 
 @Entity()
 export class Bill{
@@ -21,6 +21,6 @@ export class Bill{
     paidList: User_Paid;
     @OneToMany(()=>User_Owe, user_owe=>user_owe.bill)
     oweList:User_Owe;
-    @ManyToOne(()=>User, user=>user.createdBillList, {onDelete:'CASCADE'})
-    creator:User;
+    @ManyToOne(()=>UserDetail, user=>user.createdBillList, {onDelete:'CASCADE'})
+    creator:UserDetail;
 }

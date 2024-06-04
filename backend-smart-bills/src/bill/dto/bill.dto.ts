@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsNumber, isNotEmpty } from "class-validator";
-import { User_Paid } from "src/entities/user-paid.entity";
-import { User } from "src/entities/user.entity";
+import { UserDetail } from "src/entities/userdetail.entity";
 type UserInvolve={
     isPaid:boolean;
     amount:string;
@@ -19,13 +18,13 @@ export class BillDto{
     @IsNumber()
     numberPeople:number;
     @IsNotEmpty()
-    creator:User;
+    creator:UserDetail;
     @IsNotEmpty()
     userList: UserInvolve[];
 
 }
 export class UpdateBillDto{
-    creator:User
+    creator:UserDetail
 }
 export class BillListDto{
     @IsNotEmpty()

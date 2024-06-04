@@ -4,14 +4,8 @@ import { User_Paid } from "./user-paid.entity";
 import { Bill } from "./bill.entity";
 import { FriendRequest } from "./friend-request.entity";
 
-type FriendListType={
-    id:number,
-    username:string,
-    fullName:string,
-}
-
 @Entity()
-export class User{
+export class UserDetail{
     @PrimaryGeneratedColumn()
     id: number;
     @Column()

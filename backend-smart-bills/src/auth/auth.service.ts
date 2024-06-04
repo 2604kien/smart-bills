@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/entities/user.entity';
+import { UserDetail } from 'src/entities/userdetail.entity';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -10,7 +10,7 @@ import { Request, Response } from 'express';
 export class AuthService {
     constructor(
         private jwtService:JwtService,
-        @InjectRepository(User) private userRepository:Repository<User>
+        @InjectRepository(UserDetail) private userRepository:Repository<UserDetail>
     ){}
       //login logic
     async login(data:AuthDto):Promise<Object>{

@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendRequest } from 'src/entities/friend-request.entity';
-import { User } from 'src/entities/user.entity';
+import { UserDetail } from 'src/entities/userdetail.entity';
 import { Repository } from 'typeorm';
 import { FriendRequestDto} from './Dtos/friend-request.dto';
 
 @Injectable()
 export class FriendRequestService {
     constructor(@InjectRepository(FriendRequest) private friendRequestRepository:Repository<FriendRequest>,
-    @InjectRepository(User) private userRepository:Repository<User>
+    @InjectRepository(UserDetail) private userRepository:Repository<UserDetail>
 ){}
 
     async getAll(){

@@ -1,10 +1,10 @@
 import { IsNotEmpty } from "class-validator";
 import { Bill } from "src/entities/bill.entity";
-import { User } from "src/entities/user.entity";
+import { UserDetail } from "src/entities/userdetail.entity";
 
 export class UserPaidDto{
     @IsNotEmpty()
-    user:User;
+    user:UserDetail;
     @IsNotEmpty()
     bill:Bill;
     @IsNotEmpty()

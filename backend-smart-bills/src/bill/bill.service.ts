@@ -5,7 +5,7 @@ import { Bill } from 'src/entities/bill.entity';
 import { BillDto, BillListDto, UpdateBillDto } from './dto/bill.dto';
 import { UserOweService } from 'src/user-owe/user-owe.service';
 import { UserPaidService } from 'src/user-paid/user-paid.service';
-import { User } from 'src/entities/user.entity';
+import { UserDetail } from 'src/entities/userdetail.entity';
 import { title } from 'process';
 @Injectable()
 export class BillService {
@@ -97,7 +97,7 @@ export class BillService {
             const userOweList=bill.userList.filter(el=>el.isPaid===false);
             if(userOweList){
                 userOweList.map(async (el)=>{
-                const user=new User();
+                const user=new UserDetail();
                 user.id=el.userId;
                 const data={
                     bill:savedBill,
@@ -113,7 +113,7 @@ export class BillService {
             const userPaidList=bill.userList.filter(el=>el.isPaid===true);
             if(userPaidList){
                 userPaidList.map(async (el)=>{
-                    const user=new User();
+                    const user=new UserDetail();
                     user.id=el.userId;
                     const data={
                         bill:savedBill,

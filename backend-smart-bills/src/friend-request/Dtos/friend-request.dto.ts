@@ -1,9 +1,9 @@
 import { IsNotEmpty } from "class-validator";
-import { User } from "src/entities/user.entity";
+import { UserDetail } from "src/entities/userdetail.entity";
 
 export class FriendRequestDto{
     @IsNotEmpty()
-    sender:User;
+    sender:UserDetail;
     @IsNotEmpty()
-    receiver:User;
+    receiver:UserDetail;
 }

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber } from "class-validator";
 import { Bill } from "src/entities/bill.entity";
-import { User } from "src/entities/user.entity";
+import { UserDetail } from "src/entities/userdetail.entity";
 type OweBill={
     id:number;
 }
@@ -9,7 +9,7 @@ export class UserOweDto{
     @IsNumber()
     oweAmount:string;
     @IsNotEmpty()
-    user:User;
+    user:UserDetail;
     @IsNotEmpty()
     bill:Bill;
     
