@@ -1,0 +1,113 @@
+{
+  "C:\\Javascript\\smart-bills\\backend-smart-bills": {
+    "versionSfCore": null,
+    "versionFramework": "4.0.38",
+    "isWithinCompose": false,
+    "composeOrgName": null,
+    "servicePath": "C:\\Javascript\\smart-bills\\backend-smart-bills",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "smartbills-serverless",
+      "useDotenv": true,
+      "plugins": [
+        "serverless-offline"
+      ],
+      "provider": {
+        "name": "aws",
+        "region": "ap-southeast-2",
+        "runtime": "nodejs20.x",
+        "architecture": "arm64",
+        "environment": {
+          "SECRET": "<REDACTED>",
+          "SESSION_SECRET": "<REDACTED>",
+          "NODE_ENV": "development",
+          "DB_HOST": "nestjs-smartbills.cvusomiico8t.ap-southeast-2.rds.amazonaws.com",
+          "DB_USERNAME": "postgres",
+          "DB_PASSWORD": "<REDACTED>",
+          "DB_NAME": "postgres",
+          "DB_PORT": "5432"
+        },
+        "stage": "dev",
+        "versionFunctions": true
+      },
+      "functions": {
+        "main": {
+          "image": {
+            "uri": "854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda:latest"
+          },
+          "events": [
+            {
+              "http": {
+                "method": "ANY",
+                "path": "/"
+              }
+            },
+            {
+              "http": {
+                "method": "ANY",
+                "path": "{proxy+}"
+              }
+            }
+          ],
+          "name": "smartbills-serverless-dev-main"
+        }
+      },
+      "custom": {
+        "serverless-offline": {
+          "httpPort": 3500,
+          "noPrependStageInUrl": true
+        }
+      }
+    },
+    "serviceRawFile": "service: smartbills-serverless\r\nuseDotenv: true\r\nplugins:\r\n  - serverless-offline\r\nprovider:\r\n  name: aws\r\n  region: ap-southeast-2\r\n  runtime: nodejs20.x\r\n  architecture: arm64\r\n  environment:\r\n    SECRET: ${env:SECRET}\r\n    SESSION_SECRET: ${env:SESSION_SECRET}\r\n    NODE_ENV: ${env:NODE_ENV}\r\n    DB_HOST: ${env:DB_HOST}\r\n    DB_USERNAME: ${env:DB_USERNAME}\r\n    DB_PASSWORD: ${env:DB_PASSWORD}\r\n    DB_NAME: ${env:DB_NAME}\r\n    DB_PORT: ${env:DB_PORT}\r\nfunctions:\r\n  main:\r\n    image:\r\n      uri: 854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda:latest\r\n    events:\r\n      - http:\r\n          method: ANY\r\n          path: /\r\n      - http:\r\n          method: ANY\r\n          path: '{proxy+}'\r\ncustom:\r\n  serverless-offline:\r\n    httpPort: 3500\r\n    noPrependStageInUrl: true",
+    "command": [
+      "remove"
+    ],
+    "options": {},
+    "error": null,
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "648e6b52-bf3a-422f-b39e-09a3909ed1c8",
+    "orgName": "smartbills",
+    "userId": "DxtNMSsC1zRdJQBt08",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "smartbills",
+    "subscription": null,
+    "userEmail": "nguyenhongkien26@gmail.com",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "854018809160",
+    "versionSf": "4.0.38",
+    "serviceProviderAwsCfStackName": "smartbills-serverless-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-southeast-2:854018809160:stack/smartbills-serverless-dev/0c63afe0-2409-11ef-92f9-060bd8101a9d",
+    "serviceProviderAwsCfStackCreated": "2024-06-06T13:31:15.374Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-06T13:32:00.591Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "MainLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-southeast-2:854018809160:function:smartbills-serverless-dev-main:4",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-smartbills-serverless-dev-MainLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://5bbxwqii2l.execute-api.ap-southeast-2.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-smartbills-serverless-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "smartbills-serverless-dev-serverlessdeploymentbuck-jox9w4axdgvv",
+        "ExportName": "sls-smartbills-serverless-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

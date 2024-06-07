@@ -1,0 +1,32 @@
+service: smartbills-serverless
+useDotenv: true
+plugins:
+  - serverless-offline
+provider:
+  name: aws
+  region: ap-southeast-2
+  runtime: nodejs20.x
+  architecture: arm64
+  environment:
+    SECRET: ${env:SECRET}
+    SESSION_SECRET: ${env:SESSION_SECRET}
+    NODE_ENV: ${env:NODE_ENV}
+    DB_HOST: ${env:DB_HOST}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+    DB_PORT: ${env:DB_PORT}
+functions:
+  main:
+    handler: dist/src/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
+custom:
+  serverless-offline:
+    httpPort: 3500
+    noPrependStageInUrl: true
