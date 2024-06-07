@@ -19,7 +19,7 @@ provider:
 functions:
   app:
     image:
-      uri: 854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda:latest
+      uri: ${env:ECR_URI}
     events:
       - http:
           method: ANY

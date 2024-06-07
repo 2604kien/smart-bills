@@ -346,7 +346,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1717750262565": {
+          "ApiGatewayDeployment1717752435061": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -589,7 +589,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/smartbills-serverless/dev/1717750263177-2024-06-07T08:51:03.177Z",
+    "artifactDirectoryName": "serverless/smartbills-serverless/dev/1717752435668-2024-06-07T09:27:15.668Z",
     "artifact": ""
   }
 }
