@@ -17,8 +17,9 @@ provider:
     DB_NAME: ${env:DB_NAME}
     DB_PORT: ${env:DB_PORT}
 functions:
-  main:
-    handler: dist/src/serverless.handler
+  app:
+    image:
+      uri: 854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda:latest
     events:
       - http:
           method: ANY

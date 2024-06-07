@@ -1,7 +1,6 @@
 {
   "name": "smart-bills-backend",
   "version": "0.0.1",
-  "main": "dist/src/serverless.js",
   "description": "",
   "author": "",
   "private": true,
