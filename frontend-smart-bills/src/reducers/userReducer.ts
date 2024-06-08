@@ -1,4 +1,4 @@
-import { createSlice, createEntityAdapter, createAsyncThunk, isRejectedWithValue} from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import { backEndServer } from "../server/server";
 type Register={
@@ -7,17 +7,7 @@ type Register={
     password:string,
     email:string
 }
-type User={
-    id:number,
-    username:string,
-    fullName:string,
-    email:string,
-    balance:number,
-    roles:string[],
-    oweList:Object,
-    paidList:Object,
-    createdBillList:Object
-}
+
 const userAdapter=createEntityAdapter();
 //get all user data (only for admin user)
 export const getAllUserData=createAsyncThunk('user/getAllUserData',async (token:string) => {

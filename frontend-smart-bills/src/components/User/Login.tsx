@@ -34,16 +34,16 @@ export default function Login(){
     React.useEffect(()=>{
         if(message) alert(message);
         dispatch(resetMessage());
-    },[message]);
+    },[message, dispatch]);
     React.useEffect(()=>{
         if(isAuthenticated) navigate('/bill');
-    },[isAuthenticated]);
+    },[isAuthenticated, navigate]);
     return (
         !isAuthenticated?<section>
             <div className="select-none flex flex-col justify-center items-center" style={{height:"90vh"}}>
                 <div className="container-fluid border-black sm:border flex flex-col justify-center items-center rounded-xl bg-black text-white" style={{boxShadow:"0px 5px 20px 5px rgba(0,0,0,0.5)",height:"90%", width:"560px", maxWidth:"100%", minWidth:"390px"}}>
                         <div className="h-1/6 flex justify-center items-center hover:brightness-50 duration-150">
-                            <img src={Logo} style={{width:"80%",}}/>
+                            <img src={Logo} alt="Smartbills-Logo" style={{width:"80%",}}/>
                         </div>
                         <div className="h-1/4 border-1 flex flex-col justify-center">
                             <h1 className="text-5xl font-semibold">Log In</h1>

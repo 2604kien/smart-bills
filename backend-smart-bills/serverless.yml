@@ -18,8 +18,7 @@ provider:
     DB_PORT: ${env:DB_PORT}
 functions:
   app:
-    image:
-      uri: ${env:ECR_URI}
+    handler: dist/src/serverless.handler
     events:
       - http:
           method: ANY

@@ -29,7 +29,7 @@ export default function ViewOweBill(){
             dispatch(getOweBill({data:{currList}, token}))
         }
         
-    },[currList])
+    },[currList, dispatch, token])
     return (
         <div className="flex flex-col justify-center items-center" style={{
             height:"fit-content",

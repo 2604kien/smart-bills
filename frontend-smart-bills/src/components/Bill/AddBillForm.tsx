@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
@@ -51,6 +51,7 @@ export default function AddBillForm(){
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
             alert('Add New Bill Successfully');
+            window.location.reload();
         }
         else{
             alert('Total amount must equal to the total cost');
@@ -60,7 +61,7 @@ export default function AddBillForm(){
         if(id!==0){
             dispatch(getFriendList({id, token}))
         }
-    },[currUser, token])
+    },[currUser, token, dispatch, id])
     React.useEffect(()=>{
         let handler=(e:any)=>{
             const element=userRef.current;

@@ -1,8 +1,8 @@
-import React, { HtmlHTMLAttributes } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
-import { createNewBill, getBillById } from "../../reducers/billReducer";
+import {getBillById } from "../../reducers/billReducer";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 export default function EditBill(){
@@ -47,10 +47,10 @@ export default function EditBill(){
         </div>
     )
     
-    
+
     const handleSubmit=(e:any)=>{
         e.preventDefault();
-        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+currValue.amount,0);
+        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>Number(accumulator)+Number(currValue.amount),0);
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             alert('Add New Bill Successfully');
@@ -64,7 +64,7 @@ export default function EditBill(){
             dispatch(getFriendList({id:userId, token}))
             dispatch(getBillById({id:Number(id), token}))
         }
-    },[currUser, token])
+    },[currUser, token, dispatch, id, userId])
     React.useEffect(()=>{
         let handler=(e:any)=>{
             const element=userRef.current;

@@ -18,7 +18,8 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
             setFormData(check[0]);
             setIsClicked(true);
         }
-    },[props.involveList])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[props.id])
     React.useEffect(()=>{
         if(props.equal===true && isClicked===true){
             setFormData(prev=>{
@@ -28,7 +29,7 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
                 }
             })
         }
-    },[props.equal])
+    },[props.equal, isClicked, props.amount])
     //adjust amount based on change in equal to the involve list
     React.useEffect(()=>{
         if(props.equal===true && isClicked===true){
@@ -45,7 +46,9 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
                 return arr;
             })
         }
-    },[formData.amount]);
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[formData.amount, formData.userId, isClicked]);
     const handleChange=(e:any)=>{
         const {name, type, value, checked}=e.target;
         if(type==="checkbox"){
@@ -78,6 +81,7 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
                 return arr;
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[isClicked]);
     return(
         <div className="w-full h-full" style={{

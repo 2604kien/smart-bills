@@ -23,7 +23,7 @@ export default function FriendPendingCard(){
     )
     React.useEffect(()=>{
         if(token.length>0 && id>0) dispatch(getPendingRequest({id, token}));
-    },[token, id])
+    },[token, id, dispatch])
     return (
         <div className="w-full h-full flex flex-col justify-center items-center sm:border-2">
             <div className="w-4/6 h-4/5 justify-center items-center sm:border" style={{

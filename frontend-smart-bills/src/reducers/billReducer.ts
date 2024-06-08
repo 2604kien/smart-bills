@@ -1,7 +1,6 @@
 import { createEntityAdapter, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { backEndServer, getConfig } from "../server/server";
 import axios from "axios";
-import { getUserById } from "./userReducer";
 
 const billAdapter=createEntityAdapter();
 const initialState=billAdapter.getInitialState({

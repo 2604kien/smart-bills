@@ -6,7 +6,7 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     const friendList=useAppSelector(state=>state.friendRequest.friendList);
     const [isEqual, setIsEqual]=React.useState(false);
     const currUser=useAppSelector(state=>state.user.currentUser);
-    const userList=currUser.id!=0?[{user:currUser}].concat(friendList):[];
+    const userList=currUser.id!==0?[{user:currUser}].concat(friendList):[];
     const [involveList, setInvolveList]=React.useState([]);
     
     const amount=involveList.length>0?Math.round(props.totalCost/involveList.length*100)/100:0;
@@ -30,7 +30,6 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     React.useEffect(()=>{
         if(props.userlist) setInvolveList(props.userlist)
     },[props.userlist])
-console.log(involveList);
     React.useEffect(()=>{setIsEqual(false)},[props.totalCost])
     return(
         <div className="flex flex-col justify-center items-center" ref={props.userRef} style={{

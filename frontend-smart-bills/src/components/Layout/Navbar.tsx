@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../Logo/WhiteBackground.png";
 import Menu from "./Menu";
@@ -16,7 +16,7 @@ export default function Navbar(){
     const id=token&& token.length>0?JSON.parse(atob(token.split('.')[1])).UserInfo.id:Math.random();
     React.useEffect(()=>{
         if(isAuthenticated) dispatch(getUserById({id, token}));
-    },[isAuthenticated]);
+    },[isAuthenticated, dispatch, id, token]);
     const [isClick, setIsClick]=React.useState<boolean>(false);
     const [isProfileClick, setIsProfileClick]=React.useState<boolean>(false);
     const [isNotificationClick, setIsNotificationClick]=React.useState<boolean>(false);
@@ -55,7 +55,7 @@ export default function Navbar(){
         </div>
         <div className="select-none sm:border h-20 border-gray text-black" style={{width:"100vw", top:"0", position:"fixed", borderLeft:"none", borderRight:"none", display:"grid", gridTemplateColumns:"20% 60% 20%"}} >
             <div className="flex duration-300 flex-col justify-center items-center" style={{visibility:location.pathname.includes('bill')?"hidden":"visible",height:"inherit", backgroundColor:"#f0f0f0"}}>
-                <img src={Logo} style={{scale:"0.8"}} className="h-full cursor-pointer brightness-0 hover:brightness-100 duration-150" onClick={()=>navigate('/')}/>
+                <img src={Logo} alt="Smartbills-Logo" style={{scale:"0.8"}} className="h-full cursor-pointer brightness-0 hover:brightness-100 duration-150" onClick={()=>navigate('/')}/>
             </div>
             <div className="flex duration-300 flex-col justify-center items-center" style={{width:"100%", backgroundColor:location.pathname.includes("bill")?"white":"#f0f0f0"}}>
                 <div className="flex flex-col justify-center items-center w-4/6" style={{position:"relative"}}>

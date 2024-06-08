@@ -28,7 +28,7 @@ export default function CreatedBill(){
             dispatch(getCreatedBill({data:{currList}, token}))
         }
         
-    },[currList])
+    },[currList, dispatch, token])
     return (
         <div className="flex flex-col justify-center items-center" style={{
             height:"fit-content",

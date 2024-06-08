@@ -35,7 +35,6 @@ export default function ViewCreatedCard(props:any){
                  <h1>Time: {moment(props.data.date).format('HH:mm | DD-MM-YYYY')}</h1>
                  <h1>Created By: {props.data.creator.fullName}</h1>
                  <h1>Total Cost: ${props.data.totalCost}</h1>
-                 <h1></h1>
             </div>
             <div className="flex flex-col justify-center items-center gap-5">
                 <button className="border-black border-2 bg-black text-white hover:bg-white hover:text-black duration-300" style={{
