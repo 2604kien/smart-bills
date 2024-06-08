@@ -1,7 +1,7 @@
 import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppSelector } from "../../app/hooks";
-export default function BillUserCard(props:{ amount:number, setInvolveList:any, involveList:any, equal: boolean, id:number, fullName:string, username:string, phoneNumber:string}){
+export default function BillUserCard(props:{ amount:number, isPaid?:boolean, editAmount?:number, setInvolveList:any, involveList:any, equal: boolean, id:number, fullName:string, username:string, phoneNumber:string, included?: any}){
     const currUser=useAppSelector(state=>state.user.currentUser);
     const [formData, setFormData]=React.useState<{isPaid:boolean, amount:number, userId:number, userFullName:string}>({
         isPaid:props.id===currUser.id?true:false,
@@ -9,8 +9,18 @@ export default function BillUserCard(props:{ amount:number, setInvolveList:any, 
         userId:props.id===currUser.id?currUser.id:props.id,
         userFullName:props.fullName===currUser.fullName? currUser.fullName:props.fullName,
     });
-    
+
     const [isClicked, setIsClicked]=React.useState(props.id===currUser.id?true:false);
+    React.useEffect(()=>{
+        setFormData((prev:any)=>{
+            return {
+                ...prev,
+                amount:props.editAmount? props.editAmount:0,
+                isPaid:props.isPaid? props.isPaid: false,
+            }
+        })
+        setIsClicked(props.included)
+    },[props.editAmount, props.included, props.isPaid])
     //adjust amount based on change in equal to display.
     React.useEffect(()=>{
         const check=props.involveList.filter((el:any)=>el.userId===props.id)

@@ -36,7 +36,7 @@ export default function AddBillForm(){
         })
     }
     const userElement=formData.userList.length>0?formData.userList.map((el:any, id:number)=>(<div key={id} className="ml-2 flex flex-col">
-        <h1>user: {el.userFullName?el.userFullName:"self"}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
+        <h1>user: {el.userFullName}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
     </div>)):(
         <div className="ml-2 flex flex-row">
             <h1>Please add an user</h1>

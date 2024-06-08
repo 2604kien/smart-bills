@@ -1,6 +1,7 @@
 import { createSlice, createEntityAdapter, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import { backEndServer } from "../server/server";
+import {setStatusIdle, setStatusPending, setStatusSuccess} from "./serverStatusReducer";
 type Register={
     username:string,
     fullName:string,
@@ -10,24 +11,41 @@ type Register={
 
 const userAdapter=createEntityAdapter();
 //get all user data (only for admin user)
-export const getAllUserData=createAsyncThunk('user/getAllUserData',async (token:string) => {
-   
-    const response=await axios.get(backEndServer, getConfig(token));
-    return response.data;
+export const getAllUserData=createAsyncThunk('user/getAllUserData',async (token:string, thunkAPI:any) => {
+   try {
+        thunkAPI.dispatch(setStatusPending());
+        const response=await axios.get(backEndServer, getConfig(token));
+        thunkAPI.dispatch(setStatusSuccess());
+        return response.data;    
+   }catch (error:any) {
+    thunkAPI.dispatch(setStatusIdle());
+    return thunkAPI.rejectWithValue(error.response.data);
+}
+
 })
 //get user by id
-export const getUserById=createAsyncThunk<{message:string, data?:string}, {id:number, token:string}, {rejectValue:string}>('user/getUserById', async({id, token})=>{
-    const response=await axios.get(backEndServer+`user/${id}`, getConfig(token));
-    return response.data;
+export const getUserById=createAsyncThunk<{message:string, data?:string}, {id:number, token:string}, {rejectValue:string}>('user/getUserById', async({id, token}, thunkAPI:any)=>{
+    try {
+        thunkAPI.dispatch(setStatusPending());
+        const response=await axios.get(backEndServer+`user/${id}`, getConfig(token));
+        thunkAPI.dispatch(setStatusSuccess());
+        return response.data;        
+    }catch (error:any) {
+        thunkAPI.dispatch(setStatusIdle());
+        return thunkAPI.rejectWithValue(error.response.data);
+    }
+
 })
 //register new user
-export const createNewUser=createAsyncThunk<{message:string, data?:string}, Register, {rejectValue:string}>('user/createNewUser',async(data:Register,{rejectWithValue})=>{
+export const createNewUser=createAsyncThunk<{message:string, data?:string}, Register, {rejectValue:string}>('user/createNewUser',async(data:Register,thunkAPI:any)=>{
     try{
+        thunkAPI.dispatch(setStatusPending());
         const response=await axios.post(backEndServer+'user', data);
+        thunkAPI.dispatch(setStatusSuccess());
         return response.data;
-    }
-    catch(error:any){
-        return rejectWithValue(error.response.data)
+    }catch (error:any) {
+        thunkAPI.dispatch(setStatusIdle());
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 const initialState=userAdapter.getInitialState({
