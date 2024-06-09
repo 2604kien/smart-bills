@@ -1,20 +1,18 @@
 import React from "react";
-import { Outlet, useLocation} from "react-router-dom";
+import { Outlet} from "react-router-dom";
 import Navbar from "./Navbar";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { refresh } from "../../reducers/authReducer";
-import BillCard from "./BillCard";
 export default function Layout(){
     const dispatch=useAppDispatch();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const token=useAppSelector(state=>state.auth.accessToken);
-    const location=useLocation();
     //refresh to check if cookie contains valid jwt, if yes then request new accessToken
     React.useEffect(()=>{
         if(!isAuthenticated){
             dispatch(refresh());
         }
-    },[]);
+    },[dispatch, isAuthenticated]);
     //refresh if the current accessToken expire.
     React.useEffect(()=>{
         const tokenExpirationThreshold :number = 3 * 60;
@@ -26,7 +24,7 @@ export default function Layout(){
             }
         }, 13 * 60 * 1000);
         return () => clearInterval(intervalId);
-    }, [dispatch, token]);
+    }, [dispatch, token, isAuthenticated]);
     return (
         <div className="flex flex-col" style={{height:"inherit", zIndex:"999"}}>
             <Navbar/>

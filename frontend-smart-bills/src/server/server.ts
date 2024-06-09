@@ -1,4 +1,5 @@
-export const backEndServer:string="http://localhost:3500/"
+import {serverURL} from "../config"
+export const backEndServer:string=serverURL;
 export const getConfig=(token:string):Object=>{
     const config={
         headers: {

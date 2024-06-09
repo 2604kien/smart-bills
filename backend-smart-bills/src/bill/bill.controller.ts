@@ -32,7 +32,7 @@ export class BillController {
     @Roles(...Role.all())
     @UseGuards(JwtAuthGuard, RolesGuard)
     @UsePipes(new ValidationPipe())
-    async updateBill(@Param('id') id:number, @Body() bill:UpdateBillDto){
+    async updateBill(@Param('id') id:number, @Body() bill:BillDto){
         return this.billService.updateBill(bill, id);
     }
     @Delete('all')

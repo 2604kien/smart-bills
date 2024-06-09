@@ -3,6 +3,7 @@ import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { acceptFriendRequest, rejectFriendRequest } from "../../reducers/friendRequestReducer";
 export default function ActionFriendCard(props:{id:number, action:string, fullName:string, username:string, phoneNumber:string}){
+    
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const handleAcceptFriendRequest=async()=>{

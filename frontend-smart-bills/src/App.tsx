@@ -19,10 +19,14 @@ import CreatedBill from './components/Bill/CreatedBill';
 import { useAppSelector } from './app/hooks';
 import Error from './components/Error/Error';
 import EditBill from './components/Bill/EditBill';
+import Loading from './components/Layout/Loading';
+
 function App() {
   const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
+  const serverStatus=useAppSelector(state=>state.serverStatus.status);
   return (
     <div className="App h-screen m-0" >
+      {serverStatus==="pending" && <Loading/>}
       <Routes>
         <Route path="" element={<Layout/>}>
           <Route path='' element={<Home/>}/>

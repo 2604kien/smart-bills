@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
@@ -36,7 +36,7 @@ export default function AddBillForm(){
         })
     }
     const userElement=formData.userList.length>0?formData.userList.map((el:any, id:number)=>(<div key={id} className="ml-2 flex flex-col">
-        <h1>user: {el.userFullName?el.userFullName:"self"}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
+        <h1>user: {el.userFullName}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
     </div>)):(
         <div className="ml-2 flex flex-row">
             <h1>Please add an user</h1>
@@ -51,6 +51,7 @@ export default function AddBillForm(){
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
             alert('Add New Bill Successfully');
+            window.location.reload();
         }
         else{
             alert('Total amount must equal to the total cost');
@@ -60,7 +61,7 @@ export default function AddBillForm(){
         if(id!==0){
             dispatch(getFriendList({id, token}))
         }
-    },[currUser, token])
+    },[currUser, token, dispatch, id])
     React.useEffect(()=>{
         let handler=(e:any)=>{
             const element=userRef.current;
@@ -89,7 +90,7 @@ export default function AddBillForm(){
                                 <label className="text-lg">Description</label>
                                 <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}}/>
                                 <h1 className="bg-white rounded-xl text-black duration-300 cursor-pointer sm:border border-white hover:brightness-50 p-2 gap-2" style={{width:"fit-content"}} onClick={()=>setOverlay(true)}>Add User</h1>
-                                <div className="w-full sm:border border-white" style={{height:"100px"}}>
+                                <div className="w-full sm:border border-white" style={{minHeight:"100px"}}>
                                     {userElement}
                                 </div>
                                 <button style={{

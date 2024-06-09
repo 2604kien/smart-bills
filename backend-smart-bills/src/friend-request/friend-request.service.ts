@@ -60,8 +60,9 @@ export class FriendRequestService {
     }
     //Add friend Request
     async addFriendRequest(data:FriendRequestDto){
-        const foundedRequest=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{id:data.receiver.id}});
-        if(foundedRequest || data.sender.id===data.receiver.id){
+        const foundedRequest1=await this.friendRequestRepository.findOneBy({sender:{id:data.sender.id}, receiver:{id:data.receiver.id}});
+        const foundedRequest2=await this.friendRequestRepository.findOneBy({sender:{id:data.receiver.id}, receiver:{id:data.sender.id}});
+        if(foundedRequest1 ||foundedRequest2 || data.sender.id===data.receiver.id){
             throw new HttpException('You already sent friend request to this person.',HttpStatus.CONFLICT);
         }
         const foundedReceiver=await this.userRepository.findOneBy({id:data.receiver.id});

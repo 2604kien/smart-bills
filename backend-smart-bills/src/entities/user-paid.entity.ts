@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, CreateDateColumn, Unique } from "typeorm";
 import { UserDetail } from "./userdetail.entity";
 import { Bill } from "./bill.entity";
 
 @Entity()
+@Unique(['user', 'bill']) // Composite unique constraint
 export class User_Paid{
     @PrimaryGeneratedColumn()
     id:number;

@@ -3,11 +3,12 @@ import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
-import { BillDto, BillListDto, UpdateBillDto } from './dto/bill.dto';
+import { BillDto, BillListDto} from './dto/bill.dto';
 import { UserOweService } from 'src/user-owe/user-owe.service';
 import { UserPaidService } from 'src/user-paid/user-paid.service';
 import { UserDetail } from 'src/entities/userdetail.entity';
-import { title } from 'process';
+import { User_Owe } from 'src/entities/user-owe.entity';
+import { User_Paid } from 'src/entities/user-paid.entity';
 @Injectable()
 export class BillService {
     
@@ -15,6 +16,8 @@ export class BillService {
         @InjectRepository(Bill) private billRepository:Repository<Bill>,
         @Inject(UserOweService) private userOweService:UserOweService,
         @Inject(UserPaidService) private userPaidService:UserPaidService,
+        @InjectRepository(User_Owe) private userOweRepository:Repository<User_Owe>,
+        @InjectRepository(User_Paid) private userPaidRepository:Repository<User_Paid>
     ){}
 
     //get all bill
@@ -133,20 +136,139 @@ export class BillService {
         }
     }
     //update bill and need to modify later for proper handling
-    async updateBill(bill:UpdateBillDto, id:number):Promise<Object>{
-        const foundedBill=await this.billRepository.findOneBy({id});
-        if(!foundedBill){
-            throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
+async updateBill(bill: BillDto, id: number): Promise<Object> {
+    const foundedBill = await this.billRepository.findOne({
+        where:{id},
+        select:{
+            id:true,
+            title:true,
+            description:true,
+            numberPeople:true,
+            totalCost:true,
+            date:true,
+            oweList:{
+                id:true,
+                user:{
+                    id:true,
+                    fullName:true,
+                },
+                bill:{
+                    id:true
+                },
+                oweAmount:true
+            },
+            paidList:{
+                id:true,
+                user:{
+                    id:true,
+                    fullName:true
+                },
+                bill:{
+                    id:true,
+                },
+                paidAmount:true
+            }
+        },
+        relations:{
+            oweList:{user:true, bill: true},
+            paidList:{user:true, bill:true}
         }
-        try{
-            await this.billRepository.update(id, bill);
-            return {message:'Bill data is successfully editted'}
-        }
-        catch(error){
-            console.log(error);
-            throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    });
+    if (!foundedBill) {
+        throw new HttpException('Bill id is not found', HttpStatus.NOT_FOUND);
     }
+
+    try {
+        foundedBill.totalCost = bill.totalCost;
+        foundedBill.numberPeople = bill.numberPeople;
+        foundedBill.creator = bill.creator;
+        foundedBill.title = bill.title;
+        foundedBill.description = bill.description || "";
+        const savedBill = await this.billRepository.save(foundedBill);
+        //initialise userPaidList and user Owe List
+        const userPaidList = bill.userList.filter(el => el.isPaid === true);
+        const userOweList = bill.userList.filter(el => el.isPaid === false);
+
+        //remove item.
+        await Promise.all(foundedBill.paidList.map(async (el:User_Paid)=>{
+            const found=userPaidList.find(e=>Number(e.userId)===Number(el.user.id) && Number(el.bill.id)===Number(id))
+            if(!found) await this.userPaidService.deleteUserPaid(el.id);
+        }));
+        await Promise.all(foundedBill.oweList.map(async (el:User_Owe)=>{
+            const found=userOweList.find(e=>Number(e.userId)===Number(el.user.id) && Number(el.bill.id)===Number(id))
+            if(!found) await this.userOweService.deleteUserOwe(el.id);
+        }));
+
+         // Create user-paid or modify user-paid
+         const userPaidPromises = await Promise.all(userPaidList.map(async (el: any) => {
+             let foundeduserPaid = await this.userPaidRepository.findOne({
+                 where:{
+                     user:{id:Number(el.userId)},
+                     bill:{id:id}
+                 },
+                 relations:{
+                     user:true,
+                     bill:true
+                 }
+             });
+             if (!foundeduserPaid) {
+                const user=new UserDetail();
+                user.id=el.userId;
+                const data={
+                    bill:savedBill,
+                    user:user,
+                    paidAmount:el.amount
+                }
+                return await this.userPaidService.createUserPaid(data);
+             } else{
+                const user = new UserDetail();
+                user.id = el.userId;
+                foundeduserPaid.bill = savedBill;
+                foundeduserPaid.user = user;
+                foundeduserPaid.paidAmount = el.amount;
+                return this.userPaidRepository.save(foundeduserPaid);
+             }
+
+         }));
+ 
+        // Create user-owe or modify user-owe
+        const userOwePromises =await Promise.all(userOweList.map(async (el: any) => {
+            let foundedUserOwe = await this.userOweRepository.findOne({
+                where:{
+                    user:{id:Number(el.userId)},
+                    bill:{id:id}
+                },
+                relations:{
+                    user:true,
+                    bill:true
+                }
+            });
+
+            if (!foundedUserOwe) {
+                const user=new UserDetail();
+                user.id=el.userId;
+                const data={
+                    bill:savedBill,
+                    user:user,
+                    oweAmount: el.amount
+                }
+                return await this.userOweService.createNewUserOwe(data);
+            } else{
+                const user = new UserDetail();
+                user.id = el.userId;
+                foundedUserOwe.bill = savedBill;
+                foundedUserOwe.user = user;
+                foundedUserOwe.oweAmount = el.amount;
+                return this.userOweRepository.save(foundedUserOwe);
+            }
+        }));
+        return { message: "Bill updated successfully", data: foundedBill };
+
+    } catch (error) {
+        console.log(error);
+        throw new HttpException('Something went wrong, please try again later', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
     //delete bill by id
     async deleteBill(id:number):Promise<Object>{
         if(!id){

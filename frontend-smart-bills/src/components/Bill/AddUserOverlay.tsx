@@ -6,11 +6,28 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     const friendList=useAppSelector(state=>state.friendRequest.friendList);
     const [isEqual, setIsEqual]=React.useState(false);
     const currUser=useAppSelector(state=>state.user.currentUser);
-    const userList=currUser.id!=0?[{user:currUser}].concat(friendList):[];
+    const userList=currUser.id!==0?[{user:currUser}].concat(friendList):[];
+
     const [involveList, setInvolveList]=React.useState([]);
-    
+    let finalUserList = userList.slice(); // Make a copy of userList
+
+    if (props.userlist?.length > 0) {
+        props.userlist.forEach((el: any) => {
+            finalUserList = finalUserList.map((e: any) => {
+                if (Number(e.user.id) === Number(el.userId)) {
+                    return {
+                        ...e,
+                        editAmount: el.amount,
+                        included: true,
+                        isPaid: el.isPaid
+                    };
+                }
+                return e;
+            });
+        });
+    }
     const amount=involveList.length>0?Math.round(props.totalCost/involveList.length*100)/100:0;
-    const userCardElement=userList && userList.length>0? userList.map((el:any, id:number)=><BillUserCard amount={amount} setInvolveList={setInvolveList} involveList={involveList} equal={isEqual} key={id} id={el.user.id} fullName={el.user.fullName} phoneNumber={el.user.phoneNumber} username={el.user.username}/>):<></>
+    const userCardElement=finalUserList && finalUserList.length>0? finalUserList.map((el:any, id:number)=><BillUserCard isPaid={el.isPaid} amount={amount} editAmount={Number(el.editAmount)} included={el.included}  setInvolveList={setInvolveList} involveList={involveList} equal={isEqual} key={id} id={el.user.id} fullName={el.user.fullName} phoneNumber={el.user.phoneNumber} username={el.user.username}/>):<></>
     const handleSubmit=()=>{
         const check=involveList.filter((el:any)=>Number(el.amount)===0);
         if(check.length>0){
@@ -30,7 +47,6 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     React.useEffect(()=>{
         if(props.userlist) setInvolveList(props.userlist)
     },[props.userlist])
-console.log(involveList);
     React.useEffect(()=>{setIsEqual(false)},[props.totalCost])
     return(
         <div className="flex flex-col justify-center items-center" ref={props.userRef} style={{

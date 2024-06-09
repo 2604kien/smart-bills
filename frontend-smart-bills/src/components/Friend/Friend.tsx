@@ -23,7 +23,7 @@ export default function Friend(){
         if(!isNaN(id) && id>0) {
             dispatch(getFriendList({id, token}))
         };
-    },[token, id])
+    },[token, id, dispatch])
     return(
         <div style={{
             display:"grid",

@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, Unique } from "typeorm";
 import {UserDetail } from "./userdetail.entity";
 import { Bill } from "./bill.entity";
 
 @Entity()
+@Unique(['user', 'bill']) // Composite unique constraint
 export class User_Owe{
     @PrimaryGeneratedColumn()
     id: number;
@@ -10,6 +11,6 @@ export class User_Owe{
     user:UserDetail;
     @ManyToOne(()=>Bill, bill=>bill.oweList, {onDelete:'CASCADE'})
     bill:Bill;
-    @Column()
+    @Column({nullable:true})
     oweAmount:string;
 }
