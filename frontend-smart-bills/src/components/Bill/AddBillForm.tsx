@@ -90,7 +90,7 @@ export default function AddBillForm(){
                                 <label className="text-lg">Description</label>
                                 <textarea onChange={handleChange} name="description" value={formData.description} className="w-full h-11 indent-1.5 pt-1 rounded-xl text-black text-base" placeholder="Enter bill title" style={{height:"100px"}}/>
                                 <h1 className="bg-white rounded-xl text-black duration-300 cursor-pointer sm:border border-white hover:brightness-50 p-2 gap-2" style={{width:"fit-content"}} onClick={()=>setOverlay(true)}>Add User</h1>
-                                <div className="w-full sm:border border-white" style={{height:"100px"}}>
+                                <div className="w-full sm:border border-white" style={{minHeight:"100px"}}>
                                     {userElement}
                                 </div>
                                 <button style={{

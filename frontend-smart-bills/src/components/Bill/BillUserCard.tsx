@@ -11,8 +11,22 @@ export default function BillUserCard(props:{ amount:number, isPaid?:boolean, edi
     });
 
     const [isClicked, setIsClicked]=React.useState(props.id===currUser.id?true:false);
+    
+    //auto pass data for edit bill card
+    React.useEffect(()=>{
+        if(props.editAmount){
+            setFormData((prev:any)=>{
+                return{
+                    ...prev,
+                    isPaid:props.isPaid,
+                    amount:props.editAmount
+                }
+            })
+            setIsClicked(true);
+        }
+    },[props.isPaid, props.editAmount])
 
-    //adjust amount based on change in equal to display.
+    //adjust amount, ispaid and user id when currUser is the one in card to display
     React.useEffect(()=>{
         const check=props.involveList.filter((el:any)=>el.userId===props.id)
         if(check.length>0){
