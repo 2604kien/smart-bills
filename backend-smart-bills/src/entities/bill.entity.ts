@@ -18,9 +18,9 @@ export class Bill{
     @Column()
     numberPeople:number;
     @OneToMany(()=>User_Paid, user_paid=>user_paid.bill)
-    paidList: User_Paid;
+    paidList: User_Paid[];
     @OneToMany(()=>User_Owe, user_owe=>user_owe.bill)
-    oweList:User_Owe;
+    oweList:User_Owe[];
     @ManyToOne(()=>UserDetail, user=>user.createdBillList, {onDelete:'CASCADE'})
     creator:UserDetail;
 }

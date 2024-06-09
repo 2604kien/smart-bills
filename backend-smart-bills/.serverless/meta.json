@@ -190,7 +190,7 @@
               "Type": "AWS::Lambda::Function",
               "Properties": {
                 "Code": {
-                  "ImageUri": "854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda@sha256:af938fdbefc38cf825c25854a55f1d277ff972b59262134ff1c5343816a03357"
+                  "ImageUri": "854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda@sha256:f0670ac5bbc6098309f47fd0a58e3bbf2f6fd572fe9ffc6a6f2bf72d39cd2461"
                 },
                 "PackageType": "Image",
                 "FunctionName": "smartbills-serverless-dev-app",
@@ -222,14 +222,14 @@
                 "AppLogGroup"
               ]
             },
-            "AppLambdaVersionwYJnspCV0J8OubeYX41w68OFsdjYMGyGGhwtnyORg": {
+            "AppLambdaVersionP8IBN3zrIqCGahQaBrba1HiZ3kBoBJCpUe8VSwvC8": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "AppLambdaFunction"
                 },
-                "CodeSha256": "af938fdbefc38cf825c25854a55f1d277ff972b59262134ff1c5343816a03357"
+                "CodeSha256": "f0670ac5bbc6098309f47fd0a58e3bbf2f6fd572fe9ffc6a6f2bf72d39cd2461"
               }
             },
             "ApiGatewayRestApi": {
@@ -354,7 +354,7 @@
                 "AppLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1717830701146": {
+            "ApiGatewayDeployment1717931158292": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -417,7 +417,7 @@
             "AppLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "AppLambdaVersionwYJnspCV0J8OubeYX41w68OFsdjYMGyGGhwtnyORg"
+                "Ref": "AppLambdaVersionP8IBN3zrIqCGahQaBrba1HiZ3kBoBJCpUe8VSwvC8"
               },
               "Export": {
                 "Name": "sls-smartbills-serverless-dev-AppLambdaFunctionQualifiedArn"
@@ -561,7 +561,7 @@
           "memory": 1024,
           "timeout": 6,
           "vpc": {},
-          "versionLogicalId": "AppLambdaVersionwYJnspCV0J8OubeYX41w68OFsdjYMGyGGhwtnyORg"
+          "versionLogicalId": "AppLambdaVersionP8IBN3zrIqCGahQaBrba1HiZ3kBoBJCpUe8VSwvC8"
         }
       },
       "custom": {
@@ -571,7 +571,7 @@
         }
       }
     },
-    "serviceRawFile": "service: smartbills-serverless\r\nuseDotenv: true\r\nplugins:\r\n  - serverless-offline\r\nprovider:\r\n  name: aws\r\n  region: ap-southeast-2\r\n  runtime: nodejs20.x\r\n  architecture: arm64\r\n  environment:\r\n    SECRET: ${env:SECRET}\r\n    SESSION_SECRET: ${env:SESSION_SECRET}\r\n    NODE_ENV: ${env:NODE_ENV}\r\n    DB_HOST: ${env:DB_HOST}\r\n    DB_USERNAME: ${env:DB_USERNAME}\r\n    DB_PASSWORD: ${env:DB_PASSWORD}\r\n    DB_NAME: ${env:DB_NAME}\r\n    DB_PORT: ${env:DB_PORT}\r\nfunctions:\r\n  app:\r\n    image:\r\n      uri: ${env:ECR_URI}\r\n    events:\r\n      - http:\r\n          method: ANY\r\n          path: /\r\n      - http:\r\n          method: ANY\r\n          path: '{proxy+}'\r\ncustom:\r\n  serverless-offline:\r\n    httpPort: 3500\r\n    noPrependStageInUrl: true",
+    "serviceRawFile": "service: smartbills-serverless\r\nuseDotenv: true\r\nplugins:\r\n  - serverless-offline\r\nprovider:\r\n  name: aws\r\n  region: ap-southeast-2\r\n  runtime: nodejs20.x\r\n  architecture: arm64\r\n  environment:\r\n    SECRET: ${env:SECRET}\r\n    SESSION_SECRET: ${env:SESSION_SECRET}\r\n    NODE_ENV: ${env:NODE_ENV}\r\n    DB_HOST: ${env:DB_HOST}\r\n    DB_USERNAME: ${env:DB_USERNAME}\r\n    DB_PASSWORD: ${env:DB_PASSWORD}\r\n    DB_NAME: ${env:DB_NAME}\r\n    DB_PORT: ${env:DB_PORT}\r\nfunctions:\r\n  app:\r\n    # handler: dist/src/serverless.handler\r\n    image:\r\n      uri: ${env:ECR_URI}\r\n    events:\r\n      - http:\r\n          method: ANY\r\n          path: /\r\n      - http:\r\n          method: ANY\r\n          path: '{proxy+}'\r\ncustom:\r\n  serverless-offline:\r\n    httpPort: 3500\r\n    noPrependStageInUrl: true",
     "command": [
       "deploy"
     ],
@@ -600,12 +600,12 @@
     "serviceProviderAwsCfStackName": "smartbills-serverless-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-southeast-2:854018809160:stack/smartbills-serverless-dev/98f0c8f0-24a7-11ef-9db8-02c9c0f1c099",
     "serviceProviderAwsCfStackCreated": "2024-06-07T08:26:11.650Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-08T07:11:57.221Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-09T11:06:13.907Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "AppLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:ap-southeast-2:854018809160:function:smartbills-serverless-dev-app:20",
+        "OutputValue": "arn:aws:lambda:ap-southeast-2:854018809160:function:smartbills-serverless-dev-app:21",
         "Description": "Current Lambda function version",
         "ExportName": "sls-smartbills-serverless-dev-AppLambdaFunctionQualifiedArn"
       },

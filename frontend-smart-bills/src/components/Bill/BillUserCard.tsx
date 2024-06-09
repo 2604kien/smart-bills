@@ -33,7 +33,6 @@ export default function BillUserCard(props:{ amount:number, isPaid?:boolean, edi
             setFormData(prev=>{
                 return{
                     ...check[0],
-                    isPaid: true,
                     userId: currUser.id
                 }
             });

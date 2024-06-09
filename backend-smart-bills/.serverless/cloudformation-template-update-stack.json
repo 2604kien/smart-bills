@@ -159,7 +159,7 @@
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ImageUri": "854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda@sha256:af938fdbefc38cf825c25854a55f1d277ff972b59262134ff1c5343816a03357"
+          "ImageUri": "854018809160.dkr.ecr.ap-southeast-2.amazonaws.com/smartbills-lambda@sha256:f0670ac5bbc6098309f47fd0a58e3bbf2f6fd572fe9ffc6a6f2bf72d39cd2461"
         },
         "PackageType": "Image",
         "FunctionName": "smartbills-serverless-dev-app",
@@ -191,14 +191,14 @@
         "AppLogGroup"
       ]
     },
-    "AppLambdaVersionwYJnspCV0J8OubeYX41w68OFsdjYMGyGGhwtnyORg": {
+    "AppLambdaVersionP8IBN3zrIqCGahQaBrba1HiZ3kBoBJCpUe8VSwvC8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "af938fdbefc38cf825c25854a55f1d277ff972b59262134ff1c5343816a03357"
+        "CodeSha256": "f0670ac5bbc6098309f47fd0a58e3bbf2f6fd572fe9ffc6a6f2bf72d39cd2461"
       }
     },
     "ApiGatewayRestApi": {
@@ -323,7 +323,7 @@
         "AppLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1717830701146": {
+    "ApiGatewayDeployment1717931158292": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -386,7 +386,7 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersionwYJnspCV0J8OubeYX41w68OFsdjYMGyGGhwtnyORg"
+        "Ref": "AppLambdaVersionP8IBN3zrIqCGahQaBrba1HiZ3kBoBJCpUe8VSwvC8"
       },
       "Export": {
         "Name": "sls-smartbills-serverless-dev-AppLambdaFunctionQualifiedArn"
