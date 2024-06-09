@@ -2,7 +2,7 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
-import {getBillById } from "../../reducers/billReducer";
+import {getBillById, updateBill } from "../../reducers/billReducer";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 export default function EditBill(){
@@ -17,13 +17,14 @@ export default function EditBill(){
         creator:currUser,
     });
     React.useEffect(()=>{
-        setFormData(prev=>{
+        setFormData((prev)=>{
             return {
                 ...prev,
                 creator:currUser
             }
         })
     },[currUser])
+    console.log(formData)
     const userId=currUser?currUser.id:0;
     const {id}=useParams();
     const dispatch=useAppDispatch();
@@ -52,7 +53,10 @@ export default function EditBill(){
         const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>Number(accumulator)+Number(currValue.amount),0);
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
         if(difference===0||(difference>=0.01&&difference<=0.02)){
-            alert('Add New Bill Successfully');
+            
+
+            dispatch(updateBill({data:formData, token, id:Number(id)}))
+            alert('Edit Bill Successfully');
         }
         else{
             alert('Total amount must equal to the total cost');
@@ -97,10 +101,12 @@ export default function EditBill(){
                 return{
                     ...currBill,
                     userList:userOweList.concat(userPaidList),
+                    creator: currUser,
+                    totalCost: Number(currBill.totalCost)
                 }
             })
         }
-    },[currBill])
+    },[currBill, currUser])
     return (
 
             <div className="z-0 flex flex-col justify-center items-center w-full h-full mt-5">
@@ -126,7 +132,7 @@ export default function EditBill(){
                                 </div>
                                 <button style={{
                                     marginBottom:"30px"
-                                }} className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Create New Bill</button>
+                                }} className="bg-white text-black rounded-lg h-9 mt-12 font-bold hover:brightness-75 duration-150">Edit Bill</button>
                             </form>
                         </div>
                 </div>

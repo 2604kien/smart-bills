@@ -19,6 +19,8 @@ provider:
 functions:
   app:
     handler: dist/src/serverless.handler
+    # image:
+    #   uri: ${env:ECR_URI}
     events:
       - http:
           method: ANY

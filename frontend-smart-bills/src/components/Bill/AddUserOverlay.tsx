@@ -9,7 +9,6 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     const userList=currUser.id!==0?[{user:currUser}].concat(friendList):[];
 
     const [involveList, setInvolveList]=React.useState([]);
-
     let finalUserList = userList.slice(); // Make a copy of userList
 
     if (props.userlist?.length > 0) {

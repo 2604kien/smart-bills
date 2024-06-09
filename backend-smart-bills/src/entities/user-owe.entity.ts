@@ -10,6 +10,6 @@ export class User_Owe{
     user:UserDetail;
     @ManyToOne(()=>Bill, bill=>bill.oweList, {onDelete:'CASCADE'})
     bill:Bill;
-    @Column()
+    @Column({nullable:true})
     oweAmount:string;
 }

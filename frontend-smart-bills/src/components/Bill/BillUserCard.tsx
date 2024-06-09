@@ -11,25 +11,22 @@ export default function BillUserCard(props:{ amount:number, isPaid?:boolean, edi
     });
 
     const [isClicked, setIsClicked]=React.useState(props.id===currUser.id?true:false);
-    React.useEffect(()=>{
-        setFormData((prev:any)=>{
-            return {
-                ...prev,
-                amount:props.editAmount? props.editAmount:0,
-                isPaid:props.isPaid? props.isPaid: false,
-            }
-        })
-        setIsClicked(props.included)
-    },[props.editAmount, props.included, props.isPaid])
+
     //adjust amount based on change in equal to display.
     React.useEffect(()=>{
         const check=props.involveList.filter((el:any)=>el.userId===props.id)
         if(check.length>0){
-            setFormData(check[0]);
+            setFormData(prev=>{
+                return{
+                    ...check[0],
+                    isPaid: true,
+                    userId: currUser.id
+                }
+            });
             setIsClicked(true);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[props.id])
+    },[props.id, currUser.id])
     React.useEffect(()=>{
         if(props.equal===true && isClicked===true){
             setFormData(prev=>{
@@ -76,23 +73,22 @@ export default function BillUserCard(props:{ amount:number, isPaid?:boolean, edi
             }
         })
     }
-    React.useEffect(()=>{
-        if(!props.involveList.includes(formData) && isClicked===true){
-            props.setInvolveList((prev:any)=>{
-                return [
-                    ...prev,
-                    formData,
-                ]
-            })
+    React.useEffect(() => {
+        if (isClicked === true) {
+          if (!props.involveList.some((el: any) => el.userId === formData.userId)) {
+            props.setInvolveList((prev: any) => [
+              ...prev,
+              formData,
+            ]);
+          }
+        } else if (isClicked === false) {
+          props.setInvolveList((prev: any) => {
+            const arr = prev.filter((el: any) => el.userId !== formData.userId);
+            return arr;
+          });
         }
-        else if(isClicked===false){
-            props.setInvolveList((prev:any)=>{
-                const arr=prev.filter((el:any)=>el.userId!==formData.userId)
-                return arr;
-            })
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[isClicked]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [isClicked, formData]);
     return(
         <div className="w-full h-full" style={{
             display:"grid",
