@@ -26,6 +26,7 @@ export const getAllCreatedBill=createAsyncThunk<{message:string, data?:Object}, 
 export const updateBill=createAsyncThunk<{message:string, data?:Object}, {data:any, token:string, id:number}>('bill/updateBill', async({data, token, id}, thunkAPI:any)=>{
     try {
         thunkAPI.dispatch(setStatusPending());
+        console.log(data.userList);
         const response=await axios.patch(backEndServer+`bill/${Number(id)}`,data, getConfig(token));
         thunkAPI.dispatch(setStatusSuccess());
         return response.data;

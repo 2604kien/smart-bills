@@ -3,11 +3,10 @@ import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bill } from 'src/entities/bill.entity';
-import { BillDto, BillListDto, UpdateBillDto } from './dto/bill.dto';
+import { BillDto, BillListDto} from './dto/bill.dto';
 import { UserOweService } from 'src/user-owe/user-owe.service';
 import { UserPaidService } from 'src/user-paid/user-paid.service';
 import { UserDetail } from 'src/entities/userdetail.entity';
-import { title } from 'process';
 import { User_Owe } from 'src/entities/user-owe.entity';
 import { User_Paid } from 'src/entities/user-paid.entity';
 @Injectable()
@@ -150,11 +149,44 @@ async updateBill(bill: BillDto, id: number): Promise<Object> {
         foundedBill.title = bill.title;
         foundedBill.description = bill.description || "";
         const savedBill = await this.billRepository.save(foundedBill);
-
+         // Create user-paid
+         const userPaidList = bill.userList.filter(el => el.isPaid === true);
+         const userPaidPromises = Promise.all(userPaidList.map(async (el: any) => {
+             const foundeduserPaid = await this.userPaidRepository.findOne({
+                 where:{
+                     user:{id:Number(el.userId)},
+                     bill:{id:id}
+                 },
+                 relations:{
+                     user:true,
+                     bill:true
+                 }
+             });
+             if (!foundeduserPaid) {
+                 throw new HttpException('User Paid Id invalid', HttpStatus.NOT_FOUND);
+             }
+             const user = new UserDetail();
+             user.id = el.userId;
+             foundeduserPaid.bill = savedBill;
+             foundeduserPaid.user = user;
+             foundeduserPaid.paidAmount = el.amount;
+             return this.userPaidRepository.save(foundeduserPaid);
+         }));
+ 
         // Create user-owe
         const userOweList = bill.userList.filter(el => el.isPaid === false);
-        const userOwePromises = userOweList.map(async (el: any) => {
-            const foundedUserOwe = await this.userOweRepository.findOneBy({ id: el.oweId });
+        const userOwePromises = Promise.all(userOweList.map(async (el: any) => {
+            const foundedUserOwe = await this.userOweRepository.findOne({
+                where:{
+                    user:{id:Number(el.userId)},
+                    bill:{id:id}
+                },
+                relations:{
+                    user:true,
+                    bill:true
+                }
+            });
+
             if (!foundedUserOwe) {
                 throw new HttpException('User Owe Id invalid', HttpStatus.NOT_FOUND);
             }
@@ -164,25 +196,11 @@ async updateBill(bill: BillDto, id: number): Promise<Object> {
             foundedUserOwe.user = user;
             foundedUserOwe.oweAmount = el.amount;
             return this.userOweRepository.save(foundedUserOwe);
-        });
+        }));
 
-        // Create user-paid
-        const userPaidList = bill.userList.filter(el => el.isPaid === true);
-        const userPaidPromises = userPaidList.map(async (el: any) => {
-            const foundedUserPaid = await this.userPaidRepository.findOneBy({ id: el.paidId });
-            if (!foundedUserPaid) {
-                throw new HttpException('User Paid Id invalid', HttpStatus.NOT_FOUND);
-            }
-            const user = new UserDetail();
-            user.id = el.userId;
-            foundedUserPaid.bill = savedBill;
-            foundedUserPaid.user = user;
-            foundedUserPaid.paidAmount = el.amount;
-            return this.userPaidRepository.save(foundedUserPaid);
-        });
+       
 
         // Wait for all promises to complete
-        await Promise.all([...userOwePromises, ...userPaidPromises]);
 
         return { message: "Bill updated successfully", data: foundedBill };
 

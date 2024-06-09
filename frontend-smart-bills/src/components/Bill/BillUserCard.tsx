@@ -3,13 +3,13 @@ import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppSelector } from "../../app/hooks";
 export default function BillUserCard(props:{ amount:number, isPaid?:boolean, editAmount?:number, setInvolveList:any, involveList:any, equal: boolean, id:number, fullName:string, username:string, phoneNumber:string, included?: any}){
     const currUser=useAppSelector(state=>state.user.currentUser);
-    const [formData, setFormData]=React.useState<{isPaid:boolean, amount:number, userId:number, userFullName:string}>({
+    const [formData, setFormData]=React.useState<{isPaid:boolean, amount:number, userId:number, userFullName:string, username:string}>({
         isPaid:props.id===currUser.id?true:false,
         amount:props.equal?props.amount:0,
         userId:props.id===currUser.id?currUser.id:props.id,
         userFullName:props.fullName===currUser.fullName? currUser.fullName:props.fullName,
+        username:props.username
     });
-
     const [isClicked, setIsClicked]=React.useState(props.id===currUser.id?true:false);
     
     //auto pass data for edit bill card
