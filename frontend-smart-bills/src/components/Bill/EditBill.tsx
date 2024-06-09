@@ -24,7 +24,6 @@ export default function EditBill(){
             }
         })
     },[currUser])
-    console.log(formData)
     const userId=currUser?currUser.id:0;
     const {id}=useParams();
     const dispatch=useAppDispatch();

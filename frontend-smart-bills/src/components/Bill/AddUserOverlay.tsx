@@ -12,19 +12,19 @@ export default function AddUserOverlay(props:{userlist?:any, setUserArray:any, o
     let finalUserList = userList.slice(); // Make a copy of userList
 
     if (props.userlist?.length > 0) {
-      props.userlist.forEach((el: any) => {
-        finalUserList = finalUserList.map((e: any) => {
-          if (Number(e.user.id) === Number(el.userId)) {
-            return {
-              ...e,
-              editAmount: el.amount,
-              included: true,
-              isPaid: el.isPaid
-            };
-          }
-          return e;
+        props.userlist.forEach((el: any) => {
+            finalUserList = finalUserList.map((e: any) => {
+                if (Number(e.user.id) === Number(el.userId)) {
+                    return {
+                        ...e,
+                        editAmount: el.amount,
+                        included: true,
+                        isPaid: el.isPaid
+                    };
+                }
+                return e;
+            });
         });
-      });
     }
     const amount=involveList.length>0?Math.round(props.totalCost/involveList.length*100)/100:0;
     const userCardElement=finalUserList && finalUserList.length>0? finalUserList.map((el:any, id:number)=><BillUserCard isPaid={el.isPaid} amount={amount} editAmount={Number(el.editAmount)} included={el.included}  setInvolveList={setInvolveList} involveList={involveList} equal={isEqual} key={id} id={el.user.id} fullName={el.user.fullName} phoneNumber={el.user.phoneNumber} username={el.user.username}/>):<></>
