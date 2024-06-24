@@ -9,16 +9,23 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { GatewayModule } from './gateway/gateway.module';
-import { MyGateWay } from './gateway/gateway';
 import { FriendRequestModule } from './friend-request/friend-request.module';
 import { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true
+      isGlobal: true,
     }),
-    TypeOrmModule.forRoot(dataSourceOptions),GatewayModule, UserModule, BillModule, UserOweModule, UserPaidModule, AuthModule, FriendRequestModule],
+    TypeOrmModule.forRoot(dataSourceOptions),
+    GatewayModule,
+    UserModule,
+    BillModule,
+    UserOweModule,
+    UserPaidModule,
+    AuthModule,
+    FriendRequestModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

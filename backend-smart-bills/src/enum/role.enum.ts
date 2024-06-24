@@ -1,11 +1,12 @@
-export enum Role{
-    member="member",
-    admin="admin",
-    user="user",
+export enum Role {
+  member = 'member',
+  admin = 'admin',
+  user = 'user',
 }
 
-export namespace Role{
-    export function all():Role[]{
-        return Object.keys(Role).map(key=>Role[key]);
-    }
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Role {
+  export function all(): Role[] {
+    return Object.keys(Role).map((key) => Role[key]);
+  }
 }

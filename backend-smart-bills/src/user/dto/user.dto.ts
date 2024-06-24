@@ -1,25 +1,25 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-export class UserDto{
-    @IsNotEmpty()
-    @IsString()
-    fullName:string;
-    @IsNotEmpty()
-    @IsString()
-    username:string;
-    @IsNotEmpty()
-    @IsString()
-    password:string;
-    @IsNotEmpty()
-    @IsEmail()
-    email:string;
-    @IsNotEmpty()
-    @IsString()
-    phoneNumber:string;
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+export class UserDto {
+  @IsNotEmpty()
+  @IsString()
+  fullName: string;
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber: string;
 }
-export class UserUpdateDto{
-    @IsNotEmpty()
-    @IsString()
-    username:string;
-    password:string;
-    roles:string[];
+export class UserUpdateDto {
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+  password: string;
+  roles: string[];
 }

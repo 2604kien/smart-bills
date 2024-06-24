@@ -15,10 +15,10 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forFeature([UserDetail]),
     PassportModule,
     JwtModule.register({
-      secret:process.env.SECRET
-    })
+      secret: process.env.SECRET,
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  controllers: [AuthController]
+  controllers: [AuthController],
 })
 export class AuthModule {}
