@@ -9,8 +9,12 @@ import { User_Owe } from 'src/entities/user-owe.entity';
 import { User_Paid } from 'src/entities/user-paid.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Bill, User_Owe, User_Paid]), UserOweModule, UserPaidModule],
+  imports: [
+    TypeOrmModule.forFeature([Bill, User_Owe, User_Paid]),
+    UserOweModule,
+    UserPaidModule,
+  ],
   providers: [BillService],
-  controllers: [BillController]
+  controllers: [BillController],
 })
 export class BillModule {}

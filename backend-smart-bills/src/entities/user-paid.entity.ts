@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, CreateDateColumn, Unique } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, Unique } from "typeorm";
 import { UserDetail } from "./userdetail.entity";
 import { Bill } from "./bill.entity";
 

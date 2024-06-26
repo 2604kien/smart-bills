@@ -46,7 +46,7 @@ export default function AddBillForm(){
     
     const handleSubmit=(e:any)=>{
         e.preventDefault();
-        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>accumulator+currValue.amount,0);
+        const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>Number(accumulator)+Number(currValue.amount),0);
         const difference=Math.round(Math.abs((Number(totalCostCheck)-Number(formData.totalCost))*100))/100;
         if(difference===0||(difference>=0.01&&difference<=0.02)){
             dispatch(createNewBill({data:formData, token}));
