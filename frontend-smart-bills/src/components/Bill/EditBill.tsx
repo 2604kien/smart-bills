@@ -5,7 +5,15 @@ import AddUserOverlay from "./AddUserOverlay";
 import {getBillById, updateBill } from "../../reducers/billReducer";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+//Edit Bill form that allow user to edit their created bill.
+/**
+ * Need to consider:
+ * Only person who created the bill can edit or
+ * everyone who is part of the bill can edit
+ * 
+ */
 export default function EditBill(){
+    //initialize variable, data to use later
     const currUser=useAppSelector(state=>state.user.currentUser);
     const currBill:any=useAppSelector(state=>state.bill.currBill);
     const [formData,setFormData]=React.useState({
@@ -16,6 +24,7 @@ export default function EditBill(){
         numberPeople:0,
         creator:currUser,
     });
+    //useEffect to set creator attribute in the formData to current user when the currentUser data is retrived.
     React.useEffect(()=>{
         setFormData((prev)=>{
             return {
@@ -30,6 +39,7 @@ export default function EditBill(){
     const token=useAppSelector(state=>state.auth.accessToken);
     const [overlay, setOverlay]=React.useState(false);
     const userRef=React.useRef<HTMLInputElement>(null);
+    //handleChange function that transform value to a number if the input field is totalCost
     const handleChange=(e:any)=>{
         const {name, value}=e.target
         setFormData(prev=>{
@@ -39,6 +49,7 @@ export default function EditBill(){
             }
         })
     }
+    //userElement that include all the user involved to the bill 
     const userElement=formData.userList.length>0?formData.userList.map((el:any, id:number)=>(<div key={id} className="ml-2 flex flex-col">
         <h1>user: {el.userFullName}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
     </div>)):(
@@ -46,7 +57,7 @@ export default function EditBill(){
             <h1>Please add an user</h1>
         </div>
     )
-
+    //handleSubmit function that allow user to submit the editted form to the server if ther is no difference in totalCost and the sum of all user amount in userList
     const handleSubmit=(e:any)=>{
         e.preventDefault();
         const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>Number(accumulator)+Number(currValue.amount),0);
@@ -61,12 +72,14 @@ export default function EditBill(){
             alert('Total amount must equal to the total cost');
         }
     }
+    //useEffect to get friend data and get the current bill
     React.useEffect(()=>{
         if(userId!==0){
             dispatch(getFriendList({id:userId, token}))
             dispatch(getBillById({id:Number(id), token}))
         }
     },[currUser, token, dispatch, id, userId])
+    //useEffect to check overlay for add friend to bill section
     React.useEffect(()=>{
         let handler=(e:any)=>{
             const element=userRef.current;
@@ -76,6 +89,7 @@ export default function EditBill(){
         }
         document.addEventListener("mousedown", handler);
     },[])
+    //useEffect to categorise and set necessary attribute for oweList and paidList before sending it to the server.
     React.useEffect(()=>{
         if(currBill.oweList && currBill.paidList){
             const userOweList=currBill.oweList.map((el:any)=>{
@@ -106,6 +120,7 @@ export default function EditBill(){
             })
         }
     },[currBill, currUser])
+    //return input form used to Edit Bill.
     return (
 
             <div className="z-0 flex flex-col justify-center items-center w-full h-full mt-5">

@@ -13,6 +13,7 @@ type Action={
         username:string
     }
 }
+//Friend homepage that display all user who are in the friend list, friend request and friend request pending
 export default function Friend(){
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);

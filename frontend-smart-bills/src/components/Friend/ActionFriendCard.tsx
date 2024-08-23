@@ -2,6 +2,7 @@ import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { acceptFriendRequest, rejectFriendRequest } from "../../reducers/friendRequestReducer";
+//ActionFriendCard that allow user to response to friend request or friend request pending.
 export default function ActionFriendCard(props:{id:number, action:string, fullName:string, username:string, phoneNumber:string}){
     
     const dispatch=useAppDispatch();

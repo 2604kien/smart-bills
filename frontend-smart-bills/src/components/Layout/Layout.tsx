@@ -3,6 +3,7 @@ import { Outlet} from "react-router-dom";
 import Navbar from "./Navbar";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { refresh } from "../../reducers/authReducer";
+//Layout page for the whole website
 export default function Layout(){
     const dispatch=useAppDispatch();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);

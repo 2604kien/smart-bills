@@ -10,6 +10,7 @@ type Register={
     email:string,
     phoneNumber:string,
 }
+//User Registering page
 export default function Login(){
     const dispatch=useAppDispatch();
     const message=useAppSelector(state=>state.user.message);

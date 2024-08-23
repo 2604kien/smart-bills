@@ -65,7 +65,7 @@ const authSlice=createSlice({
             state.isAuthenticated=true;
         })
         .addCase(login.rejected, (state, action:any)=>{
-            if(action.error.message.includes("401")||action.error.message.includes("404")){
+            if(action.error.message.includes("401")||action.error.message.includes("404")||action.error.message.includes("Rejected")){
                 state.message="Username/password incorrect!";
             }
             else{

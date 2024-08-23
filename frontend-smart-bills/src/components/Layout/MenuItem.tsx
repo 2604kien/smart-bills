@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+// display each Item in the menu item drop down
 export default function MenuItem(props:{item:string, itemName:string, navigation:string, handleMenuClick:()=>void}){
     const navigate=useNavigate();
     return(

@@ -2,6 +2,7 @@ import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../reducers/authReducer";
+//Card that contains all necessary user information
 export default function ProfileCard(){
     const user=useAppSelector(state=>state.user.currentUser);
     const dispatch=useAppDispatch();

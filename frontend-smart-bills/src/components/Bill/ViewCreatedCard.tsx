@@ -3,10 +3,13 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { deleteBill } from "../../reducers/billReducer";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+//ViewCreatedCard that will be used in created bill page
 export default function ViewCreatedCard(props:any){
+    //initialize data, variable, method
     const navigate=useNavigate();
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
+    //delete created bill
     const handleDelete=()=>{
         const confirm=window.confirm('Please confirm you want to delete this bill?')
         if(confirm){
@@ -14,6 +17,7 @@ export default function ViewCreatedCard(props:any){
             window.location.reload();
         }       
     }
+    //return the created bill card
     return(
         <div style={{
             height:"200px",
@@ -33,7 +37,7 @@ export default function ViewCreatedCard(props:any){
             <div className="flex flex-col justify-center items-center" style={{fontSize:"1.3rem"}}>
                  <h1 style={{fontWeight:"600", fontSize:"1.5rem"}}>Title: {props.data.title}</h1>
                  <h1>Time: {moment(props.data.date).format('HH:mm | DD-MM-YYYY')}</h1>
-                 <h1>Created By: {props.data.creator.fullName}</h1>
+                 <h1>Paid By: {props.data.creator.fullName}</h1>
                  <h1>Total Cost: ${props.data.totalCost}</h1>
             </div>
             <div className="flex flex-col justify-center items-center gap-5">

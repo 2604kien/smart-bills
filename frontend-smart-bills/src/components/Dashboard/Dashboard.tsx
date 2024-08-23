@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
+//Dashboard page
 export default function Dashboard(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+//navigation bar for Add Friend feature
 export default function FriendNav(){
     const navigate=useNavigate();
     return (

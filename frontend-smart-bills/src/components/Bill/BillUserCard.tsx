@@ -2,6 +2,7 @@ import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png";
 import { useAppSelector } from "../../app/hooks";
 
+//component that display each user in the friendlist inside AddUserOverlay component 
 export default function BillUserCard(props:any) {
     const currUser = useAppSelector(state => state.user.currentUser);
     const [formData, setFormData] = React.useState({
@@ -73,7 +74,7 @@ export default function BillUserCard(props:any) {
             [name]: type === "checkbox" ? checked : value
         }));
     };
-
+//return user card to display user data.
     return (
         <div className="w-full h-full" style={{
             display: "grid",

@@ -6,6 +6,7 @@ import Profile from "./Profile";
 import NotificationBox from "./Notifcation";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getUserById } from "../../reducers/userReducer";
+//Navbar of the whole website
 export default function Navbar(){
     const navigate=useNavigate();
     const location=useLocation();

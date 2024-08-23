@@ -2,9 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import AddBillForm from "./AddBillForm";
+//component to add bill form to the server
 export default function AddBill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
+    //if user is authenticated then show the AddBillForm componet, otherwise error message asking for login
     const element=isAuthenticated? (<div className="flex flex-col justify-center items-center" style={{height:"100%", width:"100%"}}>
                                         <AddBillForm/>                                   
                                     </div>):

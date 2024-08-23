@@ -2,13 +2,16 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Logo from "../../Logo/BlackBackground.png";
 import { useAppSelector } from "../../app/hooks";
+//navigation bar on the left side of bill feature
 export default function BillCard(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
+    //button in the navigation bar
     const element=isAuthenticated?(
         <div className="flex flex-col justify-center items-center" style={{
             gap:"20px",
         }}>
+            <h1 onClick={()=>navigate("/bill")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>Settle Friend</h1>
             <h1 onClick={()=>navigate("/bill/new")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>Add New Bill</h1>
             <h1 onClick={()=>navigate("/bill/owe")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>View Owed Bill</h1>
             <h1 onClick={()=>navigate("/bill/paid")} className="hover:brightness-50 cursor-pointer flex flex-col justify-center items-center" style={{ borderRadius:"15px", padding:"5px", width:"70%", background:"white"}}>View Paid Bill</h1>

@@ -2,6 +2,7 @@ import React from "react";
 import defaultAvatar from "../../Logo/defaultAvatar.png"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { sendFriendRequest } from "../../reducers/friendRequestReducer";
+//AddFriendCard display user who is found using the search bar in add friend.
 export default function AddFriendCard(props:{status:boolean, data:any}){
     const currUserId=useAppSelector(state=>state.user.currentUser.id);
     const dispatch=useAppDispatch();

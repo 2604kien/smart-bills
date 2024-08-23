@@ -1,4 +1,5 @@
 import React from "react";
+//notification drop down
 export default function NotificationBox(props:{notificationRef:React.RefObject<HTMLInputElement> ,isClick:boolean, handleClick:()=>void}){
     
     return (

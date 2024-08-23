@@ -3,6 +3,7 @@ import AddFriendCard from "./AddFriendCard";
 import axios from "axios";
 import { backEndServer } from "../../server/server";
 import { useAppSelector } from "../../app/hooks";
+//AddFriend page allow user to add friend base on phone number;
 export default function AddFriend(){
     const [isSelect, setIsSelect]=React.useState(false);
     const [phoneNumber, setPhoneNumber]=React.useState("");

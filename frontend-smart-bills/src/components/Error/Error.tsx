@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+//display error 404 page when the website is unabled to retrive content
 export default function Error(){
     const navigate=useNavigate();
     return(

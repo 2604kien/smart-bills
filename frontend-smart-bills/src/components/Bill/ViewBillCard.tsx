@@ -2,10 +2,12 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { deleteUserPaid, getOweBillSettle } from "../../reducers/billReducer";
 import moment from "moment";
+//ViewBillCard that contains all element of a bill card, used on all display bill page
 export default function ViewBillCard(props:any){
-
+    //initialize data, variable, method
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
+    //used to delete a bill card in created bill
     const handleDelete=()=>{
         const confirmMsg=window.confirm("Are you sure to delete this paid history?");
         if(confirmMsg){
@@ -14,6 +16,7 @@ export default function ViewBillCard(props:any){
         }
         
     }
+    //used to settle a bill in owe bill
     const handleSettle=()=>{
         const confirmMsg=window.confirm("Are you sure you have settle this bill?");
         if(confirmMsg){
@@ -21,6 +24,7 @@ export default function ViewBillCard(props:any){
             window.location.reload();
         }
     }
+    //button that do different thing if bill isPaid or not
     const buttonElement=props.isPaid?(
         <button className="bg-red-600 text-white hover:bg-white hover:text-black duration-300" style={{
             border:"2px solid white",
@@ -42,6 +46,7 @@ export default function ViewBillCard(props:any){
 
         }} onClick={handleSettle}>Settle</button>
     )
+    //return the bill card
     return (
         <div style={{
             height:"200px",
@@ -63,14 +68,14 @@ export default function ViewBillCard(props:any){
                 <>
                  <h1 style={{fontWeight:"600", fontSize:"1.5rem"}}>Title: {props.data.bill?.title}</h1>
                  <h1>Time: {moment(props.data.bill.date).format('HH:mm | DD-MM-YYYY')}</h1>
-                 <h1>Created By: {props.data.bill.creator.fullName}</h1>
+                 <h1>Paid By: {props.data.bill.creator.fullName}</h1>
                  <h1>Total Cost: ${props.data.bill.totalCost}</h1>
                  <h1>Owe Amount: ${props.data.oweAmount}</h1>
                  </>
                ):<>
                 <h1 style={{fontWeight:"600", fontSize:"1.5rem"}}>Title: {props.data.bill?.title}</h1>
                  <h1>Time: {moment(props.data.bill.date).format('HH:mm | DD-MM-YYYY')}</h1>
-                 <h1>Created By: {props.data.bill.creator.fullName}</h1>
+                 <h1>Paid By: {props.data.bill.creator.fullName}</h1>
                  <h1>Total Cost: ${props.data.bill.totalCost}</h1>
                  <h1>Paid Amount: ${props.data.paidAmount}</h1>
                </>}

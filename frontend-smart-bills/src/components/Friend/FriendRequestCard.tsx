@@ -11,6 +11,7 @@ type Action={
         username:string
     }
 }
+//Pending card for Friend Request
 export default function FriendRequestCard(){
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);

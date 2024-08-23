@@ -1,5 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+//Homepage
+/**
+ * Home page should include:
+ * Application introduction
+ * Select mobile or desktop, if mobile then go to CH play or Appstore, if desktop then go to login website.
+ * News and version update, feature, etc
+ */
 export default function Home(){
     const navigate=useNavigate();
     return(

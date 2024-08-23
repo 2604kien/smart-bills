@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import FriendNav from "./FriendNav";
+//Layout of Add friend feature
 export default function FriendLayout(){
     return(
         <div style={{

@@ -2,6 +2,7 @@ import React from "react";
 import { useAppSelector } from "../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
+//Profile drop down
 export default function Profile(props:{profileRef:React.RefObject<HTMLInputElement> ,isClick:boolean, handleClick:()=>void}){
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const navigate=useNavigate();

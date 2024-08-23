@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getFriendList } from "../../reducers/friendRequestReducer";
 import AddUserOverlay from "./AddUserOverlay";
 import { createNewBill } from "../../reducers/billReducer";
+//AddBillForm to submit a bill data to the server
 export default function AddBillForm(){
+    //initialize data for formData and try to get current User from Redux store by useSelector
     const currUser=useAppSelector(state=>state.user.currentUser);
     const [formData,setFormData]=React.useState({
         title:"",
@@ -13,6 +15,7 @@ export default function AddBillForm(){
         numberPeople:0,
         creator:currUser,
     });
+    // this use Effect check if current User data is retrived and then assign it to the form data
     React.useEffect(()=>{
         setFormData(prev=>{
             return {
@@ -21,11 +24,13 @@ export default function AddBillForm(){
             }
         })
     },[currUser])
+    //initialize data and method to use later
     const id=currUser?currUser.id:0;
     const dispatch=useAppDispatch();
     const token=useAppSelector(state=>state.auth.accessToken);
     const [overlay, setOverlay]=React.useState(false);
     const userRef=React.useRef<HTMLInputElement>(null);
+    //this handle Change is to transform input data to number if the input field is totalCost
     const handleChange=(e:any)=>{
         const {name, value}=e.target
         setFormData(prev=>{
@@ -35,6 +40,7 @@ export default function AddBillForm(){
             }
         })
     }
+    //this userElement display list of added user to the bill, if no user is added, then a message will be displayed
     const userElement=formData.userList.length>0?formData.userList.map((el:any, id:number)=>(<div key={id} className="ml-2 flex flex-col">
         <h1>user: {el.userFullName}, paid: {el.isPaid?"true":"false"}, amount: ${el.amount};</h1>
     </div>)):(
@@ -43,7 +49,7 @@ export default function AddBillForm(){
         </div>
     )
     
-    
+    //handleSubmit to submit the form data to the server, if there is a difference between all added user amount and the totalCost then it will display a message
     const handleSubmit=(e:any)=>{
         e.preventDefault();
         const totalCostCheck=formData.userList.reduce((accumulator:any, currValue:any)=>Number(accumulator)+Number(currValue.amount),0);
@@ -57,11 +63,13 @@ export default function AddBillForm(){
             alert('Total amount must equal to the total cost');
         }
     }
+    //this useEffect get the friend List from the server to be used in the AddUserOverLay
     React.useEffect(()=>{
         if(id!==0){
             dispatch(getFriendList({id, token}))
         }
     },[currUser, token, dispatch, id])
+    //this useEffect ran when the website first load to listen if user open the friend list overlay and close the overlay when user click outside.
     React.useEffect(()=>{
         let handler=(e:any)=>{
             const element=userRef.current;
@@ -71,6 +79,7 @@ export default function AddBillForm(){
         }
         document.addEventListener("mousedown", handler);
     },[])
+    //return form component
     return (
 
             <div className="z-0 flex flex-col justify-center items-center w-full h-full mt-5">

@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
+//settle bill page that group all the owed bill and lent bill by friend and user can settle payment by each friend.
 export default function Bill(){
     const navigate=useNavigate();
     const isAuthenticated=useAppSelector(state=>state.auth.isAuthenticated);
     const element=isAuthenticated? (<div style={{height:"100%"}}>  
-                                            <h1 style={{fontSize:"4rem"}}>Hi</h1>
+                                            <h1 style={{fontSize:"4rem"}}></h1>
                                     </div>):
                                     (
                                         <div style={{height:"100%"}}>

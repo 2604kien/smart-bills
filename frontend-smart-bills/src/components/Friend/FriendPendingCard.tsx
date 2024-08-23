@@ -11,6 +11,7 @@ type Action={
         username:string
     }
 }
+//Pending Card for Friend Request Pending
 export default function FriendPendingCard(){
     const dispatch=useAppDispatch();
     const id=useAppSelector(state=>state.user.currentUser.id);

@@ -9,6 +9,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
+  //provide Redux store and enable React Router Dom
   <Provider store={store}>
     <BrowserRouter>
       <Routes>

@@ -1,5 +1,6 @@
 import React from "react";
 import MenuItem from "./MenuItem";
+//the drop down menu that contains all the feature of the website
 export default function Menu(props:{menuRef:React.RefObject<HTMLInputElement> ,isClick:boolean, handleMenuClick:()=>void}){
     const classArray:string[]=["fa-solid fa-house","fa-solid fa-table", "fa-solid fa-gear", "fa-solid fa-newspaper", "fa-solid fa-receipt", "fa-solid fa-user-group"]
     const nameArray:string[]=["Home","Dashboard", "Setting","News", "Bills", "Friend"];
